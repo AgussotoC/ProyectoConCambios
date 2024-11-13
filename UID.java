@@ -5,7 +5,6 @@ public class UID{
     Scanner scanner = new Scanner(System.in);
     Random rand = new Random();
     Agentes agentes;
-    Items[] items;
     Inventario inventario;
     //Coordenadas de cada entidad (exceptuando al jugador)
     int indexiItems;
@@ -19,6 +18,10 @@ public class UID{
     //Coordenadas de los enemigos
     int[] indexiEnemigos;
     int[] indexjEnemigos;
+    //Creacion de objteos
+    Armas[] armas = new Armas[3];
+    Armaduras[] armaduras = new Armaduras[3];
+    Items[] items = new Items[6];
 
     //Creacion de la matriz y su tamaño
     int[][] matriz;
@@ -32,6 +35,7 @@ public class UID{
     Armaduras: 5
     Jugador: 6
     */
+
     //Datos para spawnear entidades
     boolean esPosible = false;
     int mChiquita = num -1; //Area dentro de las paredes
@@ -41,8 +45,8 @@ public class UID{
     Agentes[] enemigos;
     int[] spawnEnemigos = null; //ver cuantas entidades de enemigos se crean
     public UID(){
-        Armaduras armaduraI = new Armaduras("Sin armadura", 1, 30,"Defensa Base");
-        Armas armaI = new Armas("Sin arma", 1, 30, "Ataque base");
+        Armaduras armaduraI = new Armaduras("Sin armadura","Defensa Base");
+        Armas armaI = new Armas("Sin arma", "Ataque base");
         decidirNumEnemigos();
         if(enemigos.length == 0){
             enemigos = null;
@@ -260,7 +264,7 @@ public class UID{
 
     //metodo para saber las coordenadas de los items que se pueden agarrar
     public void encontrarCoordenadasEntidades(){
-        char[] entidadesAgarrables = {4 , 3, 5};
+        char[] entidadesAgarrables = {4, 3, 5};
         for(int k = 0; k < entidadesAgarrables.length; k++){
             for(int i = 0; i < num; i++){
                 for(int j = 0; j < num; j++){
@@ -275,12 +279,9 @@ public class UID{
                                 indexjItems = j;
                                 break;
                             case 2:
-                                indexiDebuff = i;
-                                indexjDebuff = j;
-                                break;
-                            case 3:
                                 indexiArmadura = i;
                                 indexjArmadura = j;
+                                break;
                         }
                     }
                 }
@@ -446,18 +447,76 @@ public class UID{
         return hayCombate;
     }
 
-    /*private void encontrarEquipable(Agentes jugador){
-        //Encontró Item
-        for(int i = 0; i < num; i++){
-            for(int j = 0; j < num; j++){
-                if(jugador.getIcono() == matriz[indexiItems][indexjItems]){
-                    System.out.println("Has obtenido: ");
-                    System.out.println(items[itemAleatorio]);
-                    jugador.agregarItemAlInventario(items[itemAleatorio]);
+    public void encontrarEquipable(Agentes jugador){
+        //Jugador encontró arma
+        if(jugador.getIcono() == matriz[indexiArmas][indexjArmas]){
+            armas[0] = new Armas("Arma basica", "Aumenta el daño en un 20%");
+            armas[1] = new Armas("Arma secreta", "Hace 50% al enemigo más el ataque base");
+            armas[2] = new Armas("Arma legendaria", "Aumenta el daño en 100%");
+            Armas armaObtenida = armas[rand.nextInt(3)];
+            System.out.println("Has obtenido: \n" + armaObtenida);
+            jugador.setArma(armaObtenida);
+        }
+        //Jugador encontró armadura
+        else if(jugador.getIcono() == matriz[indexiArmadura][indexjArmadura]){
+            armaduras[0] = new Armaduras("Arma basica", "Aumenta el daño en un 20%");
+            armaduras[1] = new Armaduras("Arma secreta", "Hace 50% al enemigo más el ataque base");
+            armaduras[2] = new Armaduras("Arma legendaria", "Aumenta el daño en 100%");
+            Armaduras armaObtenida = armaduras[rand.nextInt(3)];
+            System.out.println("Has obtenido: \n" + armaObtenida);
+            jugador.setArmadura(armaObtenida);
+        }
+        //Jugador encontró item
+        else if (jugador.getIcono() == matriz[indexiItems][indexjItems]){
+            double aumentoAtaquee = rand.nextInt(10,21);
+            items[0] = new Items("Mancuerna", aumentoAtaquee,"Aumenta el daño entre 10-20%");
+            items[1] = new Items("Mascarilla",15 ,"Aumenta la defensa en un 15%");
+            items[2] = new Items("Sangre", 20, "El 20% de tu daño se te añade a la vida");
+            items[3] = new Items("Quebrar", 15, "Reduce la defensa del enemigo en un 15%");
+            items[4] = new Items("Veneno", 1, "Quita vida en cada turno hasta 10 vida, empieza en 1");
+            items[5] = new Items("Reduccion",20, "Reduce el daño del enemigo en un 20%");
+            Items itemObtenido = items[rand.nextInt(6)];
+            System.out.println("Has obtenido: \n" + itemObtenido);
+            jugador.agregarItemAlInventario(itemObtenido);
+        }
+        if(enemigos != null){
+            for(Agentes enemigo : enemigos){
+                int contador = 0;
+                //enemigo encontró arma
+                if(enemigo.getIcono() == matriz[indexiArmas][indexjArmas]){
+                    armas[0] = new Armas("Arma basica", "Aumenta el daño en un 20%");
+                    armas[1] = new Armas("Arma secreta", "Hace 50% al enemigo más el ataque base");
+                    armas[2] = new Armas("Arma legendaria", "Aumenta el daño en 100%");
+                    Armas armaObtenida = armas[rand.nextInt(4)];
+                    System.out.println("El enemigo ha obtenido: \n" + armaObtenida);
+                    enemigo.setArma(armaObtenida);
                 }
+                //enemigo encontró armadura
+                else if(enemigo.getIcono() == matriz[indexiArmadura][indexjArmadura]){
+                    armaduras[0] = new Armaduras("Arma basica", "Aumenta el daño en un 20%");
+                    armaduras[1] = new Armaduras("Arma secreta", "Hace 50% al enemigo más el ataque base");
+                    armaduras[2] = new Armaduras("Arma legendaria", "Aumenta el daño en 100%");
+                    Armaduras armaObtenida = armaduras[rand.nextInt(4)];
+                    System.out.println("El enemigo ha obtenido: \n" + armaObtenida);
+                    enemigo.setArmadura(armaObtenida);
+                }
+                //enemigo encontró item
+                else if (enemigo.getIcono() == matriz[indexiItems][indexjItems]){
+                    double aumentoAtaquee = rand.nextInt(10,21);
+                    items[0] = new Items("Mancuerna", aumentoAtaquee,"Aumenta el daño entre 10-20%");
+                    items[1] = new Items("Mascarilla",15 ,"Aumenta la defensa en un 15%");
+                    items[2] = new Items("Sangre", 20, "El 20% de tu daño se te añade a la vida");
+                    items[3] = new Items("Quebrar", 15, "Reduce la defensa del enemigo en un 15%");
+                    items[4] = new Items("Veneno", 1, "Quita vida en cada turno hasta 10 vida, empieza en 1");
+                    items[5] = new Items("Reduccion",20, "Reduce el daño del enemigo en un 20%");
+                    Items itemObtenido = items[rand.nextInt(4)];
+                    System.out.println("El enemigo ha obtenido: \n" + itemObtenido);
+                    enemigo.agregarItemAlInventario(itemObtenido);
+                }
+                contador += 1;
             }
         }
-    }*/
+    }
 
     /*private Items atributosItem(Agentes actual){
         Items[] items = new Items[15];
