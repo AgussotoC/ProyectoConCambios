@@ -128,15 +128,30 @@ public class Main {
                         System.out.println("Se fue a la habitacion de arriba");
                         puertaTaken = true; break;
                     case "d":
-                        System.out.println("Se fue a la habitacion de la izquierda");
+                        System.out.println("Se fue a la habitacion de la derecha");
                         puertaTaken = true; break;
                     case "s":
                         System.out.println("Se fue a la habitacion de abajo");
                         puertaTaken = true; break;
                     case "a":
-                        System.out.println("Se fue a la habitacion de la derecha");
+                        System.out.println("Se fue a la habitacion de la izquierda");
                         puertaTaken = true; break;
                 }
+                /*
+                Ya trabajando con nodos sería algo así en cada case:
+                (el ejemplo esta en el case de la derecha, pero aplica para cada uno con su correspondiente case)
+                if(actual.derecha != null)
+                {
+                    Nodo nuevoNodo = new Nodo(numCuarto),
+                    nuevoNodo.izquierda = actual;
+                    actual.derecha = nuevoNodo;
+                    actual = nuevoNodo
+                }
+                else
+                {
+                    actual = actual.derecha;
+                }
+                */
             }
         }
     }
