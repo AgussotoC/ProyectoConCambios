@@ -90,7 +90,7 @@ public class Agentes
     public void setArmaduraEfecto(){
 
     }
-    public void setIcono(char ingreso){
+    public void setIcono(int ingreso){
         this.icono = ingreso;
     }
     //Metodo que recibe el daño y lo reduce a la salud
