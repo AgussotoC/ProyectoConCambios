@@ -74,7 +74,8 @@ public class UID{
             }
         }
         enemigos = new Agentes[numEnemigos];
-        indexjEnemigos = indexiEnemigos = new int[numEnemigos];
+        indexjEnemigos =  new int[numEnemigos];
+        indexiEnemigos = new int[numEnemigos];
     }
     private void generarEntidades(int[] entidades){
         for(int k = 0; k < entidades.length; k++)

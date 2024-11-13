@@ -223,7 +223,6 @@ public class Main {
             if(juego.uid.areaEnemigo() == true){
                 gano = false;
                 System.out.println("Hay combate");
-                juego.uid.imprimirMatriz();
             }
         }
     }
