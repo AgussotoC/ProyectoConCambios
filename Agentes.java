@@ -6,16 +6,18 @@ public class Agentes
     private double salud;
     private double ataque;
     private double defensa;
+
     /*Características compartidas y modificables por toda entidad
       también ocupa la creaciones de clases de items para funcionar, lo cual lo ideal sería hacerlo en el main*/
-    public Items arma;
-    public Items armadura;
+
+    public Armas arma;
+    public Armaduras armadura;
     public double buffs;
     private boolean debuff;
     public Inventario inventario;
 
     //Constructor del jugador y enemigos
-    public Agentes(int icono, double salud, double ataque, double defensa, Items arma, Items armadura, double buffs){
+    public Agentes(int icono, double salud, double ataque, double defensa, Armas arma, Armaduras armadura, double buffs){
         this.icono = icono;
         this.salud = salud;
         this.ataque = ataque;
@@ -47,22 +49,9 @@ public class Agentes
     public String getArmaduraNombre(){
         return armadura.getNombre();
     }
-    public double getArmaduraEfecto(){
-        return armadura.getEfecto();
-    }
     public String getArmaduraDesc(){
         return armadura.getDescripcion();
     }
-
-    public String getArmaNombre(){
-        return arma.getNombre();
-    }
-    public double getArmaEfecto(){
-        return arma.getEfecto();
-    }
-    public String getArmaDesc(){
-        return arma.getDescripcion();
-    } 
 
     public int getIcono(){
         return icono;
@@ -78,8 +67,11 @@ public class Agentes
     public void setAtaque(double efecto){
         this.ataque = efecto;
     }
-    public void setArmadura(Items armaduraNueva){
+    public void setArmadura(Armaduras armaduraNueva){
         this.armadura = armaduraNueva;
+    }
+    public void setArma(Armas armaNueva){
+        this.arma = armaNueva;
     }
     public void setBuff(double efecto){
         this.defensa = efecto;
@@ -95,18 +87,29 @@ public class Agentes
     }
     //Metodo que recibe el daño y lo reduce a la salud
     public double recibirDaño(double daño){
-        if(armadura.getEfecto() == 0){
+        if(armadura.getVida() == 0){
             salud -= daño;
             if(salud < 0){
                 setSalud(0);
             }
         } else{
-            if(armadura.getEfecto() > 0){
-                double armaduraRestante = getArmaduraEfecto() - daño;
-                if(armaduraRestante < 0){
-                    armadura.setEfecto(0);
-                } else {
-                    armadura.setEfecto(armaduraRestante);
+            switch (armadura.getNombre()){
+                case "Armadura basica":
+                    daño = daño * 0.80;
+                    armadura.setVida(armadura.getVida() - 2);
+                    break;
+                case "Armadura secreta":
+                    daño = daño * 0.70;
+                    armadura.setVida(armadura.getVida() - 2);
+                    break;
+                case "Armadura legendaria":
+                    daño = daño * 0.50;
+                    break;
+            }
+            if(armadura.getVida() > 0){
+                salud = - daño;
+                if(armadura.getVida() < 0){
+                    armadura.setVida(0);
                 }
             }
         }
@@ -115,7 +118,20 @@ public class Agentes
 
     //Metodo de ataque
     public double  atacar(Agentes objetivo){
-        double daño = ataque;
+        double daño;
+        switch (arma.getNombre()){
+            case "Arma basica":
+                daño = ataque * 1.20;
+                break;
+            case "Arma secreta":
+                daño = objetivo.getSalud()/2 + ataque;
+                break;
+            case "Arma legendaria":
+                daño = ataque * 2;
+                break;
+            default:
+                daño = ataque;
+        }
         objetivo.recibirDaño(daño);
         if(objetivo.getSalud() < 0){
             objetivo.setSalud(0);
@@ -138,9 +154,9 @@ public class Agentes
 
     }
     public void statusJugador(Agentes jugador){
-        System.out.println("Jugador: "+ " Vida: " + jugador.getSalud() + " Defensa: " + jugador.getDefensa() + " Efecto de Armadura: " + jugador.getArmaduraEfecto());
+        System.out.println("Jugador: "+ " Vida: " + jugador.getSalud() + " Defensa: " + jugador.getDefensa() + "Armadura: " + jugador.armadura.getNombre());
     }
     public void statusEnemigos(Agentes enemigos){
-        System.out.println("Enemigo: " + " Vida: " + enemigos.getSalud() + " Defensa: " + enemigos.getDefensa() + " Efecto de Armadura: " + enemigos.getArmaduraEfecto());
+        System.out.println("Enemigo: " + " Vida: " + enemigos.getSalud() + " Defensa: " + enemigos.getDefensa() + " Efecto de Armadura: " + enemigos.arma.getNombre());
     }
 }
