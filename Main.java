@@ -3,67 +3,11 @@ import java.util.Scanner;
 public class Main {
     //Iniciacion de clases
     UID uid = new UID();
-    Random rand = new Random();
     Scanner scanner = new Scanner(System.in);
     //Variables globales
-    static int enemigoActual;
-    static boolean armaduraSecreta;
-    static boolean armaduraLegendaria = false;
-    static boolean enemigoArmaduraLegendaria = false;
     static boolean gano;
     static Items[] items = new Items[15];
     int dañoVeneno = 1;
-    //Funcion de combate
-
-    //Comprobantes de agarrar items
-    public boolean AgarrarItem(){
-        boolean agarroItem = true;
-        for(int i = 0; i < uid.num; i++){
-            for(int j = 0; j < uid.num; j++){
-                if(uid.matriz[i][j] == 3){
-                    agarroItem = false;
-                    break;
-                }
-            }
-        }
-        return agarroItem;
-    }
-    public boolean AgarrarArma(){
-        boolean agarroArma = true;
-        for(int i = 0; i < uid.num; i++){
-            for(int j = 0; j < uid.num; j++){
-                if(uid.matriz[i][j] == 4){
-                    agarroArma = false;
-                    break;
-                }
-            }
-        }
-        return agarroArma;
-    }
-    public boolean AgarrarDebuff(){
-        boolean agarroDebuff = true;
-        for(int i = 0; i < uid.num; i++){
-            for(int j = 0; j < uid.num; j++){
-                if(uid.matriz[i][j] == 'D'){
-                    agarroDebuff = false;
-                    break;
-                }
-            }
-        }
-        return agarroDebuff;
-    }
-    public boolean AgarrarArmadura(){
-        boolean agarroArmadura = true;
-        for(int i = 0; i < uid.num; i++){
-            for(int j = 0; j < uid.num; j++){
-                if(uid.matriz[i][j] == 5){
-                    agarroArmadura = false;
-                }
-            }
-        }
-        return agarroArmadura;
-    }
-
     public Main(){
         //Creacion de matriz y encontrar coordenadas de las entidades
         uid.generarAreaMatriz(1);
@@ -71,7 +15,6 @@ public class Main {
     }
     //Ejecución del main
     public static void main(String[] args) {
-        Random random = new Random();
         Main juego = new Main();
         //Vector y variable necesarias para mover la casilla enemigo
         Armaduras armaduraI = new Armaduras("Sin armadura", "Defensa Base");
