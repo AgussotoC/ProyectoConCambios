@@ -20,7 +20,7 @@ public class Main {
         boolean agarroItem = true;
         for(int i = 0; i < uid.num; i++){
             for(int j = 0; j < uid.num; j++){
-                if(uid.matriz[i][j] == 'I'){
+                if(uid.matriz[i][j] == 3){
                     agarroItem = false;
                     break;
                 }
@@ -32,7 +32,7 @@ public class Main {
         boolean agarroArma = true;
         for(int i = 0; i < uid.num; i++){
             for(int j = 0; j < uid.num; j++){
-                if(uid.matriz[i][j] == 'A'){
+                if(uid.matriz[i][j] == 4){
                     agarroArma = false;
                     break;
                 }
@@ -56,44 +56,29 @@ public class Main {
         boolean agarroArmadura = true;
         for(int i = 0; i < uid.num; i++){
             for(int j = 0; j < uid.num; j++){
-                if(uid.matriz[i][j] == 'P'){
+                if(uid.matriz[i][j] == 5){
                     agarroArmadura = false;
                 }
             }
         }
         return agarroArmadura;
     }
-    public boolean EntroPuerta(){
-        boolean entroPuerta = true;
-        for(int i = 0; i < uid.num; i++){
-            for(int j = 0; j < uid.num; j++){
-                if(uid.matriz[i][j] == '+'){
-                    entroPuerta = false;
-                    break;
-                }
-            }
-        }
-        return entroPuerta;
-    }
 
     //Ejecución del main
     public static void main(String[] args) {
         Random random = new Random();
-        Jugabilidad jugabilidad = new Jugabilidad();
         Main juego = new Main();
         //Vector y variable necesarias para mover la casilla enemigo
-        char[] moverEnemigo = {'w', 'a', 's', 'd'};
-        char moverE;
         Items armaduraI = new Items("hola", 0, " ");
         Items armaI = new Items("hola", 0, " ");
-        //Creacion del jugador 
-        Agentes jugador = new Agentes('@',500,70,50, armaI , armaduraI, 0);
+        //Creacion del jugador
+        Agentes jugador = new Agentes(6,500,70,50, armaI , armaduraI, 0);
 
         //Creacion del banco de enemigos
         Agentes[] enemigos = new Agentes[6];
         for(int i = 0; i < enemigos.length; i ++){
             int vidaAleatoria = random.nextInt(100,300);
-            int ataqueAleatorio = random.nextInt(1,15);
+            int ataqueAleatorio = random.nextInt(50,125);
             int defensaAleatoria = random.nextInt(50,70);
             enemigos[i] = new Agentes('E', vidaAleatoria, ataqueAleatorio, defensaAleatoria, armaI , armaduraI, 0);
         }
@@ -127,7 +112,7 @@ public class Main {
             items[12] = new Items("Reducir Defensa",(jugador.getDefensa() - jugador.getDefensa() * 0.15),"Recuce la defensa del enemigo en un 15%");
         }
         //Creacion de matriz y encontrar coordenadas de las entidades
-        juego.uid.generarAreaMatriz(jugador, enemigos[enemigoActual]);
+        juego.uid.generarAreaMatriz(1);
         juego.uid.encontrarCoordenadasEntidades();
 
         //Comprobantes de que sí un objeto fue agarrado
@@ -146,8 +131,7 @@ public class Main {
 
         while(puertaTaken == false && jugador.getSalud() != 0){
             jugador.statusJugador(jugador);
-            moverE = moverEnemigo[juego.rand.nextInt(4)];
-            juego.uid.imprimirMatriz(); char mover = juego.scanner.next().charAt(0);
+            juego.uid.imprimirMatriz(); String mover = juego.scanner.nextLine();
             juego.uid.moverPersonaje(mover, jugador); System.out.println();
             if(jugador.getDebuff()){
                 jugador.venenoAtaque(juego.dañoVeneno);
@@ -159,15 +143,14 @@ public class Main {
                 }
             }
             if(enemigos[enemigoActual] != null){
-                juego.uid.moverPersonaje(moverE, enemigos[enemigoActual]);
                 if(enemigos[enemigoActual].getDebuff()){
                     enemigos[enemigoActual].venenoAtaque(juego.dañoVeneno);
                     if(enemigos[enemigoActual].getSalud() == 0){
                         enemigos[enemigoActual] = null;
                         for (int i = 0; i < juego.uid.num; i++) {
                             for (int j = 0; j < juego.uid.num; j++) {
-                                if (juego.uid.matriz[i][j] == 'E') {
-                                    juego.uid.matriz[i][j] = ' ';
+                                if (juego.uid.matriz[i][j] == 2) {
+                                    juego.uid.matriz[i][j] = 0;
                                 }
                             }
                         }
@@ -180,7 +163,7 @@ public class Main {
             //Comprobantes para ver si el jugador agarró una arma, item, debuff, o entró a la puerta
             if(itemTaken == false){
                 if(juego.AgarrarItem() == true){
-                    if(juego.uid.matriz[juego.uid.indexiItems][juego.uid.indexjItems] == '@'){
+                    if(juego.uid.matriz[juego.uid.indexiItems][juego.uid.indexjItems] == 6){
                         System.out.println("Has obtenido: ");
                         System.out.println(items[itemAleatorio]);
                         jugador.agregarItemAlInventario(items[itemAleatorio]);
@@ -194,7 +177,7 @@ public class Main {
             }
             if(armaTaken == false){
                 if(juego.AgarrarArma() == true){
-                    if(juego.uid.matriz[juego.uid.indexiArmas][juego.uid.indexjArmas] == '@'){
+                    if(juego.uid.matriz[juego.uid.indexiArmas][juego.uid.indexjArmas] == 6){
                         System.out.println("¡Agarraste un arma!");
                         System.out.println("Has obtenido:");
                         System.out.println(items[armaAleatoria]);
@@ -207,24 +190,11 @@ public class Main {
                     armaTaken = true;
                 }
             }
-            if(debuffTaken == false){
-                if(juego.AgarrarDebuff() == true){
-                    if(juego.uid.matriz[juego.uid.indexiDebuff][juego.uid.indexjDebuff] == '@'){
-                        System.out.println("Tenías hambre y comiste un chicle usado del suelo...!Te envenenaste!");
-                        jugador.setDebuff(true);
-                        jugador.armadura.setEfecto(0);
-                    } else{
-                        System.out.println(" El enemigo se ha envenado!");
-                        enemigos[enemigoActual].setDebuff(true);
-                    }
-                    debuffTaken = true;
-                }
-            }
             if(armaduraTaken == false){
                 if(juego.AgarrarArmadura() == true){
                     if(armaduraAleatoria == 4 || armaduraAleatoria == 5){
                         //mostrar la info y ponerle automatico la armadura al jugador
-                        if(juego.uid.matriz[juego.uid.indexiArmadura][juego.uid.indexjArmadura] == '@'){
+                        if(juego.uid.matriz[juego.uid.indexiArmadura][juego.uid.indexjArmadura] == 6){
                             System.out.println("¡Agarraste una Armadura!");
                             System.out.println("Has obtenido: ");
                             System.out.println(items[armaduraAleatoria]);
@@ -244,13 +214,9 @@ public class Main {
                                 enemigoArmaduraLegendaria = true;
                             }
                         }
-                            armaduraTaken = true;
+                        armaduraTaken = true;
                     }
                 }
-            }
-            if(juego.EntroPuerta() == true){
-                System.out.print("Saliste de la habitación");
-                puertaTaken = true;
             }
 
             //Incialización del comprobante para ver si el jugador esta en el area del enemigo
@@ -258,16 +224,6 @@ public class Main {
                 gano = false;
                 System.out.println("Hay combate");
                 juego.uid.imprimirMatriz();
-                jugabilidad.sistemaDeBatalla(jugador, enemigos, enemigoActual);
-                if(enemigos[enemigoActual] == null){
-                    for (int i = 0; i < juego.uid.num; i++) {
-                        for (int j = 0; j < juego.uid.num; j++) {
-                            if (juego.uid.matriz[i][j] == 'E') {
-                                juego.uid.matriz[i][j] = ' ';
-                            }
-                        }
-                    } //
-                }
             }
         }
     }

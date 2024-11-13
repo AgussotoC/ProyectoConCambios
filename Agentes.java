@@ -2,7 +2,7 @@ public class Agentes
 {
     //Atributos de la clase
     //Características únicas del personaje
-    private char icono;
+    private int icono;
     private double salud;
     private double ataque;
     private double defensa;
@@ -15,7 +15,7 @@ public class Agentes
     public Inventario inventario;
 
     //Constructor del jugador y enemigos
-    public Agentes(char icono, double salud, double ataque, double defensa, Items arma, Items armadura, double buffs){
+    public Agentes(int icono, double salud, double ataque, double defensa, Items arma, Items armadura, double buffs){
         this.icono = icono;
         this.salud = salud;
         this.ataque = ataque;
@@ -64,7 +64,7 @@ public class Agentes
         return arma.getDescripcion();
     } 
 
-    public char getIcono(){
+    public int getIcono(){
         return icono;
     }
     public boolean getDebuff(){

@@ -16,10 +16,44 @@ public class UID{
     int indexiArmadura;
     int indexjArmadura;
 
-    int[][] matriz;
-    int num; //Tamaño de la matriz
+    int[] indexiEnemigos;
+    int[] indexjEnemigos;
 
+    int[][] matriz;
+    int num = rand.nextInt(8, 17); //Tamaño de la matriz
     Agentes[] enemigos;
+    boolean esPosible = false;
+    int mChiquita = num -1;
+    int range = ((num - 2) * 4) - 4; //area dentro de las paredes es disminuye en 2 bloques, y la puerta puede estar en las 4 paredes, esto en otras pal es el perímetro
+    int rng = rand.nextInt(1, range + 1);
+    /*
+    Vacio: 0
+    Paredes: 1
+    Enemigos: 2
+    Items: 3
+    Armas: 4
+    Armaduras: 5
+    Jugador: 6
+    */
+    int[] spawnEnemigos = null; //ver cuantas entidades de enemigos se crean
+    public UID(){
+        Items armaduraI = new Items("hola", 0, " ");
+        Items armaI = new Items("hola", 0, " ");
+        decidirNumEnemigos();
+        if(enemigos.length == 0){
+            enemigos = null;
+        } else{
+            spawnEnemigos = new int[enemigos.length];
+            for(int i = 0; i < enemigos.length; i ++){
+                int vidaAleatoria = rand.nextInt(100,300);
+                int ataqueAleatorio = rand.nextInt(50,125);
+                int defensaAleatoria = rand.nextInt(50,70);
+                enemigos[i] = new Agentes(2, vidaAleatoria, ataqueAleatorio, defensaAleatoria, armaI , armaduraI, 0);
+                spawnEnemigos[i] = enemigos[i].getIcono();
+            }
+        }
+
+    }
     private void decidirNumEnemigos(){
         int prob = rand.nextInt(1,101);
         int max = 75;
@@ -40,63 +74,28 @@ public class UID{
             }
         }
         enemigos = new Agentes[numEnemigos];
+        indexjEnemigos = indexiEnemigos = new int[numEnemigos];
     }
-    public UID(){
-
-    }
-    /*
-    Vacio: 0
-    Paredes: 1
-    Enemigos: 2
-    Items: 3
-    Armas: 4
-    Armaduras: 5
-    Jugador: 6
-    */
-
-    //Metodo para generar aleatoriamente la dungeon
-    public void generarAreaMatriz(int cuarto, Nodo actual){
-        num = rand.nextInt(8, 17);
-        matriz = new int[num][num];
-        //Definir las paredes de los costados
-        for(int i = 0; i < num; i++){
-            for(int j = 0; j < num; j++){
-                if(i == 0 || i == num - 1){ 
-                    matriz[i][j] = 1;
-                } else if(j == 0 || j == num - 1){ 
-                    matriz[i][j] = 1;
-                } else{
-                    matriz[i][j] = 0;
-                }
-            }
-        }
-        //Generar puertas
-        if(cuarto == 1){
-            generarParedesIniciales();
-        } else{
-            //Crear metodo para generar habitacion que no sea la primera, la que depende de nodos
-        }
-        boolean esPosible = false;
-        int mChiquita = num -1;
-        int range = ((num - 2) * 4) - 4; //area dentro de las paredes es disminuye en 2 bloques, y la puerta puede estar en las 4 paredes, esto en otras pal es el perímetro
-        int rng = rand.nextInt(1, range + 1);
-
-
-        //Generar entidades
-        char[] entidades = {'@', 'E', 'A', 'I', 'D', 'P'};
-        for(int k = 0; k < entidades.length; k++){
+    private void generarEntidades(int[] entidades){
+        for(int k = 0; k < entidades.length; k++)
+        {
             esPosible = false;
             range = (num - 2) * (num - 2);
-            rng = rand.nextInt(1 , range + 1);            
-            for(int i = 0; i < mChiquita; i++){
-                for(int j =  0; j < mChiquita; j++){
-                    if(matriz[i][j] != ' '){
+            rng = rand.nextInt(1 , range + 1);
+            for(int i = 0; i < mChiquita; i++)
+            {
+                for(int j =  0; j < mChiquita; j++)
+                {
+                    if(matriz[i][j] != 0)
+                    {
                         range -= 1;
-                    }else if(rng == 1){
-                            matriz[i][j] = entidades[k];
-                            esPosible = true;
-                            break;
-                    } else{
+                    } else if(rng == 1)
+                    {
+                        matriz[i][j] = entidades[k];
+                        esPosible = true;
+                        break;
+                    } else
+                    {
                         range -= 1;
                         if(range < 1){
                             range = 2;
@@ -104,42 +103,115 @@ public class UID{
                         rng = rand.nextInt(1, range + 1);
                     }
                 }
-                if(esPosible){
+                if(esPosible)
+                {
                     break;
                 }
-            }           
+            }
+        }
+        esPosible = false;
+        range = (num - 2) * (num - 2);
+        rng = rand.nextInt(1 , range + 1);
+    }
+    private void generarEnemigos(int[] enemigos){
+        int contador = 0;
+        if(enemigos != null){
+            for(int k = 0; k < enemigos.length; k++)
+            {
+                esPosible = false;
+                range = (num - 2) * (num - 2);
+                rng = rand.nextInt(1 , range + 1);
+                for(int i = 0; i < mChiquita; i++)
+                {
+                    for(int j =  0; j < mChiquita; j++)
+                    {
+                        if(matriz[i][j] != 0)
+                        {
+                            range -= 1;
+                        } else if(rng == 1)
+                        {
+                            matriz[i][j] = enemigos[k];
+                            indexiEnemigos[contador] = i;
+                            indexjEnemigos[contador] = j;
+                            contador++;
+                            esPosible = true;
+                            break;
+                        } else
+                        {
+                            range -= 1;
+                            if(range < 1){
+                                range = 2;
+                            }
+                            rng = rand.nextInt(1, range + 1);
+                        }
+                    }
+                    if(esPosible)
+                    {
+                        break;
+                    }
+                }
+            }
+            esPosible = false;
+            range = (num - 2) * (num - 2);
+            rng = rand.nextInt(1 , range + 1);
         }
     }
+
+    //Metodo para generar aleatoriamente la dungeon
+    public void generarAreaMatriz(int cuarto){
+        matriz = new int[num][num];
+        //Definir las paredes de los costados
+        for(int i = 0; i < num; i++){
+            for(int j = 0; j < num; j++){
+                if(i == 0 || i == num - 1){
+                    matriz[i][j] = 1;
+                } else if(j == 0 || j == num - 1){
+                    matriz[i][j] = 1;
+                } else{
+                    matriz[i][j] = 0;
+                }
+            }
+        }
+        //Generar entidades
+        int[] entidades = {6, 4, 3, 5};
+        generarEntidades(entidades);
+        generarEnemigos(spawnEnemigos);
+        //Generar puertas
+        if(cuarto == 1){
+            generarParedesIniciales();
+        } else{
+            //Crear metodo para generar habitacion que no sea la primera, la que depende de nodos
+        }
+    }
+
     //metodo para crear las puertas de la primera habitacion
     public void generarParedesIniciales(){
         int generacion = 1; //probailidad de 100%, se mide con 1/5
         int genMaximo = 5;
         int maxPared = 5;
-        int paredRandom = 1;
+        int paredRandom = rand.nextInt(1,5);
         for(int k = 0; k < 4; k++){
             if(generacion <= genMaximo){
-                for(int i = 0; i < num; i++){
-                    for(int j = 0; j < num; j++){
-                        if(paredRandom == rand.nextInt(1, maxPared)){
-                            if(i == 0 || i == num - 1){
-                                matriz[i][num/2] = 0;
-                            } else if(j == 0 || j == num - 1){
-                                matriz[num/2][j] = 0;
-                            } else{
-                                maxPared -= 1;
-                            }
-                        }
-                    }
+                switch (paredRandom){
+                    case 1:
+                        matriz[0][num/2] = 0; break;
+                    case 2:
+                        matriz[num -1][num/2] = 0; break;
+                    case 3:
+                        matriz[num/2][0] = 0; break;
+                    case 4:
+                        matriz[num/2][num - 1] = 0; break;
                 }
                 switch(genMaximo){
                     case 5:
-                        genMaximo -= 2; break;
+                        genMaximo = 3; break;
                     case 3:
-                        genMaximo -= 1; break;
+                        genMaximo = 2; break;
                     case 2:
-                        genMaximo -= 1; break;
+                        genMaximo = 1; break;
                 }
                 generacion = rand.nextInt(1, 6);
+                paredRandom = rand.nextInt(1,5);
             } else{
                 break;
             }
@@ -151,9 +223,6 @@ public class UID{
         int genMaximo = 5;
         int maxPared = 5;
         int paredRandom = 1;
-        if(actual.abajo != null){
-            //matriz[]
-        }
         for(int k = 0; k < 4; k++){
             if(generacion <= genMaximo){
                 for(int i = 0; i < num; i++){
@@ -186,7 +255,7 @@ public class UID{
 
     //metodo para saber las coordenadas de los items que se pueden agarrar
     public void encontrarCoordenadasEntidades(){
-        char[] entidadesAgarrables = {'A', 'I', 'D', 'P'};
+        char[] entidadesAgarrables = {4 , 3, 5};
         for(int k = 0; k < entidadesAgarrables.length; k++){
             for(int i = 0; i < num; i++){
                 for(int j = 0; j < num; j++){
@@ -218,36 +287,51 @@ public class UID{
     public void imprimirMatriz(){
         for(int i = 0; i < num; i++){
             for(int j = 0; j < num; j++){
-                System.out.print(matriz[i][j]);
+                switch(matriz[i][j]){
+                    case 0:
+                        System.out.print(" "); break;
+                    case 1:
+                        System.out.print("#"); break;
+                    case 2:
+                        System.out.print("E"); break;
+                    case 3:
+                        System.out.print("I"); break;
+                    case 4:
+                        System.out.print("A"); break;
+                    case 5:
+                        System.out.print("R"); break;
+                    case 6:
+                        System.out.print("@"); break;
+                }
             }
             System.out.println();
         }
     }
 
     //comprobante que si la entidad puede estar ahí (revisar si hay pared por ejemplo)
-    public boolean sePuede(char espacio){
+    public boolean sePuede(int espacio){
         boolean sePuede = true;
-        if(espacio == 'D' || espacio == 'I' || espacio == 'A' || espacio == 'P'){
+        if(espacio == 3 || espacio == 4 || espacio == 5){
             sePuede = true;
-        } else if(espacio != ' '){
+        } else if(espacio != 0){
             sePuede = false;
         }
         return sePuede;
     }
 
     //comprobante diferente para el jugador, ya que este puede entrar a la puerta
-    public boolean sePuedeJugador(char espacio){
+    public boolean sePuedeJugador(int espacio){
         boolean sePuede = true;
-        if(espacio == 'I' || espacio == 'A' || espacio == '+' || espacio == 'D' || espacio == 'P'){
+        if(espacio == 3 || espacio == 4 || espacio == 5){
             sePuede = true;
-        } else if(espacio != ' '){
+        } else if(espacio != 0){
             sePuede = false;
         }
         return sePuede;
     }
 
     //metodo para mover el personaje
-    public void moverPersonaje(char wasd, Agentes agente){
+    public void moverPersonaje(String wasd, Agentes agente){
         int indexi = 0;
         int indexj = 0;
         for(int i = 0; i < num; i++){
@@ -257,106 +341,107 @@ public class UID{
                     indexj = j;
                 }
             }
-        } 
-        if(agente.getIcono() == '@'){
+        }
+        if(agente.getIcono() == 6){
             switch(wasd){
-                case 'w': 
+                case "w":
                     if(sePuedeJugador(matriz[indexi -1][indexj]) == true){
-                        matriz[indexi][indexj] = ' ';
+                        matriz[indexi][indexj] = 0;
                         matriz[indexi - 1][indexj] = agente.getIcono();
                     }
                     break;
-                case 'a':
+                case "a":
                     if(sePuedeJugador(matriz[indexi][indexj - 1]) == true){
-                        matriz[indexi][indexj] = ' ';
+                        matriz[indexi][indexj] = 0;
                         matriz[indexi][indexj - 1] = agente.getIcono();
-                    }          
+                    }
                     break;
-                case 's':
+                case "s":
                     if(sePuedeJugador(matriz[indexi + 1][indexj]) == true){
-                        matriz[indexi][indexj] = ' ';
+                        matriz[indexi][indexj] = 0;
                         matriz[indexi + 1][indexj] = agente.getIcono();
-                    } 
+                    }
                     break;
-                case 'd':
+                case "d":
                     if(sePuedeJugador(matriz[indexi][indexj + 1]) == true){
-                        matriz[indexi][indexj] = ' ';
+                        matriz[indexi][indexj] = 0;
                         matriz[indexi][indexj + 1] = agente.getIcono();
-                    }   
+                    }
                     break;
                 default:
                     System.out.println("Invalido intente de nuevo");
                     break;
-            } 
-        } else{
-            switch(wasd){
-                case 'w': 
-                    if(sePuede(matriz[indexi -1][indexj]) == true){
-                        matriz[indexi][indexj] = ' ';
-                        matriz[indexi - 1][indexj] = agente.getIcono();
-                    }
-                    break;
-                case 'a':
-                    if(sePuede(matriz[indexi][indexj - 1]) == true){
-                        matriz[indexi][indexj] = ' ';
-                        matriz[indexi][indexj - 1] = agente.getIcono();
-                    }          
-                    break;
-                case 's':
-                    if(sePuede(matriz[indexi + 1][indexj]) == true){
-                        matriz[indexi][indexj] = ' ';
-                        matriz[indexi + 1][indexj] = agente.getIcono();
-                    } 
-                    break;
-                case 'd':
-                    if(sePuede(matriz[indexi][indexj + 1]) == true){
-                        matriz[indexi][indexj] = ' ';
-                        matriz[indexi][indexj + 1] = agente.getIcono();
-                    }   
-                    break;            
             }
         }
+        /*if(enemigos != null){
+            for (Agentes enemigo : enemigos) {
+                String[] moverEnemigo = {"w", "a", "s", "d"};
+                String moverE = moverEnemigo[rand.nextInt(moverEnemigo.length)];
+                int contador = 0;
+                switch (moverE) {
+                    case "w":
+                        if (sePuede(matriz[indexiEnemigos[contador] - 1][indexjEnemigos[contador]]) == true) {
+                            matriz[indexiEnemigos[contador]][indexjEnemigos[contador]] = 0;
+                            matriz[indexiEnemigos[contador] - 1][indexjEnemigos[contador]] = enemigo.getIcono();
+                        }
+                        break;
+                    case "a":
+                        if (sePuede(matriz[indexiEnemigos[contador]][indexjEnemigos[contador] - 1]) == true) {
+                            matriz[indexiEnemigos[contador]][indexjEnemigos[contador]] = 0;
+                            matriz[indexiEnemigos[contador]][indexjEnemigos[contador] - 1] = enemigo.getIcono();
+                        }
+                        break;
+                    case "s":
+                        if (sePuede(matriz[indexiEnemigos[contador] + 1][indexjEnemigos[contador]]) == true) {
+                            matriz[indexiEnemigos[contador]][indexjEnemigos[contador]] = 0;
+                            matriz[indexiEnemigos[contador] + 1][indexjEnemigos[contador]] = enemigo.getIcono();
+                        }
+                        break;
+                    case "d":
+                        if (sePuede(matriz[indexiEnemigos[contador]][indexjEnemigos[contador] + 1]) == true) {
+                            matriz[indexiEnemigos[contador]][indexjEnemigos[contador]] = 0;
+                            matriz[indexiEnemigos[contador]][indexjEnemigos[contador] + 1] = enemigo.getIcono();
+                        }
+                        break;
+                }
+            }
+        }*/
     }
-    
+
     //Comprobación si el jugador esta en el area de 1x1 del enemigo para iniciar combate
     public boolean areaEnemigo(){
         boolean hayCombate = false;
-        int indexiEnemigo = 0;
-        int indexjEnemigo = 0;
-        int indexiJugador = 0;
-        int indexjJugador = 0;
-        //Encontrar al enemigo
-        for(int i = 0; i < num; i++){
-            for(int j = 0; j < num; j++){
-                if(matriz[i][j] == 'E'){
-                    indexiEnemigo = i;
-                    indexjEnemigo = j;
-                }
-            }
-        } 
-        //Encontrar al jugador
-        for(int i = 0; i < num; i++){
-            for(int j = 0; j < num; j++){
-                if(matriz[i][j] == '@'){
-                    indexiJugador = i;
-                    indexjJugador = j;
-                }
-            }
-        } 
-        //Revisar si el jugador esta en el area del enemigo
-        for(int i = indexiEnemigo - 1; i <= indexiEnemigo + 1; i++){
-            for(int j = indexjEnemigo - 1; j <= indexjEnemigo + 1; j++){
-                if(indexiJugador == i){
-                    if(indexjJugador == j){
-                        hayCombate = true;
+        if(enemigos != null) {
+            int contador = 0;
+            int indexiJugador = 0;
+            int indexjJugador = 0;
+            //Encontrar al jugador
+            for (int i = 0; i < num; i++) {
+                for (int j = 0; j < num; j++) {
+                    if (matriz[i][j] == 6) {
+                        indexiJugador = i;
+                        indexjJugador = j;
                     }
                 }
+            }
+            //Revisar si el jugador esta en el area del enemigo
+            for (Agentes enemigo : enemigos) {
+                for (int i = indexiEnemigos[contador] - 1; i <= indexiEnemigos[contador] + 1; i++) {
+                    for (int j = indexjEnemigos[contador] - 1; j <= indexjEnemigos[contador] + 1; j++) {
+                        if (indexiJugador == i) {
+                            if (indexjJugador == j) {
+                                hayCombate = true;
+                            }
+                        }
+                    }
+                }
+                contador++;
             }
         }
         return hayCombate;
     }
 
-    public void sistemaDeBatalla(Agentes jugador, Agentes[] enemigo, int enemigoActual) {
+   /* public void sistemaDeBatalla(Agentes jugador, Agentes[] enemigo, int enemigoActual) {
         //Agregar Contador para los turnos; 1 jugador, 0 enemigo
         boolean pelea = true;
         boolean defensa = false;
@@ -512,5 +597,5 @@ public class UID{
             jugador.armadura.setEfecto(200);
         }
 
-    }
+    }*/
 }
