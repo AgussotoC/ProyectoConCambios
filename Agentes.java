@@ -12,20 +12,20 @@ public class Agentes
 
     public Armas arma;
     public Armaduras armadura;
-    public double buffs;
-    private boolean debuff;
+    public Items buff;
+    private Items debuff;
     public Inventario inventario;
 
     //Constructor del jugador y enemigos
-    public Agentes(int icono, double salud, double ataque, double defensa, Armas arma, Armaduras armadura, double buffs){
+    public Agentes(int icono, double salud, double ataque, double defensa, Armas arma, Armaduras armadura, Items buff, Items debuff){
         this.icono = icono;
         this.salud = salud;
         this.ataque = ataque;
         this.defensa = defensa;
         this.arma = arma;
         this.armadura = armadura;
-        this.buffs = buffs;
-        this.debuff = false;
+        this.buff = buff;
+        this.debuff = debuff;
         this.inventario = new Inventario(3);
     } 
     public void agregarItemAlInventario(Items item){
@@ -56,9 +56,6 @@ public class Agentes
     public int getIcono(){
         return icono;
     }
-    public boolean getDebuff(){
-        return debuff;
-    }
 
     //Setters
     public void setSalud(double efecto){
@@ -76,8 +73,8 @@ public class Agentes
     public void setBuff(double efecto){
         this.defensa = efecto;
     }
-    public void setDebuff(boolean agarroVeneno){
-        this.debuff = agarroVeneno;
+    public void setDebuff(Items debuff){
+        this.debuff = debuff;
     }
     public void setArmaduraEfecto(){
 
@@ -137,6 +134,13 @@ public class Agentes
             objetivo.setSalud(0);
         }
         return objetivo.getSalud();
+    }
+    public double BuffDeAumentoDeDaño(double daño){
+        switch (buff.getNombre()){
+            case "Mancuerna":
+
+        }
+        return daño;
     }
 
     //Metodo de defensa, defender bloquea 25% del ataque recibido
