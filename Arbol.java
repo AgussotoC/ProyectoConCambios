@@ -4,19 +4,27 @@ public class Arbol {
     public Arbol(){
         raiz = null;
     }
-    public void insertar(int cuarto, Object dato){
-        raiz = insertarRecursivo(raiz, cuarto, dato);
+    public void insertar(int numCuarto, Object[][] matriz){
+        raiz = insertarRecursivo(raiz, numCuarto, matriz);
     }
-    private Nodo insertarRecursivo(Nodo raiz,int cuarto, Object dato){
+    private Nodo insertarRecursivo(Nodo raiz,int numCuarto, Object[][] matriz){
         if(raiz == null){
-            raiz = new Nodo(cuarto ,dato);
+            raiz = new Nodo(numCuarto ,matriz);
             return raiz;
         }
-        if (cuarto < raiz.cuarto) {
-            raiz.izquierdo = insertarRecursivo(raiz, cuarto, dato);
-        }else if(cuarto > raiz.cuarto){
-            raiz.derecho = insertarRecursivo(raiz, cuarto, dato);
+        if (numCuarto < raiz.numCuarto) {
+            raiz.izquierdo = insertarRecursivo(raiz, numCuarto, matriz);
+        }else if(numCuarto > raiz.numCuarto){
+            raiz.derecho = insertarRecursivo(raiz, numCuarto, matriz);
         }
         return raiz;
+    }
+    public void recorridoPreOrden(Nodo nodo){
+        if (nodo == null) {
+            return;
+        }
+        System.out.println(nodo.matriz + "|");
+        recorridoPreOrden(nodo.izquierdo);
+        recorridoPreOrden(nodo.derecho);
     }
 }
