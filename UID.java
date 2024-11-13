@@ -410,7 +410,7 @@ public class UID{
     }
 
     //Comprobación si el jugador esta en el area de 1x1 del enemigo para iniciar combate
-    public boolean areaEnemigo(){
+    public boolean areaEnemigo(Agentes jugador){
         boolean hayCombate = false;
         if(enemigos != null) {
             int contador = 0;

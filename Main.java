@@ -220,7 +220,7 @@ public class Main {
             }
 
             //Incialización del comprobante para ver si el jugador esta en el area del enemigo
-            if(juego.uid.areaEnemigo() == true){
+            if(juego.uid.areaEnemigo(jugador) == true){
                 gano = false;
                 System.out.println("Hay combate");
             }
