@@ -1,4 +1,3 @@
-import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 public class UID{
@@ -35,25 +34,7 @@ public class UID{
     Armaduras: 5
     Jugador: 6
     */
-    int[] spawnEnemigos = null; //ver cuantas entidades de enemigos se crean
-    public UID(){
-        Items armaduraI = new Items("hola", 0, " ");
-        Items armaI = new Items("hola", 0, " ");
-        decidirNumEnemigos();
-        if(enemigos.length == 0){
-            enemigos = null;
-        } else{
-            spawnEnemigos = new int[enemigos.length];
-            for(int i = 0; i < enemigos.length; i ++){
-                int vidaAleatoria = rand.nextInt(100,300);
-                int ataqueAleatorio = rand.nextInt(50,125);
-                int defensaAleatoria = rand.nextInt(50,70);
-                enemigos[i] = new Agentes(2, vidaAleatoria, ataqueAleatorio, defensaAleatoria, armaI , armaduraI, 0);
-                spawnEnemigos[i] = enemigos[i].getIcono();
-            }
-        }
-
-    }
+    
     private void decidirNumEnemigos(){
         int prob = rand.nextInt(1,101);
         int max = 75;
@@ -76,6 +57,25 @@ public class UID{
         enemigos = new Agentes[numEnemigos];
         indexjEnemigos =  new int[numEnemigos];
         indexiEnemigos = new int[numEnemigos];
+    }
+    int[] spawnEnemigos = null; //ver cuantas entidades de enemigos se crean
+    public UID(){
+        Items armaduraI = new Items("hola", 0, " ");
+        Items armaI = new Items("hola", 0, " ");
+        decidirNumEnemigos();
+        if(enemigos.length == 0){
+            enemigos = null;
+        } else{
+            spawnEnemigos = new int[enemigos.length];
+            for(int i = 0; i < enemigos.length; i ++){
+                int vidaAleatoria = rand.nextInt(100,300);
+                int ataqueAleatorio = rand.nextInt(50,125);
+                int defensaAleatoria = rand.nextInt(50,70);
+                enemigos[i] = new Agentes(2, vidaAleatoria, ataqueAleatorio, defensaAleatoria, armaI , armaduraI, 0);
+                spawnEnemigos[i] = enemigos[i].getIcono();
+            }
+        }
+
     }
     private void generarEntidades(int[] entidades){
         for(int k = 0; k < entidades.length; k++)
@@ -374,8 +374,11 @@ public class UID{
                     break;
             }
         }
-        /*if(enemigos != null){
+        if(enemigos != null){
             for (Agentes enemigo : enemigos) {
+                if(enemigo == null){
+                    continue;
+                }//mmm
                 String[] moverEnemigo = {"w", "a", "s", "d"};
                 String moverE = moverEnemigo[rand.nextInt(moverEnemigo.length)];
                 int contador = 0;
@@ -406,7 +409,7 @@ public class UID{
                         break;
                 }
             }
-        }*/
+        }
     }
 
     //Comprobación si el jugador esta en el area de 1x1 del enemigo para iniciar combate

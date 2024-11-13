@@ -5,7 +5,7 @@ public class Lista {
     public Lista(){
         inicio = null;
     }
-    public void insertarInicio(int matriz){
+    public void insertarInicio(int[][] matriz){
         Nodo nuevoNodo = new Nodo(matriz);
        if(inicio == null){
             inicio = nuevoNodo;
@@ -16,7 +16,7 @@ public class Lista {
             }
        }
     }
-    public void insertarHabitaciones(Nodo habitacionActual, String direccion, int dato){
+    public void insertarHabitaciones(Nodo habitacionActual, String direccion, int[][] dato){
         Nodo nuevahabitacion = new Nodo(dato);
         switch(direccion.toLowerCase()){
             case "W":

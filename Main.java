@@ -112,6 +112,7 @@ public class Main {
             items[12] = new Items("Reducir Defensa",(jugador.getDefensa() - jugador.getDefensa() * 0.15),"Recuce la defensa del enemigo en un 15%");
         }
         //Creacion de matriz y encontrar coordenadas de las entidades
+        for(int i = 0; i < )
         juego.uid.generarAreaMatriz(1);
         juego.uid.encontrarCoordenadasEntidades();
 
