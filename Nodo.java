@@ -1,15 +1,16 @@
 public class Nodo {
-    int cuarto;
-    Nodo derecha;
-    Nodo izquierda;
+    Object dato;
+    Nodo derecho;
+    Nodo izquierdo;
     Nodo arriba;
     Nodo abajo;
-    char[][] matriz;
-    UID uid = new UID();
-    public Nodo(int cuarto, char[][] matriz) {
+    int cuarto;
+    /*char[][] matriz;
+    UID uid = new UID();*/
+    public Nodo(int cuarto , Object dato ) {
         this.cuarto = cuarto;
-        this.derecha = this.izquierda = this.arriba = this.abajo = null;
-        this.matriz = uid.generarAreaMatriz();
-    }
+        this.derecho = this.izquierdo = this.arriba = this.abajo = null;
+        this.dato = dato;
 
+    }
 }
