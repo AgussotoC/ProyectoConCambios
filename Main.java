@@ -69,8 +69,8 @@ public class Main {
         Random random = new Random();
         Main juego = new Main();
         //Vector y variable necesarias para mover la casilla enemigo
-        Items armaduraI = new Items("hola", 0, " ");
-        Items armaI = new Items("hola", 0, " ");
+        Armaduras armaduraI = new Armaduras("Sin armadura", 1, 30,"Defensa Base");
+        Armas armaI = new Armas("Sin arma", 1, 30, "Ataque base");
         //Creacion del jugador
         Agentes jugador = new Agentes(6,500,70,50, armaI , armaduraI, 0);
 
@@ -192,7 +192,8 @@ public class Main {
             }
             if(armaduraTaken == false){
                 if(juego.AgarrarArmadura() == true){
-                    if(armaduraAleatoria == 4 || armaduraAleatoria == 5){
+                    System.out.println("Se agarró una armadura");
+                    /*if(armaduraAleatoria == 4 || armaduraAleatoria == 5){
                         //mostrar la info y ponerle automatico la armadura al jugador
                         if(juego.uid.matriz[juego.uid.indexiArmadura][juego.uid.indexjArmadura] == 6){
                             System.out.println("¡Agarraste una Armadura!");
@@ -215,7 +216,7 @@ public class Main {
                             }
                         }
                         armaduraTaken = true;
-                    }
+                    }*/
                 }
             }
 

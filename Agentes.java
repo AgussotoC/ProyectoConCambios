@@ -6,16 +6,18 @@ public class Agentes
     private double salud;
     private double ataque;
     private double defensa;
+
     /*Características compartidas y modificables por toda entidad
       también ocupa la creaciones de clases de items para funcionar, lo cual lo ideal sería hacerlo en el main*/
-    public Items arma;
-    public Items armadura;
+
+    public Armas arma;
+    public Armaduras armadura;
     public double buffs;
     private boolean debuff;
     public Inventario inventario;
 
     //Constructor del jugador y enemigos
-    public Agentes(int icono, double salud, double ataque, double defensa, Items arma, Items armadura, double buffs){
+    public Agentes(int icono, double salud, double ataque, double defensa, Armas arma, Armaduras armadura, double buffs){
         this.icono = icono;
         this.salud = salud;
         this.ataque = ataque;
@@ -48,21 +50,11 @@ public class Agentes
         return armadura.getNombre();
     }
     public double getArmaduraEfecto(){
-        return armadura.getEfecto();
+        return armadura.getReduccion();
     }
     public String getArmaduraDesc(){
         return armadura.getDescripcion();
     }
-
-    public String getArmaNombre(){
-        return arma.getNombre();
-    }
-    public double getArmaEfecto(){
-        return arma.getEfecto();
-    }
-    public String getArmaDesc(){
-        return arma.getDescripcion();
-    } 
 
     public int getIcono(){
         return icono;
@@ -78,7 +70,7 @@ public class Agentes
     public void setAtaque(double efecto){
         this.ataque = efecto;
     }
-    public void setArmadura(Items armaduraNueva){
+    public void setArmadura(Armaduras armaduraNueva){
         this.armadura = armaduraNueva;
     }
     public void setBuff(double efecto){
@@ -95,18 +87,18 @@ public class Agentes
     }
     //Metodo que recibe el daño y lo reduce a la salud
     public double recibirDaño(double daño){
-        if(armadura.getEfecto() == 0){
+        if(armadura.getVida() == 0){
             salud -= daño;
             if(salud < 0){
                 setSalud(0);
             }
         } else{
-            if(armadura.getEfecto() > 0){
+            if(armadura.getVida() > 0){
                 double armaduraRestante = getArmaduraEfecto() - daño;
                 if(armaduraRestante < 0){
-                    armadura.setEfecto(0);
+                    armadura.setVida(0);
                 } else {
-                    armadura.setEfecto(armaduraRestante);
+                    armadura.setVida(armaduraRestante);
                 }
             }
         }

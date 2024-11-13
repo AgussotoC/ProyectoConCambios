@@ -159,7 +159,7 @@ public class Jugabilidad {
             }
         }
         if (jugador.armadura.getNombre() == "Armadura Secreta") {
-            jugador.armadura.setEfecto(200);
+            jugador.armadura.setVida(200);
         }
 
     } 

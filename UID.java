@@ -7,6 +7,7 @@ public class UID{
     Agentes agentes;
     Items[] items;
     Inventario inventario;
+    //Coordenadas de cada entidad (exceptuando al jugador)
     int indexiItems;
     int indexjItems;
     int indexiArmas;
@@ -15,18 +16,14 @@ public class UID{
     int indexjDebuff;
     int indexiArmadura;
     int indexjArmadura;
-
+    //Coordenadas de los enemigos
     int[] indexiEnemigos;
     int[] indexjEnemigos;
 
+    //Creacion de la matriz y su tamaño
     int[][] matriz;
     int num = rand.nextInt(8, 17); //Tamaño de la matriz
-    Agentes[] enemigos;
-    boolean esPosible = false;
-    int mChiquita = num -1;
-    int range = ((num - 2) * 4) - 4; //area dentro de las paredes es disminuye en 2 bloques, y la puerta puede estar en las 4 paredes, esto en otras pal es el perímetro
-    int rng = rand.nextInt(1, range + 1);
-    /*
+    /* Forma de leer la matriz de enteros:
     Vacio: 0
     Paredes: 1
     Enemigos: 2
@@ -35,10 +32,17 @@ public class UID{
     Armaduras: 5
     Jugador: 6
     */
+    //Datos para spawnear entidades
+    boolean esPosible = false;
+    int mChiquita = num -1; //Area dentro de las paredes
+    int range = ((num - 2) * 4) - 4; //area dentro de las paredes es (disminuye en 2 bloques)
+    int rng = rand.nextInt(1, range + 1);
+
+    Agentes[] enemigos;
     int[] spawnEnemigos = null; //ver cuantas entidades de enemigos se crean
     public UID(){
-        Items armaduraI = new Items("hola", 0, " ");
-        Items armaI = new Items("hola", 0, " ");
+        Armaduras armaduraI = new Armaduras("Sin armadura", 1, 30,"Defensa Base");
+        Armas armaI = new Armas("Sin arma", 1, 30, "Ataque base");
         decidirNumEnemigos();
         if(enemigos.length == 0){
             enemigos = null;
@@ -441,6 +445,46 @@ public class UID{
         }
         return hayCombate;
     }
+
+    /*private void encontrarEquipable(Agentes jugador){
+        //Encontró Item
+        for(int i = 0; i < num; i++){
+            for(int j = 0; j < num; j++){
+                if(jugador.getIcono() == matriz[indexiItems][indexjItems]){
+                    System.out.println("Has obtenido: ");
+                    System.out.println(items[itemAleatorio]);
+                    jugador.agregarItemAlInventario(items[itemAleatorio]);
+                }
+            }
+        }
+    }*/
+
+    /*private Items atributosItem(Agentes actual){
+        Items[] items = new Items[15];
+        for(int i = 0; i< items.length; i++){
+            //Creacion de los items, variable porcentaje para las pociones y sus buffos random
+            double min = 0.05;
+            double max = 0.10;
+            double porcentajes = random.nextDouble(min,max) + 0.01;
+            items[0] = new Items("Ninguno", 0,"Nada");
+            //Creacion de las armas
+            items[1] = new Items("Arma Basica", actual.setAtaque(actual.getAtaque() * 1.20), "Ataque normal");
+            items[2] = new Items("Arma Secreta",(enemigo.getSalud()/2 + jugador.getAtaque()),"Reduce en un 50% la vida actual del enemigo actual");
+            //Creacion de las armaduras
+            items[4] = new Items("Armadura Secreta", 200, "Se regenera despues de cada partida");
+            items[5] = new Items("Armadura Legendaria", 200, "Reduce un 50% del ataque recibido");
+            //creacion de los Items
+            items[6] = new Items("Aumentar Ataque", (Math.round(jugador.getAtaque() + (jugador.getAtaque() * porcentajes))),"Aumenta el ataque en un rango de 5 a 10%");
+            items[7] = new Items("Reducir Defensa",(enemigo.getDefensa() - enemigo.getDefensa() * 0.15),"Recuce la defensa del enemigo en un 15%");
+            // creacion de las armas del enemigo
+            items[8] = new Items("Arma Secreta",(jugador.getSalud()/2 + enemigos.getAtaque()),"Reduce en un 50% la vida actual del enemigo actual");
+            items[9] = new Items("Arma Basica", enemigos.getAtaque(), "Ataque normal");
+            items[10] = new Items("Arma Legendaria", (enemigos.getAtaque()*2),"Realiza el doble de daño que el ataque normal");
+            //creacion de los Items del enemigo
+            items[11] = new Items("Aumentar Ataque", (Math.round(enemigos.getAtaque() + (enemigos.getAtaque() * porcentajes))),"Aumenta el ataque en un rango de 5 a 10%");
+            items[12] = new Items("Reducir Defensa",(jugador.getDefensa() - jugador.getDefensa() * 0.15),"Recuce la defensa del enemigo en un 15%");
+        }
+    }*/
 
    /*public void sistemaDeBatalla(Agentes jugador, Agentes enemigo) {
         //Agregar Contador para los turnos; 1 jugador, 0 enemigo
