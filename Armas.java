@@ -12,6 +12,6 @@ public class Armas {
         return descripcion;
     }
     public String toString(){
-        return nombre + " descripcion: " + descripcion;
+        return nombre + ": " + descripcion;
     }
 }

@@ -23,6 +23,6 @@ public class Armaduras {
         this.vida = vida;
     }
     public String toString(){
-        return nombre + " descripcion: " + descripcion;
+        return nombre + ": " + descripcion;
     }
 }
