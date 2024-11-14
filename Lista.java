@@ -50,6 +50,10 @@ public class Lista {
                     if(i == 1 && j == 1){
                         if(habitacionActual.arriba == null){
                             System.out.println("[N]");
+                        }else if(habitacionActual.arriba.getTipoHabitacion().equalsIgnoreCase("jefe")){
+                            System.out.println("[B]");
+                        }else if(habitacionActual.arriba.getTipoHabitacion().equalsIgnoreCase("salida")){
+                            System.out.println("[S]");
                         }else{
                             System.out.println("[" + habitacionActual.arriba.getNumeroCuarto() + "]");
                         } 
@@ -62,12 +66,20 @@ public class Lista {
                     }else if(i == 5 && j == 3){
                         if(habitacionActual.abajo == null){
                             System.out.println("  [N]  ");
+                        }else if(habitacionActual.abajo.getTipoHabitacion().equalsIgnoreCase("jefe")){
+                            System.out.println("  [B]  ");
+                        }else if(habitacionActual.abajo.getTipoHabitacion().equalsIgnoreCase("salida")){
+                            System.out.println("  [S]  ");
                         }else{
-                            System.out.println(" [" + habitacionActual.abajo.getNumeroCuarto()+ "] ");
+                            System.out.println("  [" + habitacionActual.abajo.getNumeroCuarto()+ "]  ");
                         }
                     }else if (i == 3 && j == 1 ) {
                         if(habitacionActual.izquierdo == null){
                             System.out.print("[N]");
+                        }else if(habitacionActual.izquierdo.getTipoHabitacion().equalsIgnoreCase("jefe")){
+                            System.out.println("[B]");
+                        }else if(habitacionActual.izquierdo.getTipoHabitacion().equalsIgnoreCase("salida")){
+                            System.out.println("[S]");
                         }else{
                             System.out.print("[" + habitacionActual.izquierdo.getNumeroCuarto()+ "]");
                         }
@@ -78,6 +90,10 @@ public class Lista {
                     }else if(i == 3 && j == 5){
                         if(habitacionActual.derecho == null){
                             System.out.println("[N]");
+                        }else if(habitacionActual.derecho.getTipoHabitacion().equalsIgnoreCase("jefe")){
+                            System.out.println("[B]");
+                        }else if(habitacionActual.derecho.getTipoHabitacion().equalsIgnoreCase("salida")){
+                            System.out.println("[S]");
                         }else{
                             System.out.println("[" + habitacionActual.derecho.getNumeroCuarto()+ "]");
                         }
