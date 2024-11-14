@@ -29,7 +29,7 @@ public class Main {
         boolean puertaTaken = false;
 
         String mover = "W";
-        Nodo actual = new Nodo(juego.uid);
+        Nodo actual = new Nodo(juego.uid, juego.numCuarto);
         lista.insertarInicio(actual, mover);
 
         //Ejecucion principal del juego
@@ -81,7 +81,7 @@ public class Main {
                         {
                             juego.numCuarto++;
                             UID uidNuevo = new UID(juego.numCuarto);
-                            Nodo nuevoNodo = new Nodo(uidNuevo);
+                            Nodo nuevoNodo = new Nodo(uidNuevo, juego.numCuarto);
                             lista.insertarNodo(actual, mover, nuevoNodo);
                             actual = nuevoNodo;
                         }
@@ -97,7 +97,7 @@ public class Main {
                         {
                             juego.numCuarto++;
                             UID uidNuevo = new UID(juego.numCuarto);
-                            Nodo nuevoNodo = new Nodo(uidNuevo);
+                            Nodo nuevoNodo = new Nodo(uidNuevo, juego.numCuarto);
                             lista.insertarNodo(actual, mover, nuevoNodo);
                             actual = nuevoNodo;
                         }
@@ -112,7 +112,7 @@ public class Main {
                         {
                             juego.numCuarto++;
                             UID uidNuevo = new UID(juego.numCuarto);
-                            Nodo nuevoNodo = new Nodo(uidNuevo);
+                            Nodo nuevoNodo = new Nodo(uidNuevo, juego.numCuarto);
                             lista.insertarNodo(actual, mover, nuevoNodo);
                             actual = nuevoNodo;
                         }
@@ -127,7 +127,7 @@ public class Main {
                         {
                             juego.numCuarto++;
                             UID uidNuevo = new UID(juego.numCuarto);
-                            Nodo nuevoNodo = new Nodo(uidNuevo);
+                            Nodo nuevoNodo = new Nodo(uidNuevo, juego.numCuarto);
                             lista.insertarNodo(actual, mover, nuevoNodo);
                             actual = nuevoNodo;
                         }
