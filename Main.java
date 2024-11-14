@@ -23,11 +23,11 @@ public class Main {
         //Creacion de matriz y encontrar coordenadas de las entidades
 
         juego.uid.encontrarCoordenadasEntidades();
-        lista.imprimirHabitaciones();
+       
 
         //Ver si salió de la habitación
         boolean puertaTaken = false;
-
+        jugador.setLlave(1);
         String mover = "W";
         Nodo actual = new Nodo(juego.uid, juego.numCuarto);
         lista.insertarInicio(actual, mover);
@@ -36,6 +36,8 @@ public class Main {
         while(puertaTaken == false && jugador.getSalud() != 0){
             jugador.statusJugador(jugador);
             actual.uid.imprimirMatriz(); mover = juego.scanner.nextLine();
+            lista.imprimirMapa(0, actual);
+            System.out.println("Llave: " + jugador.getLlave());
             try{
                 actual.uid.moverPersonaje(mover, jugador); System.out.println();
                 /*if(jugador.getDebuff()){

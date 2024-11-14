@@ -522,17 +522,12 @@ public class UID{
         items[5] = new Items("Reduccion",20, "Reduce el daño del enemigo en un 20%");
     }
 
-   /*public void sistemaDeBatalla(Agentes jugador, Agentes enemigo) {
+
+    public void sistemaDeBatalla(Agentes jugador, Agentes enemigo) {
         //Agregar Contador para los turnos; 1 jugador, 0 enemigo
         boolean pelea = true;
         boolean defensa = false;
         //Ver si el jugador o enemigo tiene equipada el Arma
-        if (jugador.armadura.getNombre() == "Armadura Legendaria") {
-            enemigo.setAtaque(enemigo.getAtaque() - (enemigo.getAtaque() * 0.50));
-        }
-        if(enemigo.armadura.getNombre() == "Armadura Legendaria"){
-            jugador.setAtaque(jugador.getAtaque() - (jugador.getAtaque() * 0.50));
-        }
         while (pelea) {
             //probabilidad que el enemigo pueda usar un item del inventario
             int probalidad = rand.nextInt(5,8);
@@ -581,22 +576,14 @@ public class UID{
                             System.out.println("2) No");
                             int op = scanner.nextInt();
                             if (op == 1) {
-                                System.out.println("1 Armas");
-                                System.out.println("2 buffs");
-                                int opp = scanner.nextInt();
                                 System.out.println("Ingrese el numero de Item");
                                 int seleccionItem = scanner.nextInt() - 1;
-                                if (opp == 1) {
-                                    jugador.setAtaque(jugador.inventario.objetos[seleccionItem].getEfecto());
-                                    System.out.println("Se ha equipado exitosamente");
-                                    System.out.println("Ahora tu ataque es de: " + jugador.getAtaque());
-                                    jugador.inventario.objetos[seleccionItem] = null;
-                                } else if (opp == 2 && jugador.inventario.objetos[seleccionItem].getNombre().equalsIgnoreCase("Reducir defensa")) {
+                                if (jugador.inventario.objetos[seleccionItem].getNombre().equalsIgnoreCase("Reducir defensa")) {
                                     enemigo.setBuff(jugador.inventario.objetos[seleccionItem].getEfecto());
                                     System.out.println(enemigo.getDefensa());
                                     System.out.println("Se ha usado exitosamente");
                                     jugador.inventario.objetos[seleccionItem] = null;
-                                } else if (opp == 2 && jugador.inventario.objetos[seleccionItem].getNombre().equalsIgnoreCase("Aumentar daño")) {
+                                } else if (jugador.inventario.objetos[seleccionItem].getNombre().equalsIgnoreCase("Aumentar daño")) {
                                     jugador.setAtaque(jugador.inventario.objetos[seleccionItem].getEfecto());
                                     System.out.println("Se ha equipado exitosamente");
                                     System.out.println("Ahora tu ataque es de: " + jugador.getAtaque());
@@ -645,6 +632,8 @@ public class UID{
                     System.out.println("Te han derrotado");
                     pelea = false;
                 }
+                
+                /* 
                 //Sistema de veneno en combate
                 if (enemigo.getSalud() != 0) {
                     if (enemigo.getDebuff() == true) {
@@ -671,12 +660,9 @@ public class UID{
                             dañoVeneno += 1;
                         }
                     }
-                }
+                }*/
             }
         }
-        if (jugador.armadura.getNombre() == "Armadura Secreta") {
-            jugador.armadura.setEfecto(200);
-        }
 
-    }*/
+    }
 }

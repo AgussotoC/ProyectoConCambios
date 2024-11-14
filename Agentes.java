@@ -6,6 +6,7 @@ public class Agentes
     private double salud;
     private double ataque;
     private double defensa;
+    boolean llave;
 
     /*Características compartidas y modificables por toda entidad
       también ocupa la creaciones de clases de items para funcionar, lo cual lo ideal sería hacerlo en el main*/
@@ -27,12 +28,21 @@ public class Agentes
         this.buff = buff;
         this.debuff = debuff;
         this.inventario = new Inventario(3);
+        this.llave = false;
     } 
     public void agregarItemAlInventario(Items item){
         inventario.agregarItem(item);
     }
     public void mostrarInventario(){
         inventario.mostrarInventario(); 
+    }
+    public void setLlave(int opcion){
+        if(opcion == 1 ){
+            this.llave = true;
+        }
+    }
+    public boolean getLlave(){
+        return llave;
     }
 
     //Getters características únicas
@@ -156,6 +166,9 @@ public class Agentes
             setSalud(comprobante);
         }
 
+    }
+    public void mostrarAtributos(Agentes jugador){
+        System.out.println("Jugador: " + " Vida: " + jugador.getSalud() + "Arma: " + jugador.arma  + "Ataque: " + jugador.getAtaque() +  " Defensa: " + jugador.getDefensa() + "Armadura: " + jugador.armadura.getNombre() + " Llave " + jugador.getLlave());
     }
     public void statusJugador(Agentes jugador){
         System.out.println("Jugador: "+ " Vida: " + jugador.getSalud() + " Defensa: " + jugador.getDefensa() + "Armadura: " + jugador.armadura.getNombre());
