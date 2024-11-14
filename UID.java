@@ -21,7 +21,7 @@ public class UID{
     Armas[] armas = new Armas[3];
     Armaduras[] armaduras = new Armaduras[3];
     Items[] items = new Items[6];
-
+    Lista lista = new Lista();
     //Creacion de la matriz y su tamaño
     int[][] matriz;
     int num = rand.nextInt(8, 17); //Tamaño de la matriz
@@ -33,6 +33,8 @@ public class UID{
     Armas: 4
     Armaduras: 5
     Jugador: 6
+    boss 7
+    salida 8
     */
     //Datos para spawnear entidades
     boolean esPosible = false;
@@ -391,7 +393,7 @@ public class UID{
     }
 
     //metodo para mover el personaje
-    public void moverPersonaje(String wasd, Agentes agente){
+    public void moverPersonaje(String wasdm, Agentes agente){
         int indexi = 0;
         int indexj = 0;
         for(int i = 0; i < num; i++){
@@ -403,7 +405,7 @@ public class UID{
             }
         }
         if(agente.getIcono() == 6){
-            switch(wasd){
+            switch(wasdm){
                 case "w":
                     if(sePuedeJugador(matriz[indexi -1][indexj]) == true){
                         matriz[indexi][indexj] = 0;
@@ -426,6 +428,22 @@ public class UID{
                     if(sePuedeJugador(matriz[indexi][indexj + 1]) == true){
                         matriz[indexi][indexj] = 0;
                         matriz[indexi][indexj + 1] = agente.getIcono();
+                    }
+                    break;
+                case "m":
+                    System.out.println("1) Mapa");
+                    System.out.println("2) atributos del jugador");
+                    System.out.println("3) inventario");
+                    int opcion = scanner.nextInt();
+                    if (opcion == 1) {
+                        System.out.println("it works");
+                        lista.imprimirMapa(opcion,lista.inicio);
+                    }else if(opcion == 2){
+                        System.out.println("atributos");
+                        agente.mostrarAtributos(agente);
+                    }else if (opcion == 3) {
+                        System.out.println("inventario");
+                        agente.mostrarInventario();
                     }
                     break;
                 default:
@@ -556,9 +574,9 @@ public class UID{
         armas[2] = new Armas("Arma legendaria", "Aumenta el daño en 100%");
 
         //Armaduras
-        armaduras[0] = new Armaduras("Arma basica", "Aumenta el daño en un 20%");
-        armaduras[1] = new Armaduras("Arma secreta", "Hace 50% al enemigo más el ataque base");
-        armaduras[2] = new Armaduras("Arma legendaria", "Aumenta el daño en 100%");
+        armaduras[0] = new Armaduras("Armadura basica", "Aumenta el daño en un 20%");
+        armaduras[1] = new Armaduras("Armadura secreta", "Hace 50% al enemigo más el ataque base");
+        armaduras[2] = new Armaduras("Armadura legendaria", "Aumenta el daño en 100%");
 
         //Items
         double aumentoAtaque = rand.nextInt(10,21);

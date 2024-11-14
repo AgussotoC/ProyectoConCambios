@@ -168,7 +168,7 @@ public class Agentes
 
     }
     public void mostrarAtributos(Agentes jugador){
-        System.out.println("Jugador: " + " Vida: " + jugador.getSalud() + "Arma: " + jugador.arma  + "Ataque: " + jugador.getAtaque() +  " Defensa: " + jugador.getDefensa() + "Armadura: " + jugador.armadura.getNombre() + " Llave " + jugador.getLlave());
+        System.out.println("Jugador: " + " Vida: " + jugador.getSalud() + " Arma: " + jugador.arma  + " Ataque: " + jugador.getAtaque() +  " Defensa: " + jugador.getDefensa() + " Armadura: " + jugador.armadura.getNombre() + " Llave " + jugador.getLlave());
     }
     public void statusJugador(Agentes jugador){
         System.out.println("Jugador: "+ " Vida: " + jugador.getSalud() + " Defensa: " + jugador.getDefensa() + "Armadura: " + jugador.armadura.getNombre());

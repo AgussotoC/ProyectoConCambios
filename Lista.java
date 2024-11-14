@@ -105,13 +105,6 @@ public class Lista {
         }
     }
 }
-    /* 
-    public void imprimirHabitaciones(){
-        Nodo actual = inicio;
-        while(actual != null){
-            actual.imprimirNodos();
-            actual = actual.derecho;
-        }
-    }*/
+    
     
 
