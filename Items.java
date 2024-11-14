@@ -21,6 +21,6 @@ public class Items
         this.efecto = ingreso;
     }
     public String toString(){
-        return nombre + " descripcion: " + descripcion;
+        return nombre + ": " + descripcion;
     }
 }

@@ -14,7 +14,7 @@ public class Agentes
     public Armas arma;
     public Armaduras armadura;
     public Items buff;
-    private Items debuff;
+    public Items debuff;
     public Inventario inventario;
 
     //Constructor del jugador y enemigos

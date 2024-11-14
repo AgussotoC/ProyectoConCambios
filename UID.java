@@ -291,16 +291,6 @@ public class UID{
         }
     }
 
-    private boolean revisarPared(int[] yaSeHizoPared, int comparacion){
-        boolean hayPared = false;
-        for(int pared : yaSeHizoPared){
-            if(pared == comparacion){
-                hayPared = true;
-            }
-        }
-        return hayPared;
-    }
-
     public void reubicarJugador(int coordenadaI, int coordenadaJ){
         int indexi = 0;
         int indexj = 0;
@@ -344,14 +334,48 @@ public class UID{
     }
 
     //Metodo para imprimir la matriz en la consola
-    public void imprimirMatriz(){
+    public void imprimirMatriz(Agentes jugador){
+        String[] itemsLogo = {"A", "B", "C"};
+        String[] itemsImprimidos = {"-", "-", "-"};
+        int contador = 0;
+        for(String item : itemsLogo){
+            if(jugador.inventario.objetos[contador] != null){
+                itemsImprimidos[contador] = item;
+            }
+            contador++;
+        }
+        int ultimaFila = num-1;
         for(int i = 0; i < num; i++){
             for(int j = 0; j < num; j++){
                 switch(matriz[i][j]){
                     case 0:
                         System.out.print(" "); break;
                     case 1:
-                        System.out.print("#"); break;
+                        System.out.print("#");
+                        if(j == num -1){
+                            switch (i){
+                                case 0:
+                                    System.out.printf(" Items...[%s][%s][%s]", itemsImprimidos[0], itemsImprimidos[1], itemsImprimidos[2]);
+                                    break;
+                                case 1:
+                                    System.out.printf(" Vida...%d", (int)jugador.getSalud());
+                                    break;
+                                case 2:
+                                    System.out.printf(" Armadura...%s", jugador.armadura.descripcion); break;
+                                case 3:
+                                    System.out.printf(" Arma...%s", jugador.arma.descripcion); break;
+                            }
+                            if(i == num-3){
+                                System.out.printf(" Ataque...%d", (int)jugador.getAtaque());
+                            }
+                            if(i == num-2){
+                                System.out.printf(" Buff...%s", jugador.buff.nombre);
+                            }
+                            if(i == num-1){
+                                System.out.printf(" Debuff...%s", jugador.debuff.nombre);
+                            }
+                        }
+                        break;
                     case 2:
                         System.out.print("E"); break;
                     case 3:
@@ -551,14 +575,14 @@ public class UID{
 
     private void generacionItems(){
         //armas
-        armas[0] = new Armas("Arma basica", "Aumenta el daño en un 20%");
-        armas[1] = new Armas("Arma secreta", "Hace 50% al enemigo más el ataque base");
-        armas[2] = new Armas("Arma legendaria", "Aumenta el daño en 100%");
+        armas[0] = new Armas("Arma basica", "+20% de daño");
+        armas[1] = new Armas("Arma secreta", "ataque base +50% de la vida del enemigo");
+        armas[2] = new Armas("Arma legendaria", "+100% de daño");
 
         //Armaduras
-        armaduras[0] = new Armaduras("Arma basica", "Aumenta el daño en un 20%");
-        armaduras[1] = new Armaduras("Arma secreta", "Hace 50% al enemigo más el ataque base");
-        armaduras[2] = new Armaduras("Arma legendaria", "Aumenta el daño en 100%");
+        armaduras[0] = new Armaduras("Arma basica", "-20% daño recibido, -2% duracion por golpe");
+        armaduras[1] = new Armaduras("Arma secreta", "-30% daño recibido, duracion al 100% despues de cada batalla");
+        armaduras[2] = new Armaduras("Arma legendaria", "-50% daño recibido");
 
         //Items
         double aumentoAtaque = rand.nextInt(10,21);

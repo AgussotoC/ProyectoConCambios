@@ -13,8 +13,8 @@ public class Main {
         Main juego = new Main();
         Lista lista = new Lista();
         //Vector y variable necesarias para mover la casilla enemigo
-        Armaduras armaduraI = new Armaduras("Sin armadura", "Defensa Base");
-        Armas armaI = new Armas("Sin arma","Ataque base");
+        Armaduras armaduraI = new Armaduras("Sin armadura", "Sin armadura");
+        Armas armaI = new Armas("Sin arma","Sin arma");
         Items buffI = new Items("Sin buff", 1, "Sin afecto");
         Items debuffI = new Items("Sin debuff", 1, "Sin afecto");
         //Creacion del jugador
@@ -34,8 +34,7 @@ public class Main {
 
         //Ejecucion principal del juego
         while(puertaTaken == false && jugador.getSalud() != 0){
-            jugador.statusJugador(jugador);
-            actual.uid.imprimirMatriz(); mover = juego.scanner.nextLine();
+            actual.uid.imprimirMatriz(jugador); mover = juego.scanner.nextLine();
             lista.imprimirMapa(0, actual);
             System.out.println("Llave: " + jugador.getLlave());
             try{
