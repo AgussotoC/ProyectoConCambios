@@ -8,6 +8,7 @@ public class Main {
     static boolean gano;
     static Items[] items = new Items[15];
     int dañoVeneno = 1;
+   
     //Ejecución del main
     public static void main(String[] args) {
         Main juego = new Main();
@@ -35,7 +36,7 @@ public class Main {
         //Ejecucion principal del juego
         while(puertaTaken == false && jugador.getSalud() != 0){
             actual.uid.imprimirMatriz(jugador); mover = juego.scanner.nextLine();
-            lista.imprimirMapa(0, actual);
+            lista.imprimirMapa(actual);
             System.out.println("Llave: " + jugador.getLlave());
             try{
                 actual.uid.moverPersonaje(mover, jugador); System.out.println();

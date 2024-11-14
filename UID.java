@@ -456,16 +456,12 @@ public class UID{
                     break;
                 case "m":
                     System.out.println("1) Mapa");
-                    System.out.println("2) atributos del jugador");
-                    System.out.println("3) inventario");
+                    System.out.println("2) inventario");
                     int opcion = scanner.nextInt();
                     if (opcion == 1) {
                         System.out.println("it works");
-                        lista.imprimirMapa(opcion,lista.inicio);
-                    }else if(opcion == 2){
-                        System.out.println("atributos");
-                        agente.mostrarAtributos(agente);
-                    }else if (opcion == 3) {
+                        lista.imprimirMapa(lista.gethabitacionActual());
+                    }else if (opcion == 2) {
                         System.out.println("inventario");
                         agente.mostrarInventario();
                     }
@@ -598,15 +594,9 @@ public class UID{
         armas[2] = new Armas("Arma legendaria", "+100% de daño");
 
         //Armaduras
-<<<<<<< HEAD
-        armaduras[0] = new Armaduras("Armadura basica", "Aumenta el daño en un 20%");
-        armaduras[1] = new Armaduras("Armadura secreta", "Hace 50% al enemigo más el ataque base");
-        armaduras[2] = new Armaduras("Armadura legendaria", "Aumenta el daño en 100%");
-=======
-        armaduras[0] = new Armaduras("Arma basica", "-20% daño recibido, -2% duracion por golpe");
-        armaduras[1] = new Armaduras("Arma secreta", "-30% daño recibido, duracion al 100% despues de cada batalla");
-        armaduras[2] = new Armaduras("Arma legendaria", "-50% daño recibido");
->>>>>>> ad5ff0af87ef5b6eca1755f25c841547ec27c543
+        armaduras[0] = new Armaduras("Armadura basica", "-20% daño recibido, -2% duracion por golpe");
+        armaduras[1] = new Armaduras("Armadura secreta", "-30% daño recibido, duracion al 100% despues de cada batalla");
+        armaduras[2] = new Armaduras("Armasura legendaria", "-50% daño recibido");
 
         //Items
         double aumentoAtaque = rand.nextInt(10,21);

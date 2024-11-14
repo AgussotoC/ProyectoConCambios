@@ -39,9 +39,9 @@ public class Lista {
                 break;
 
         }
-        return habitacionActual;
+        return inicio = habitacionActual;
     }
-    public void imprimirMapa(int opcion, Nodo habitacionActual){
+    public void imprimirMapa(Nodo habitacionActual){
         int[][] mapa = new int[6][6];
         System.out.println("Mapa mazmorra");
         for(int i = 0; i < mapa[0].length ; i ++){
@@ -103,6 +103,9 @@ public class Lista {
                 }
             }
         }
+    }
+    public Nodo gethabitacionActual(){
+        return inicio;
     }
 }
     
