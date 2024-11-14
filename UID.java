@@ -34,10 +34,6 @@ public class UID{
     Armaduras: 5
     Jugador: 6
     */
-<<<<<<< HEAD
-    
-=======
-
     //Datos para spawnear entidades
     boolean esPosible = false;
     int mChiquita = num -1; //Area dentro de las paredes
@@ -66,7 +62,6 @@ public class UID{
         }
         generacionItems();
     }
->>>>>>> 741517ed750950c334b0093e45f4720ff80c959a
     private void decidirNumEnemigos(){
         int prob = rand.nextInt(1,101);
         int max = 75;
@@ -89,25 +84,6 @@ public class UID{
         enemigos = new Agentes[numEnemigos];
         indexjEnemigos =  new int[numEnemigos];
         indexiEnemigos = new int[numEnemigos];
-    }
-    int[] spawnEnemigos = null; //ver cuantas entidades de enemigos se crean
-    public UID(){
-        Items armaduraI = new Items("hola", 0, " ");
-        Items armaI = new Items("hola", 0, " ");
-        decidirNumEnemigos();
-        if(enemigos.length == 0){
-            enemigos = null;
-        } else{
-            spawnEnemigos = new int[enemigos.length];
-            for(int i = 0; i < enemigos.length; i ++){
-                int vidaAleatoria = rand.nextInt(100,300);
-                int ataqueAleatorio = rand.nextInt(50,125);
-                int defensaAleatoria = rand.nextInt(50,70);
-                enemigos[i] = new Agentes(2, vidaAleatoria, ataqueAleatorio, defensaAleatoria, armaI , armaduraI, 0);
-                spawnEnemigos[i] = enemigos[i].getIcono();
-            }
-        }
-
     }
     private void generarEntidades(int[] entidades){
         for(int k = 0; k < entidades.length; k++)
