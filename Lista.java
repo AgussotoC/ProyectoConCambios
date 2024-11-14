@@ -1,13 +1,11 @@
 public class Lista {
     Nodo inicio;
     Nodo [][] habitacion;
-    UID uid = new UID();
 
     public Lista(){
         inicio = null;
     }
-    public void insertarInicio(int[][] matriz){
-        Nodo nuevoNodo = new Nodo(matriz);
+    public void insertarInicio(Nodo nuevoNodo, String wasd){
        if(inicio == null){
             inicio = nuevoNodo;
        }else{
@@ -17,30 +15,29 @@ public class Lista {
             }
        }
     }
-    public void insertarHabitaciones(Nodo habitacionActual, String direccion, int[][] dato){
-        Nodo nuevahabitacion = new Nodo(dato);
+    public void insertarNodo(Nodo habitacionActual, String direccion, Nodo nuevoNodo){
         switch(direccion.toLowerCase()){
-            case "W":
+            case "w":
                 //arriba
                 if(habitacionActual.arriba != null){
-                    habitacionActual.arriba = nuevahabitacion;
-                    nuevahabitacion.abajo = habitacionActual;
+                    habitacionActual.arriba = nuevoNodo;
+                    nuevoNodo.abajo = habitacionActual;
                 }
                 break;
             case "s":
                 // abajo
-                habitacionActual.abajo = nuevahabitacion;
-                nuevahabitacion.arriba = habitacionActual;
+                habitacionActual.abajo = nuevoNodo;
+                nuevoNodo.arriba = habitacionActual;
                 break;
             case "a":
                 //izquierda
-                habitacionActual.izquierdo = nuevahabitacion;
-                nuevahabitacion.derecho = habitacionActual;
+                habitacionActual.izquierdo = nuevoNodo;
+                nuevoNodo.derecho = habitacionActual;
                 break;
             case "d":
                 // derecha
-                habitacionActual.derecho = nuevahabitacion;
-                nuevahabitacion.izquierdo = habitacionActual;
+                habitacionActual.derecho = nuevoNodo;
+                nuevoNodo.izquierdo = habitacionActual;
                 break;
 
         }

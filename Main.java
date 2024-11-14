@@ -1,7 +1,8 @@
 import java.util.Scanner;
 public class Main {
     //Iniciacion de clases
-    UID uid = new UID();
+    int numCuarto = 1;
+    UID uid = new UID(numCuarto);
     Scanner scanner = new Scanner(System.in);
     //Variables globales
     static boolean gano;
@@ -20,20 +21,23 @@ public class Main {
         Agentes jugador = new Agentes(6,500,70,50, armaI , armaduraI, buffI, debuffI);
 
         //Creacion de matriz y encontrar coordenadas de las entidades
-        
-        lista.insertarInicio(juego.uid.generarAreaMatriz(1));
+
         juego.uid.encontrarCoordenadasEntidades();
         lista.imprimirHabitaciones();
 
         //Ver si salió de la habitación
-
         boolean puertaTaken = false;
 
+        String mover = "W";
+        Nodo actual = new Nodo(juego.uid);
+        lista.insertarInicio(actual, mover);
+
+        //Ejecucion principal del juego
         while(puertaTaken == false && jugador.getSalud() != 0){
             jugador.statusJugador(jugador);
-            juego.uid.imprimirMatriz(); String mover = juego.scanner.nextLine();
+            actual.uid.imprimirMatriz(); mover = juego.scanner.nextLine();
             try{
-                juego.uid.moverPersonaje(mover, jugador); System.out.println();
+                actual.uid.moverPersonaje(mover, jugador); System.out.println();
                 /*if(jugador.getDebuff()){
                     jugador.venenoAtaque(juego.dañoVeneno);
                     if(jugador.getSalud() != 0){
@@ -62,10 +66,10 @@ public class Main {
                 }
             }*/
                 //Comprobantes para ver si el jugador agarró una arma, item, debuff, o entró a la puerta
-                juego.uid.encontrarEquipable(jugador);
+                actual.uid.encontrarEquipable(jugador);
 
                 //Incialización del comprobante para ver si el jugador esta en el area del enemigo
-                if(juego.uid.areaEnemigo(jugador) == true){
+                if(actual.uid.areaEnemigo(jugador) == true){
                     gano = false;
                     System.out.println("Hay combate");
                 }
@@ -73,32 +77,66 @@ public class Main {
                 switch (mover){
                     case "w":
                         System.out.println("Se fue a la habitacion de arriba");
-                        puertaTaken = true; break;
+                        if(actual.arriba == null)
+                        {
+                            juego.numCuarto++;
+                            UID uidNuevo = new UID(juego.numCuarto);
+                            Nodo nuevoNodo = new Nodo(uidNuevo);
+                            lista.insertarNodo(actual, mover, nuevoNodo);
+                            actual = nuevoNodo;
+                        }
+                        else
+                        {
+                            actual = actual.arriba;
+                        }
+                        break;
+
                     case "d":
                         System.out.println("Se fue a la habitacion de la derecha");
-                        puertaTaken = true; break;
+                        if(actual.derecho == null)
+                        {
+                            juego.numCuarto++;
+                            UID uidNuevo = new UID(juego.numCuarto);
+                            Nodo nuevoNodo = new Nodo(uidNuevo);
+                            lista.insertarNodo(actual, mover, nuevoNodo);
+                            actual = nuevoNodo;
+                        }
+                        else
+                        {
+                            actual = actual.derecho;
+                        }
+                        break;
                     case "s":
                         System.out.println("Se fue a la habitacion de abajo");
-                        puertaTaken = true; break;
+                        if(actual.abajo == null)
+                        {
+                            juego.numCuarto++;
+                            UID uidNuevo = new UID(juego.numCuarto);
+                            Nodo nuevoNodo = new Nodo(uidNuevo);
+                            lista.insertarNodo(actual, mover, nuevoNodo);
+                            actual = nuevoNodo;
+                        }
+                        else
+                        {
+                            actual = actual.abajo;
+                        }
+                        break;
                     case "a":
                         System.out.println("Se fue a la habitacion de la izquierda");
-                        puertaTaken = true; break;
+                        if(actual.izquierdo == null)
+                        {
+                            juego.numCuarto++;
+                            UID uidNuevo = new UID(juego.numCuarto);
+                            Nodo nuevoNodo = new Nodo(uidNuevo);
+                            lista.insertarNodo(actual, mover, nuevoNodo);
+                            actual = nuevoNodo;
+                        }
+                        else
+                        {
+                            actual = actual.izquierdo;
+                        }
+                        break;
                 }
-                /*
-                Ya trabajando con nodos sería algo así en cada case:
-                (el ejemplo esta en el case de la derecha, pero aplica para cada uno con su correspondiente case)
-                if(actual.derecha != null)
-                {
-                    Nodo nuevoNodo = new Nodo(numCuarto),
-                    nuevoNodo.izquierda = actual;
-                    actual.derecha = nuevoNodo;
-                    actual = nuevoNodo
-                }
-                else
-                {
-                    actual = actual.derecha;
-                }
-                */
             }
         }
     }

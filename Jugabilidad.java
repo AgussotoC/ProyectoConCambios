@@ -4,9 +4,8 @@ import java.util.Scanner;
 public class Jugabilidad {
     Random rand = new Random();
     Scanner scanner = new Scanner(System.in);
-    UID uid = new UID();
     int dañoVeneno = 1;
-    public void sistemaDeBatalla(Agentes jugador, Agentes[] enemigo, int enemigoActual) {
+    /*public void sistemaDeBatalla(Agentes jugador, Agentes[] enemigo, int enemigoActual) {
         //Agregar Contador para los turnos; 1 jugador, 0 enemigo
         boolean pelea = true;
         boolean defensa = false;
@@ -166,5 +165,5 @@ public class Jugabilidad {
     public void setDañoArmaSecreta(Agentes objetivo, Agentes propio){
         propio.setAtaque(objetivo.getSalud()/2 + propio.getAtaque());
 
-    }
+    }*/
 }

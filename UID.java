@@ -40,9 +40,10 @@ public class UID{
     int range = ((num - 2) * 4) - 4; //area dentro de las paredes es (disminuye en 2 bloques)
     int rng = rand.nextInt(1, range + 1);
 
+    int numCuarto;
     Agentes[] enemigos;
     int[] spawnEnemigos = null; //ver cuantas entidades de enemigos se crean
-    public UID(){
+    public UID(int numCuarto){
         Armaduras armaduraI = new Armaduras("Sin armadura","Defensa Base");
         Armas armaI = new Armas("Sin arma", "Ataque base");
         Items buffI = new Items("Sin buff", 1, "Sin afecto");
@@ -61,6 +62,8 @@ public class UID{
             }
         }
         generacionItems();
+        generarAreaMatriz(numCuarto);
+        encontrarCoordenadasEntidades();
     }
     private void decidirNumEnemigos(){
         int prob = rand.nextInt(1,101);
@@ -186,11 +189,11 @@ public class UID{
         generarEntidades(entidades);
         generarEnemigos(spawnEnemigos);
         //Generar puertas
-        if(cuarto == 1){
+
             generarParedesIniciales();
-        } else{
+
             //Crear metodo para generar habitacion que no sea la primera, la que depende de nodos
-        }
+
         return matriz;
     }
 
@@ -380,7 +383,7 @@ public class UID{
                     break;
             }
         }
-        if(enemigos != null){
+        /*if(enemigos != null){
             for (Agentes enemigo : enemigos) {
                 if(enemigo == null){
                     continue;
@@ -415,7 +418,7 @@ public class UID{
                         break;
                 }
             }
-        }
+        }*/
     }
 
     //Comprobación si el jugador esta en el area de 1x1 del enemigo para iniciar combate

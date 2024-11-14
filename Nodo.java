@@ -1,15 +1,15 @@
 public class Nodo {
-    int[][] habitacion;
+    UID uid;
     Nodo derecho;
     Nodo izquierdo;
     Nodo arriba;
     Nodo abajo;
-    public Nodo(int[][] habitacion) {
+    public Nodo(UID uid) {
         this.derecho = this.izquierdo = this.arriba = this.abajo = null;
-        this.habitacion = habitacion;
+        this.uid = uid;
 
     }
-    public void imprimirNodos(){
+    public void imprimirNodos() {
         /*for(int i =0 ;i < habitacion[0].length; i++){
             for(int j = 0; j < habitacion[1].length; j ++){
                 System.out.print(habitacion[i][j]);
@@ -17,4 +17,5 @@ public class Nodo {
         }
         System.out.println("");
     }*/
+    }
 }

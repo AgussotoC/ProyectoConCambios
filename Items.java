@@ -7,7 +7,6 @@ public class Items
         this.nombre = nombre;
         this.efecto = efecto;
         this.descripcion = descripcion;
-    
     }
     public String getNombre(){
         return nombre;
@@ -20,7 +19,6 @@ public class Items
     }
     public void setEfecto(double ingreso){
         this.efecto = ingreso;
-
     }
     public String toString(){
         return nombre + " descripcion: " + descripcion;
