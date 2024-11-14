@@ -19,8 +19,10 @@ public class Main {
         //Vector y variable necesarias para mover la casilla enemigo
         Armaduras armaduraI = new Armaduras("Sin armadura", "Defensa Base");
         Armas armaI = new Armas("Sin arma","Ataque base");
+        Items buffI = new Items("Sin buff", 1, "Sin afecto");
+        Items debuffI = new Items("Sin debuff", 1, "Sin afecto");
         //Creacion del jugador
-        Agentes jugador = new Agentes(6,500,70,50, armaI , armaduraI, 0);
+        Agentes jugador = new Agentes(6,500,70,50, armaI , armaduraI, buffI, debuffI);
 
         //Ver si salió de la habitación
         boolean puertaTaken = false;
@@ -30,7 +32,7 @@ public class Main {
             juego.uid.imprimirMatriz(); String mover = juego.scanner.nextLine();
             try{
                 juego.uid.moverPersonaje(mover, jugador); System.out.println();
-                if(jugador.getDebuff()){
+                /*if(jugador.getDebuff()){
                     jugador.venenoAtaque(juego.dañoVeneno);
                     if(jugador.getSalud() != 0){
                         System.out.println("Daño del veneno: " + juego.dañoVeneno);
@@ -38,7 +40,7 @@ public class Main {
                             juego.dañoVeneno += 1;
                         }
                     }
-                }
+                }*/
             /*if(enemigos[enemigoActual] != null){
                 if(enemigos[enemigoActual].getDebuff()){
                     enemigos[enemigoActual].venenoAtaque(juego.dañoVeneno);
