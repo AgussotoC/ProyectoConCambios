@@ -1,5 +1,6 @@
 public class Lista {
     Nodo inicio;
+    Nodo [][] habitacion;
     UID uid = new UID();
 
     public Lista(){
@@ -42,6 +43,13 @@ public class Lista {
                 nuevahabitacion.izquierdo = habitacionActual;
                 break;
 
+        }
+    }
+    public void imprimirHabitaciones(){
+        Nodo actual = inicio;
+        while(actual != null){
+            actual.imprimirNodos();
+            actual = actual.derecho;
         }
     }
     

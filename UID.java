@@ -167,7 +167,7 @@ public class UID{
     }
 
     //Metodo para generar aleatoriamente la dungeon
-    public void generarAreaMatriz(int cuarto){
+    public  int[][] generarAreaMatriz(int cuarto){
         matriz = new int[num][num];
         //Definir las paredes de los costados
         for(int i = 0; i < num; i++){
@@ -191,6 +191,7 @@ public class UID{
         } else{
             //Crear metodo para generar habitacion que no sea la primera, la que depende de nodos
         }
+        return matriz;
     }
 
     //metodo para crear las puertas de la primera habitacion

@@ -1,4 +1,3 @@
-import java.util.Random;
 import java.util.Scanner;
 public class Main {
     //Iniciacion de clases
@@ -8,14 +7,10 @@ public class Main {
     static boolean gano;
     static Items[] items = new Items[15];
     int dañoVeneno = 1;
-    public Main(){
-        //Creacion de matriz y encontrar coordenadas de las entidades
-        uid.generarAreaMatriz(1);
-        uid.encontrarCoordenadasEntidades();
-    }
     //Ejecución del main
     public static void main(String[] args) {
         Main juego = new Main();
+        Lista lista = new Lista();
         //Vector y variable necesarias para mover la casilla enemigo
         Armaduras armaduraI = new Armaduras("Sin armadura", "Defensa Base");
         Armas armaI = new Armas("Sin arma","Ataque base");
@@ -26,8 +21,9 @@ public class Main {
 
         //Creacion de matriz y encontrar coordenadas de las entidades
         
-        juego.uid.generarAreaMatriz(1);
+        lista.insertarInicio(juego.uid.generarAreaMatriz(1));
         juego.uid.encontrarCoordenadasEntidades();
+        lista.imprimirHabitaciones();
 
         //Ver si salió de la habitación
 
