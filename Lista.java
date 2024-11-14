@@ -18,10 +18,9 @@ public class Lista {
         switch(direccion.toLowerCase()){
             case "w":
                 //arriba
-                if(habitacionActual.arriba != null){
-                    habitacionActual.arriba = nuevoNodo;
-                    nuevoNodo.abajo = habitacionActual;
-                }
+                habitacionActual.arriba = nuevoNodo;
+                nuevoNodo.abajo = habitacionActual;
+
                 break;
             case "s":
                 // abajo

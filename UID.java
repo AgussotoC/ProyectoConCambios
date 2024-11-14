@@ -40,10 +40,9 @@ public class UID{
     int range = ((num - 2) * 4) - 4; //area dentro de las paredes es (disminuye en 2 bloques)
     int rng = rand.nextInt(1, range + 1);
 
-    int numCuarto;
     Agentes[] enemigos;
     int[] spawnEnemigos = null; //ver cuantas entidades de enemigos se crean
-    public UID(int numCuarto){
+    public UID(int numCuarto, String wasd){
         Armaduras armaduraI = new Armaduras("Sin armadura","Defensa Base");
         Armas armaI = new Armas("Sin arma", "Ataque base");
         Items buffI = new Items("Sin buff", 1, "Sin afecto");
@@ -62,7 +61,7 @@ public class UID{
             }
         }
         generacionItems();
-        generarAreaMatriz(numCuarto);
+        generarAreaMatriz(numCuarto, wasd);
         encontrarCoordenadasEntidades();
     }
     private void decidirNumEnemigos(){
@@ -170,7 +169,7 @@ public class UID{
     }
 
     //Metodo para generar aleatoriamente la dungeon
-    public  int[][] generarAreaMatriz(int cuarto){
+    public  int[][] generarAreaMatriz(int numCuarto, String wasd){
         matriz = new int[num][num];
         //Definir las paredes de los costados
         for(int i = 0; i < num; i++){
@@ -189,11 +188,11 @@ public class UID{
         generarEntidades(entidades);
         generarEnemigos(spawnEnemigos);
         //Generar puertas
-
+        if(numCuarto == 1){
             generarParedesIniciales();
-
-            //Crear metodo para generar habitacion que no sea la primera, la que depende de nodos
-
+        } else { //Metodo para generar habitacion que no sea la primera
+            generarParedes(wasd);
+        }
         return matriz;
     }
 
@@ -231,39 +230,90 @@ public class UID{
         }
     }
 
-    public void generarParedes(Nodo actual){
+    public void generarParedes(String wasd){
+        int contador = 0;
         int generacion = 1; //probailidad de 100%, se mide con 1/5
         int genMaximo = 5;
-        int maxPared = 5;
-        int paredRandom = 1;
+        boolean yaHayPared = false;
+        int paredRandom;
+        int[] yaSeHizoPared = {0 , 0, 0, 0};
+        switch(wasd){ //Asegurar que siempre haya una puerta con la habitacion anterior
+            case "w": //Se crea una puerta abajo
+                paredRandom = 2;
+                yaSeHizoPared[0] = 2; break;
+            case "s": //Se crea una puerte arriba
+                paredRandom = 1;
+                yaSeHizoPared[0] = 1; break;
+            case "d": //Se crea una puerta a la derecha
+                paredRandom = 3;
+                yaSeHizoPared[0] = 3; break;
+            case "a": //Se crea una puerta a la izquierda
+                paredRandom = 4;
+                yaSeHizoPared[0] = 4; break;
+            default:
+                paredRandom = rand.nextInt(1,5);
+        }
         for(int k = 0; k < 4; k++){
             if(generacion <= genMaximo){
-                for(int i = 0; i < num; i++){
-                    for(int j = 0; j < num; j++){
-                        if(paredRandom == rand.nextInt(1, maxPared)){
-                            if(i == 0 || i == num - 1){
-                                matriz[i][num/2] = 0;
-                            } else if(j == 0 || j == num - 1){
-                                matriz[num/2][j] = 0;
-                            } else{
-                                maxPared -= 1;
-                            }
-                        }
-                    }
+                switch (paredRandom){
+                    case 1://Pared de arrriba
+                        matriz[0][num/2] = 0; break;
+                    case 2: //Pared de abajo
+                        matriz[num -1][num/2] = 0; break;
+                    case 3: //Pared de la izquierda
+                        matriz[num/2][0] = 0; break;
+                    case 4: //Pared de la derecha
+                        matriz[num/2][num - 1] = 0; break;
                 }
                 switch(genMaximo){
                     case 5:
-                        genMaximo -= 2; break;
+                        genMaximo = 3; break; //60% de probabilidad
                     case 3:
-                        genMaximo -= 1; break;
+                        genMaximo = 2; break; //40% de probabilidad
                     case 2:
-                        genMaximo -= 1; break;
+                        genMaximo = 1; break;//20% de probabilidad
                 }
                 generacion = rand.nextInt(1, 6);
+                paredRandom = rand.nextInt(1,5);
             } else{
                 break;
             }
         }
+        switch(wasd){ //Asegurar que siempre haya una puerta con la habitacion anterior
+            case "w":
+                reubicarJugador(num-1, num/2); break;
+            case "s":
+                reubicarJugador(0, num/2); break;
+            case "d":
+                reubicarJugador(num/2, 0); break;
+            case "a":
+                reubicarJugador(num/2, num-1); break;
+        }
+    }
+
+    private boolean revisarPared(int[] yaSeHizoPared, int comparacion){
+        boolean hayPared = false;
+        for(int pared : yaSeHizoPared){
+            if(pared == comparacion){
+                hayPared = true;
+            }
+        }
+        return hayPared;
+    }
+
+    public void reubicarJugador(int coordenadaI, int coordenadaJ){
+        int indexi = 0;
+        int indexj = 0;
+        for(int i = 0; i < num; i++){
+            for(int j = 0; j < num; j++){
+                if(matriz[i][j] == 6){
+                    indexi = i;
+                    indexj = j;
+                }
+            }
+        }
+        matriz[indexi][indexj] = 0;
+        matriz[coordenadaI][coordenadaJ] = 6;
     }
 
     //metodo para saber las coordenadas de los items que se pueden agarrar
@@ -523,7 +573,7 @@ public class UID{
     }
 
 
-    public void sistemaDeBatalla(Agentes jugador, Agentes enemigo) {
+    /*public void sistemaDeBatalla(Agentes jugador, Agentes enemigo) {
         //Agregar Contador para los turnos; 1 jugador, 0 enemigo
         boolean pelea = true;
         boolean defensa = false;
@@ -660,9 +710,9 @@ public class UID{
                             dañoVeneno += 1;
                         }
                     }
-                }*/
+                }
             }
         }
 
-    }
+    } */
 }

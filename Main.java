@@ -2,7 +2,7 @@ import java.util.Scanner;
 public class Main {
     //Iniciacion de clases
     int numCuarto = 1;
-    UID uid = new UID(numCuarto);
+    UID uid = new UID(numCuarto, "w");
     Scanner scanner = new Scanner(System.in);
     //Variables globales
     static boolean gano;
@@ -82,7 +82,7 @@ public class Main {
                         if(actual.arriba == null)
                         {
                             juego.numCuarto++;
-                            UID uidNuevo = new UID(juego.numCuarto);
+                            UID uidNuevo = new UID(juego.numCuarto, mover);
                             Nodo nuevoNodo = new Nodo(uidNuevo, juego.numCuarto);
                             lista.insertarNodo(actual, mover, nuevoNodo);
                             actual = nuevoNodo;
@@ -98,7 +98,7 @@ public class Main {
                         if(actual.derecho == null)
                         {
                             juego.numCuarto++;
-                            UID uidNuevo = new UID(juego.numCuarto);
+                            UID uidNuevo = new UID(juego.numCuarto, mover);
                             Nodo nuevoNodo = new Nodo(uidNuevo, juego.numCuarto);
                             lista.insertarNodo(actual, mover, nuevoNodo);
                             actual = nuevoNodo;
@@ -113,7 +113,7 @@ public class Main {
                         if(actual.abajo == null)
                         {
                             juego.numCuarto++;
-                            UID uidNuevo = new UID(juego.numCuarto);
+                            UID uidNuevo = new UID(juego.numCuarto, mover);
                             Nodo nuevoNodo = new Nodo(uidNuevo, juego.numCuarto);
                             lista.insertarNodo(actual, mover, nuevoNodo);
                             actual = nuevoNodo;
@@ -128,7 +128,7 @@ public class Main {
                         if(actual.izquierdo == null)
                         {
                             juego.numCuarto++;
-                            UID uidNuevo = new UID(juego.numCuarto);
+                            UID uidNuevo = new UID(juego.numCuarto, mover);
                             Nodo nuevoNodo = new Nodo(uidNuevo, juego.numCuarto);
                             lista.insertarNodo(actual, mover, nuevoNodo);
                             actual = nuevoNodo;
