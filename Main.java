@@ -91,7 +91,6 @@ public class Main {
                 break;
         }
     }
-    Nodo actual;
     //Ejecución del main
     public static void main(String[] args) {
         Main juego = new Main();
@@ -110,7 +109,7 @@ public class Main {
 
         //Ver si salió de la habitación
         boolean puertaTaken = false;
-        jugador.setLlave(1);
+        jugador.setLlave(0);
         String mover = "w";
         Nodo actual = new Nodo(juego.uid, juego.numCuarto);
         lista.insertarInicio(actual, mover);
@@ -122,11 +121,12 @@ public class Main {
         while(puertaTaken == false && jugador.getSalud() != 0){
             juego.revisarConexiones(actual);
             actual.uid.imprimirMatriz(jugador); mover = juego.scanner.nextLine();
-            //lista.imprimirMapa(actual);
-            System.out.println("Llave: " + jugador.getLlave());
-          
             try{
-                actual.uid.moverPersonaje(mover, jugador); System.out.println();
+                if(mover.equalsIgnoreCase("m")){
+                    juego.mostrarMapa(lista, jugador, actual);
+                }else{
+                    actual.uid.moverPersonaje(mover, jugador); System.out.println();
+                }
                 /*if(jugador.getDebuff()){
                     jugador.venenoAtaque(juego.dañoVeneno);
                     if(jugador.getSalud() != 0){
@@ -233,9 +233,6 @@ public class Main {
                             actual.uid.reasignarPosicionJugador(mover);
                         }
                         break;
-                    default:
-                        juego.mostrarMapa(lista, jugador, actual);
-                        break;
                 }
             }
         }
@@ -245,7 +242,6 @@ public class Main {
         System.out.println("2) inventario");
         int opcion = scanner.nextInt();
         if (opcion == 1) {
-            System.out.println("it works");
             lista.imprimirMapa(actuall);
         }else if (opcion == 2) {
             System.out.println("inventario");

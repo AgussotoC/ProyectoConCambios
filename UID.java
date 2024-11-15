@@ -488,12 +488,6 @@ public class UID{
                         matriz[indexi][indexj + 1] = agente.getIcono();
                     }
                     break;
-                case "m":
-                    
-                    break;
-                default:
-                    System.out.println("Invalido intente de nuevo");
-                    break;
             }
         }
         /*if(enemigos != null){
