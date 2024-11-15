@@ -13,8 +13,7 @@ public class Main {
     Nodo[][] mazmorra = new Nodo[fila][columna];
 
     int dañoVeneno = 1;
-    private boolean revisarConexiones(Nodo actual, String wasd){
-        boolean existeHabitacion = false;
+    private void revisarConexiones(Nodo actual){
         int indexi = 0;
         int indexj = 0;
         for (int i = 0; i < fila; i++) {
@@ -25,41 +24,29 @@ public class Main {
                 }
             }
         }
-        switch (wasd){
-            case "w":
                 if(mazmorra[indexi - 1][indexj] != null){
                     actual.arriba = mazmorra[indexi - 1][indexj];
                     actual.arriba.abajo = actual;
-                    actual = actual.arriba;
-                    existeHabitacion = true;
                 }
-                break;
-            case "a":
+
+
                 if(mazmorra[indexi][indexj - 1] != null){
                     actual.izquierdo = mazmorra[indexi][indexj - 1];
                     actual.izquierdo.derecho = actual;
-                    actual = actual.izquierdo;
-                    existeHabitacion = true;
                 }
-                break;
-            case "s":
+
+
                 if(mazmorra[indexi + 1][indexj] != null){
                     actual.abajo = mazmorra[indexi + 1][indexj];
                     actual.abajo.arriba = actual;
-                    actual = actual.abajo;
-                    existeHabitacion = true;
                 }
-                break;
-            case "d":
+
+
                 if(mazmorra[indexi][indexj + 1] != null){
                     actual.derecho = mazmorra[indexi][indexj + 1];
                     actual.derecho.izquierdo = actual;
-                    actual = actual.derecho;
-                    existeHabitacion = true;
                 }
-                break;
-        }
-        return existeHabitacion;
+
     }
 
     private void agregarAMatriz(Nodo actual, String wasd){
@@ -133,6 +120,7 @@ public class Main {
 
         //Ejecucion principal del juego
         while(puertaTaken == false && jugador.getSalud() != 0){
+            juego.revisarConexiones(actual);
             actual.uid.imprimirMatriz(jugador); mover = juego.scanner.nextLine();
             lista.imprimirMapa(actual);
             System.out.println("Llave: " + jugador.getLlave());
@@ -179,17 +167,12 @@ public class Main {
                         System.out.println("Se fue a la habitacion de arriba");
                         if(actual.arriba == null)
                         {
-                            if(juego.revisarConexiones(actual, mover)){
-                                actual.uid.asignarJugadorAPared(mover);
-                            } else{
-                                juego.numCuarto++;
-                                UID uidNuevo = new UID(juego.numCuarto, mover);
-                                Nodo nuevoNodo = new Nodo(uidNuevo, juego.numCuarto);
-                                lista.insertarNodo(actual, mover, nuevoNodo);
-                                actual = nuevoNodo;
-                                juego.agregarAMatriz(actual, mover);
-                            }
-
+                            juego.numCuarto++;
+                            UID uidNuevo = new UID(juego.numCuarto, mover);
+                            Nodo nuevoNodo = new Nodo(uidNuevo, juego.numCuarto);
+                            lista.insertarNodo(actual, mover, nuevoNodo);
+                            actual = nuevoNodo;
+                            juego.agregarAMatriz(actual, mover);
                         }
                         else
                         {
@@ -202,16 +185,12 @@ public class Main {
                         System.out.println("Se fue a la habitacion de la derecha");
                         if(actual.derecho == null)
                         {
-                            if(juego.revisarConexiones(actual, mover)){
-                                actual.uid.asignarJugadorAPared(mover);
-                            } else{
-                                juego.numCuarto++;
-                                UID uidNuevo = new UID(juego.numCuarto, mover);
-                                Nodo nuevoNodo = new Nodo(uidNuevo, juego.numCuarto);
-                                lista.insertarNodo(actual, mover, nuevoNodo);
-                                actual = nuevoNodo;
-                                juego.agregarAMatriz(actual, mover);
-                            }
+                            juego.numCuarto++;
+                            UID uidNuevo = new UID(juego.numCuarto, mover);
+                            Nodo nuevoNodo = new Nodo(uidNuevo, juego.numCuarto);
+                            lista.insertarNodo(actual, mover, nuevoNodo);
+                            actual = nuevoNodo;
+                            juego.agregarAMatriz(actual, mover);
                         }
                         else
                         {
@@ -223,16 +202,12 @@ public class Main {
                         System.out.println("Se fue a la habitacion de abajo");
                         if(actual.abajo == null)
                         {
-                            if(juego.revisarConexiones(actual, mover)){
-                                actual.uid.asignarJugadorAPared(mover);
-                            } else{
-                                juego.numCuarto++;
-                                UID uidNuevo = new UID(juego.numCuarto, mover);
-                                Nodo nuevoNodo = new Nodo(uidNuevo, juego.numCuarto);
-                                lista.insertarNodo(actual, mover, nuevoNodo);
-                                actual = nuevoNodo;
-                                juego.agregarAMatriz(actual, mover);
-                            }
+                            juego.numCuarto++;
+                            UID uidNuevo = new UID(juego.numCuarto, mover);
+                            Nodo nuevoNodo = new Nodo(uidNuevo, juego.numCuarto);
+                            lista.insertarNodo(actual, mover, nuevoNodo);
+                            actual = nuevoNodo;
+                            juego.agregarAMatriz(actual, mover);
                         }
                         else
                         {
@@ -244,16 +219,12 @@ public class Main {
                         System.out.println("Se fue a la habitacion de la izquierda");
                         if(actual.izquierdo == null)
                         {
-                            if(juego.revisarConexiones(actual, mover)){
-                                actual.uid.asignarJugadorAPared(mover);
-                            } else{
-                                juego.numCuarto++;
-                                UID uidNuevo = new UID(juego.numCuarto, mover);
-                                Nodo nuevoNodo = new Nodo(uidNuevo, juego.numCuarto);
-                                lista.insertarNodo(actual, mover, nuevoNodo);
-                                actual = nuevoNodo;
-                                juego.agregarAMatriz(actual, mover);
-                            }
+                            juego.numCuarto++;
+                            UID uidNuevo = new UID(juego.numCuarto, mover);
+                            Nodo nuevoNodo = new Nodo(uidNuevo, juego.numCuarto);
+                            lista.insertarNodo(actual, mover, nuevoNodo);
+                            actual = nuevoNodo;
+                            juego.agregarAMatriz(actual, mover);
                         }
                         else
                         {

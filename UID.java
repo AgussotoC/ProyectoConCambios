@@ -271,7 +271,7 @@ public class UID{
                 }
                 switch(genMaximo){
                     case 5:
-                        genMaximo = 5; break; //60% de probabilidad
+                        genMaximo = 3; break; //60% de probabilidad
                     case 3:
                         genMaximo = 2; break; //40% de probabilidad
                     case 2:
