@@ -7,8 +7,104 @@ public class Main {
     //Variables globales
     static boolean gano;
     static Items[] items = new Items[15];
+
+    int fila = 50;
+    int columna = 50;
+    Nodo[][] mazmorra = new Nodo[fila][columna];
+
     int dañoVeneno = 1;
-   
+    private boolean revisarConexiones(Nodo actual, String wasd){
+        boolean existeHabitacion = false;
+        int indexi = 0;
+        int indexj = 0;
+        for (int i = 0; i < fila; i++) {
+            for (int j = 0; j < columna; j++) {
+                if(mazmorra[i][j] == actual){
+                    indexi = i;
+                    indexj = j;
+                }
+            }
+        }
+        switch (wasd){
+            case "w":
+                if(mazmorra[indexi - 1][indexj] != null){
+                    actual.arriba = mazmorra[indexi - 1][indexj];
+                    actual = actual.arriba;
+                    existeHabitacion = true;
+                }
+                break;
+            case "a":
+                if(mazmorra[indexi][indexj - 1] != null){
+                    actual.izquierdo = mazmorra[indexi][indexj - 1];
+                    actual = actual.izquierdo;
+                    existeHabitacion = true;
+                }
+                break;
+            case "s":
+                if(mazmorra[indexi + 1][indexj] != null){
+                    actual.abajo = mazmorra[indexi + 1][indexj];
+                    actual = actual.abajo;
+                    existeHabitacion = true;
+                }
+                break;
+            case "d":
+                if(mazmorra[indexi][indexj + 1] != null){
+                    actual.derecho = mazmorra[indexi][indexj + 1];
+                    actual = actual.derecho;
+                    existeHabitacion = true;
+                }
+                break;
+        }
+        if(existeHabitacion){
+            actual.uid.asignarJugadorAPared(wasd);
+        }
+        return existeHabitacion;
+    }
+
+    private void agregarAMatriz(Nodo actual, String wasd){
+        switch (wasd){
+            case "w":
+                for(int i = 0; i < fila; i++){
+                    for(int j = 0; j < columna; j++){
+                        if(mazmorra[i][j] == actual.abajo){
+                            mazmorra[i-1][j] = actual;
+                            break;
+                        }
+                    }
+                }
+                break;
+            case "a":
+                for(int i = 0; i < fila; i++){
+                    for(int j = 0; j < columna; j++){
+                        if(mazmorra[i][j] == actual.derecho){
+                            mazmorra[i][j-1] = actual;
+                            break;
+                        }
+                    }
+                }
+                break;
+            case "s":
+                for(int i = 0; i < fila; i++){
+                    for(int j = 0; j < columna; j++){
+                        if(mazmorra[i][j] == actual.arriba){
+                            mazmorra[i+1][j] = actual;
+                            break;
+                        }
+                    }
+                }
+                break;
+            case "d":
+                for(int i = 0; i < fila; i++){
+                    for(int j = 0; j < columna; j++){
+                        if(mazmorra[i][j] == actual.izquierdo){
+                            mazmorra[i][j+1] = actual;
+                            break;
+                        }
+                    }
+                }
+                break;
+        }
+    }
     //Ejecución del main
     public static void main(String[] args) {
         Main juego = new Main();
@@ -28,18 +124,11 @@ public class Main {
         //Ver si salió de la habitación
         boolean puertaTaken = false;
         jugador.setLlave(1);
-        String mover = "W";
+        String mover = "w";
         Nodo actual = new Nodo(juego.uid, juego.numCuarto);
         lista.insertarInicio(actual, mover);
-        
-        int fila = 50;
-        int columna = 50;
-        Nodo[][] mazmorra = new Nodo[fila][columna];
-        for(int i =0; i < fila; i++){
-            for(int j =0; j < columna; j++){
-                mazmorra[25][25] = actual;
-            }
-        }
+        juego.mazmorra[25][25] = actual;
+
 
         //Ejecucion principal del juego
         while(puertaTaken == false && jugador.getSalud() != 0){
@@ -89,11 +178,17 @@ public class Main {
                         System.out.println("Se fue a la habitacion de arriba");
                         if(actual.arriba == null)
                         {
-                            juego.numCuarto++;
-                            UID uidNuevo = new UID(juego.numCuarto, mover);
-                            Nodo nuevoNodo = new Nodo(uidNuevo, juego.numCuarto);
-                            lista.insertarNodo(actual, mover, nuevoNodo);
-                            actual = nuevoNodo;
+                            if(juego.revisarConexiones(actual, mover)){
+
+                            } else{
+                                juego.numCuarto++;
+                                UID uidNuevo = new UID(juego.numCuarto, mover);
+                                Nodo nuevoNodo = new Nodo(uidNuevo, juego.numCuarto);
+                                lista.insertarNodo(actual, mover, nuevoNodo);
+                                actual = nuevoNodo;
+                                juego.agregarAMatriz(actual, mover);
+                            }
+
                         }
                         else
                         {
@@ -105,11 +200,16 @@ public class Main {
                         System.out.println("Se fue a la habitacion de la derecha");
                         if(actual.derecho == null)
                         {
-                            juego.numCuarto++;
-                            UID uidNuevo = new UID(juego.numCuarto, mover);
-                            Nodo nuevoNodo = new Nodo(uidNuevo, juego.numCuarto);
-                            lista.insertarNodo(actual, mover, nuevoNodo);
-                            actual = nuevoNodo;
+                            if(juego.revisarConexiones(actual, mover)){
+
+                            } else{
+                                juego.numCuarto++;
+                                UID uidNuevo = new UID(juego.numCuarto, mover);
+                                Nodo nuevoNodo = new Nodo(uidNuevo, juego.numCuarto);
+                                lista.insertarNodo(actual, mover, nuevoNodo);
+                                actual = nuevoNodo;
+                                juego.agregarAMatriz(actual, mover);
+                            }
                         }
                         else
                         {
@@ -120,11 +220,16 @@ public class Main {
                         System.out.println("Se fue a la habitacion de abajo");
                         if(actual.abajo == null)
                         {
-                            juego.numCuarto++;
-                            UID uidNuevo = new UID(juego.numCuarto, mover);
-                            Nodo nuevoNodo = new Nodo(uidNuevo, juego.numCuarto);
-                            lista.insertarNodo(actual, mover, nuevoNodo);
-                            actual = nuevoNodo;
+                            if(juego.revisarConexiones(actual, mover)){
+
+                            } else{
+                                juego.numCuarto++;
+                                UID uidNuevo = new UID(juego.numCuarto, mover);
+                                Nodo nuevoNodo = new Nodo(uidNuevo, juego.numCuarto);
+                                lista.insertarNodo(actual, mover, nuevoNodo);
+                                actual = nuevoNodo;
+                                juego.agregarAMatriz(actual, mover);
+                            }
                         }
                         else
                         {
@@ -135,11 +240,16 @@ public class Main {
                         System.out.println("Se fue a la habitacion de la izquierda");
                         if(actual.izquierdo == null)
                         {
-                            juego.numCuarto++;
-                            UID uidNuevo = new UID(juego.numCuarto, mover);
-                            Nodo nuevoNodo = new Nodo(uidNuevo, juego.numCuarto);
-                            lista.insertarNodo(actual, mover, nuevoNodo);
-                            actual = nuevoNodo;
+                            if(juego.revisarConexiones(actual, mover)){
+
+                            } else{
+                                juego.numCuarto++;
+                                UID uidNuevo = new UID(juego.numCuarto, mover);
+                                Nodo nuevoNodo = new Nodo(uidNuevo, juego.numCuarto);
+                                lista.insertarNodo(actual, mover, nuevoNodo);
+                                actual = nuevoNodo;
+                                juego.agregarAMatriz(actual, mover);
+                            }
                         }
                         else
                         {

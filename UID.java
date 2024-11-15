@@ -610,6 +610,25 @@ public class UID{
         items[5] = new Items("Reduccion",20, "Reduce el daño del enemigo en un 20%");
     }
 
+    public void asignarJugadorAPared(String wasd){
+        for(int i = 0; i < num; i++){
+            for(int j = 0; j < num; j++){
+                if(matriz[i][j] == 6){
+                    matriz[i][j] = 0;
+                }
+            }
+        }
+        switch (wasd){
+            case "w":
+                matriz[num-1][num/2] = 6; break;
+            case "a":
+                matriz[num/2][num-1] = 6; break;
+            case "s":
+                matriz[0][num/2] = 6; break;
+            case "d":
+                matriz[num/2][0] = 6; break;
+        }
+    }
 
     /*public void sistemaDeBatalla(Agentes jugador, Agentes enemigo) {
         //Agregar Contador para los turnos; 1 jugador, 0 enemigo
