@@ -11,8 +11,6 @@ public class UID{
     int indexjItems;
     int indexiArmas;
     int indexjArmas;
-    int indexiDebuff;
-    int indexjDebuff;
     int indexiArmadura;
     int indexjArmadura;
     //Coordenadas de los enemigos
@@ -67,7 +65,32 @@ public class UID{
         generarAreaMatriz(numCuarto, wasd);
         encontrarCoordenadasEntidades();
     }
-    
+    public UID(String wasd){
+        matriz = new int[num][num];
+        //Definir las paredes de los costados
+        for(int i = 0; i < num; i++){
+            for(int j = 0; j < num; j++){
+                if(i == 0 || i == num - 1){
+                    matriz[i][j] = 1;
+                } else if(j == 0 || j == num - 1){
+                    matriz[i][j] = 1;
+                } else{
+                    matriz[i][j] = 0;
+                }
+            }
+        }
+        matriz[num/2][num/2] = 7; //Se crea al Boss en el centro
+        switch(wasd){ //Reubica al jugador en la entrada del nuevo cuarto
+            case "w":
+                reubicarJugador(num-1, num/2); break;
+            case "s":
+                reubicarJugador(0, num/2); break;
+            case "d":
+                reubicarJugador(num/2, 0); break;
+            case "a":
+                reubicarJugador(num/2, num-1); break;
+        }
+    }
     
     private void decidirNumEnemigos(){
         int prob = rand.nextInt(1,101);
@@ -364,15 +387,14 @@ public class UID{
             }
             contador++;
         }
-        int ultimaFila = num-1;
         for(int i = 0; i < num; i++){
             for(int j = 0; j < num; j++){
                 switch(matriz[i][j]){
-                    case 0:
+                    case 0: //espacio en blanco
                         System.out.print(" "); break;
-                    case 1:
+                    case 1: //print de las paredes
                         System.out.print("#");
-                        if(j == num -1){
+                        if(j == num -1){ // Print de la vizualizacion de los atributos
                             switch (i){
                                 case 0:
                                     System.out.printf(" Items...[%s][%s][%s]", itemsImprimidos[0], itemsImprimidos[1], itemsImprimidos[2]);
@@ -397,31 +419,19 @@ public class UID{
                         }
                         break;
                     case 2:
-                        System.out.print("E"); break;
+                        System.out.print("E"); break; //Enemigo
                     case 3:
-                        System.out.print("I"); break;
+                        System.out.print("I"); break; //Item
                     case 4:
-                        System.out.print("A"); break;
+                        System.out.print("A"); break; //Arma
                     case 5:
-                        System.out.print("R"); break;
+                        System.out.print("R"); break; //Armadura
                     case 6:
-                        System.out.print("@"); break;
-                    /* 
+                        System.out.print("@"); break; //Jugador
                     case 7:
-                        Nodo habitacion = new Nodo(null, j);
-                        if(habitacion.getTipoHabitacion().equalsIgnoreCase("enemigo")){
-                            System.out.println("B");
-                        }else{decidirNumEnemigos();
-                            System.out.println(" ");
-                        }
-                        break;
+                        System.out.print("B"); break; //Boss
                     case 8:
-                        Nodo habitacionn = new Nodo(null, j);
-                        if(habitacionn.getTipoHabitacion().equalsIgnoreCase("salida")){
-                            System.out.println("S");
-                        }
-                            break;
-                        */
+                        System.out.print("S"); break; //Salida
                 }
             }
             System.out.println();
@@ -735,7 +745,6 @@ public class UID{
                                     System.out.println("Ahora tu ataque es de: " + jugador.getAtaque());
                                     jugador.inventario.objetos[seleccionItem] = null;
                                 }
-
                             }
                         }
                         break;
@@ -779,7 +788,7 @@ public class UID{
                     pelea = false;
                 }
                 
-                /* 
+
                 //Sistema de veneno en combate
                 if (enemigo.getSalud() != 0) {
                     if (enemigo.getDebuff() == true) {
@@ -810,5 +819,5 @@ public class UID{
             }
         }
 
-    } */
+    }*/
 }

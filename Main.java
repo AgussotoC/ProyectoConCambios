@@ -1,7 +1,9 @@
+import java.util.Random;
 import java.util.Scanner;
 public class Main {
     //Iniciacion de clases
     int numCuarto = 1;
+    Random rand = new Random();
     UID uid = new UID(numCuarto, "w");
     static Scanner scanner = new Scanner(System.in);
     //Variables globales
@@ -10,7 +12,15 @@ public class Main {
     int fila = 50;
     int columna = 50;
     Nodo[][] mazmorra = new Nodo[fila][columna];
-    int dañoVeneno = 1;
+
+    int probalidadBoss = 10;
+    int probalidadSalida = 5;
+    boolean hayBoss = false;
+    boolean haySalida = false;
+
+    int numeroDeBoss = 0;
+    int numeroDeSalida = 0;
+
     private void revisarConexiones(Nodo actual){
         int indexi = 0;
         int indexj = 0;
@@ -92,7 +102,22 @@ public class Main {
         }
     }
     //Ejecución del main
+    private void comprobarBoss(String wasd){
+            if(probalidadBoss >= rand.nextInt(1,100)){
+                hayBoss = true;
+            } else{
+                probalidadBoss += 7;
+            }
+    }
+    private void comprobarSalida(String wasd){
+            if(probalidadSalida >= rand.nextInt(1,100)){
+                haySalida = true;
+            } else{
+                probalidadSalida += 5;
+            }
+    }
     public static void main(String[] args) {
+        Random rand = new Random();
         Main juego = new Main();
         Lista lista = new Lista();
         //Vector y variable necesarias para mover la casilla enemigo
@@ -163,17 +188,42 @@ public class Main {
                     System.out.println("Hay combate");
                 }
             } catch (ArrayIndexOutOfBoundsException a){
+                if(!juego.hayBoss){
+                    if(juego.probalidadBoss == rand.nextInt(1, 101)){
+                        juego.hayBoss = true;
+                        juego.numeroDeBoss +=1;
+                    } else{
+                        juego.probalidadBoss += 7;
+                    }
+                }
+                if(!juego.haySalida){
+                    if(juego.probalidadSalida == rand.nextInt(1, 101)){
+                        juego.haySalida = true;
+                        juego.numeroDeSalida +=1;
+                    } else{
+                        juego.probalidadSalida += 5;
+                    }
+                }
                 switch (mover){
                     case "w":
                         System.out.println("Se fue a la habitacion de arriba");
                         if(actual.arriba == null)
                         {
-                            juego.numCuarto++;
-                            UID uidNuevo = new UID(juego.numCuarto, mover);
-                            Nodo nuevoNodo = new Nodo(uidNuevo, juego.numCuarto);
-                            lista.insertarNodo(actual, mover, nuevoNodo);
-                            actual = nuevoNodo;
-                            juego.agregarAMatriz(actual, mover);
+                            if(juego.hayBoss && juego.numeroDeBoss == 1){
+                                UID uidBoss = new UID(mover);
+                                juego.numCuarto++;
+                                Nodo nuevoNodo = new Nodo(uidBoss, juego.numCuarto);
+                                actual = nuevoNodo;
+                                juego.agregarAMatriz(actual, mover);
+                                juego.numeroDeBoss += 1;
+                            } else {
+                                juego.numCuarto++;
+                                UID uidNuevo = new UID(juego.numCuarto, mover);
+                                Nodo nuevoNodo = new Nodo(uidNuevo, juego.numCuarto);
+                                lista.insertarNodo(actual, mover, nuevoNodo);
+                                actual = nuevoNodo;
+                                juego.agregarAMatriz(actual, mover);
+                            }
                         }
                         else
                         {
