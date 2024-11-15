@@ -193,6 +193,7 @@ public class Main {
                         else
                         {
                             actual = actual.arriba;
+                            actual.uid.reasignarPosicionJugador(mover);
                         }
                         break;
 
@@ -214,6 +215,7 @@ public class Main {
                         else
                         {
                             actual = actual.derecho;
+                            actual.uid.reasignarPosicionJugador(mover);
                         }
                         break;
                     case "s":
@@ -234,6 +236,7 @@ public class Main {
                         else
                         {
                             actual = actual.abajo;
+                            actual.uid.reasignarPosicionJugador(mover);
                         }
                         break;
                     case "a":
@@ -254,6 +257,7 @@ public class Main {
                         else
                         {
                             actual = actual.izquierdo;
+                            actual.uid.reasignarPosicionJugador(mover);
                         }
                         break;
                 }
