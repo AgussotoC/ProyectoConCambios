@@ -24,7 +24,6 @@ public class Main {
         //Creacion de matriz y encontrar coordenadas de las entidades
 
         juego.uid.encontrarCoordenadasEntidades();
-       
 
         //Ver si salió de la habitación
         boolean puertaTaken = false;
@@ -32,6 +31,15 @@ public class Main {
         String mover = "W";
         Nodo actual = new Nodo(juego.uid, juego.numCuarto);
         lista.insertarInicio(actual, mover);
+        
+        int fila = 50;
+        int columna = 50;
+        Nodo[][] mazmorra = new Nodo[fila][columna];
+        for(int i =0; i < fila; i++){
+            for(int j =0; j < columna; j++){
+                mazmorra[25][25] = actual;
+            }
+        }
 
         //Ejecucion principal del juego
         while(puertaTaken == false && jugador.getSalud() != 0){

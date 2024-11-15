@@ -7,37 +7,50 @@ public class Lista {
     public void insertarInicio(Nodo nuevoNodo, String wasd){
        if(inicio == null){
             inicio = nuevoNodo;
-       }else{
-            Nodo ultimo = inicio;
-            while(ultimo.abajo == null){
-                ultimo = ultimo.abajo;
-            }
        }
     }
     public Nodo insertarNodo(Nodo habitacionActual, String direccion, Nodo nuevoNodo){
         switch(direccion.toLowerCase()){
             case "w":
                 //arriba
-                habitacionActual.arriba = nuevoNodo;
-                nuevoNodo.abajo = habitacionActual;
-
+                if(habitacionActual.arriba == null){
+                    habitacionActual.arriba = nuevoNodo;
+                    nuevoNodo.abajo = habitacionActual;
+                }else if(habitacionActual.derecho.arriba.izquierdo != null){
+                    habitacionActual.arriba = habitacionActual.derecho.arriba.izquierdo;
+                    habitacionActual.derecho.arriba.izquierdo.abajo = habitacionActual;
+                }else if (habitacionActual.izquierdo.arriba.derecho != null) {
+                    habitacionActual.arriba = habitacionActual.izquierdo.arriba.derecho;
+                    habitacionActual.izquierdo.arriba.derecho.abajo = habitacionActual;
+                }
                 break;
             case "s":
                 // abajo
-                habitacionActual.abajo = nuevoNodo;
-                nuevoNodo.arriba = habitacionActual;
+                if(habitacionActual.abajo == null){
+                    habitacionActual.abajo = nuevoNodo;
+                    nuevoNodo.arriba = habitacionActual;
+                }else if (habitacionActual.derecho.abajo.izquierdo != null){
+                    habitacionActual.abajo = habitacionActual.derecho.abajo.izquierdo;
+                    habitacionActual.derecho.abajo.izquierdo.arriba = habitacionActual;
+                }else if (habitacionActual.izquierdo.abajo.derecho != null) {
+                    habitacionActual.abajo = habitacionActual.izquierdo.abajo.derecho;
+                    habitacionActual.izquierdo.abajo.derecho.arriba = habitacionActual;
+                }
                 break;
             case "a":
                 //izquierda
-                habitacionActual.izquierdo = nuevoNodo;
-                nuevoNodo.derecho = habitacionActual;
+                if(habitacionActual.izquierdo == null){
+                    habitacionActual.izquierdo = nuevoNodo;
+                    nuevoNodo.derecho = habitacionActual;
+                }
                 break;
             case "d":
                 // derecha
-                habitacionActual.derecho = nuevoNodo;
-                nuevoNodo.izquierdo = habitacionActual;
+                if(habitacionActual.derecho == null){
+                    habitacionActual.derecho = nuevoNodo;
+                    nuevoNodo.izquierdo = habitacionActual;
+                }
                 break;
-
         }
         return inicio = habitacionActual;
     }
@@ -106,6 +119,9 @@ public class Lista {
     }
     public Nodo gethabitacionActual(){
         return inicio;
+    }
+    public void recorrerLista(){
+
     }
 }
     
