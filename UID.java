@@ -236,29 +236,31 @@ public class UID{
     }
 
     public void generarParedes(String wasd){
+        boolean condicion = true;
         int contador = 0;
         int generacion = 1; //probailidad de 100%, se mide con 1/5
         int genMaximo = 5;
         boolean yaHayPared = false;
         int paredRandom;
-        int[] yaSeHizoPared = {0 , 0, 0, 0};
+        int[] paredHechas = {0 , 0, 0, 0};
         switch(wasd){ //Asegurar que siempre haya una puerta con la habitacion anterior
             case "w": //Se crea una puerta abajo
                 paredRandom = 2;
-                yaSeHizoPared[0] = 2; break;
+                paredHechas[0] = 2; break;
             case "s": //Se crea una puerte arriba
                 paredRandom = 1;
-                yaSeHizoPared[0] = 1; break;
+                paredHechas[0] = 1; break;
             case "d": //Se crea una puerta a la derecha
                 paredRandom = 3;
-                yaSeHizoPared[0] = 3; break;
+                paredHechas[0] = 3; break;
             case "a": //Se crea una puerta a la izquierda
                 paredRandom = 4;
-                yaSeHizoPared[0] = 4; break;
+                paredHechas[0] = 4; break;
             default:
                 paredRandom = rand.nextInt(1,5);
         }
         for(int k = 0; k < 4; k++){
+            contador++;
             if(generacion <= genMaximo){
                 switch (paredRandom){
                     case 1://Pared de arrriba
@@ -280,11 +282,24 @@ public class UID{
                 }
                 generacion = rand.nextInt(1, 6);
                 paredRandom = rand.nextInt(1,5);
+                while (condicion){
+                    if(k == 3){
+                        condicion = false;
+                    }
+                    else if(paredRandom == paredHechas[0] || paredRandom == paredHechas[1] ||
+                       paredRandom == paredHechas[2] || paredRandom == paredHechas[3]){
+                        paredRandom = rand.nextInt(1,5);
+                    } else{
+                        paredHechas[contador] = paredRandom;
+                        condicion = false;
+                    }
+                }
+                condicion = true;
             } else{
                 break;
             }
         }
-        switch(wasd){ //Asegurar que siempre haya una puerta con la habitacion anterior
+        switch(wasd){ //Reubica al jugador en la entrada del nuevo cuarto
             case "w":
                 reubicarJugador(num-1, num/2); break;
             case "s":
