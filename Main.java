@@ -29,6 +29,7 @@ public class Main {
             case "w":
                 if(mazmorra[indexi - 1][indexj] != null){
                     actual.arriba = mazmorra[indexi - 1][indexj];
+                    actual.arriba.abajo = actual;
                     actual = actual.arriba;
                     existeHabitacion = true;
                 }
@@ -36,6 +37,7 @@ public class Main {
             case "a":
                 if(mazmorra[indexi][indexj - 1] != null){
                     actual.izquierdo = mazmorra[indexi][indexj - 1];
+                    actual.izquierdo.derecho = actual;
                     actual = actual.izquierdo;
                     existeHabitacion = true;
                 }
@@ -43,6 +45,7 @@ public class Main {
             case "s":
                 if(mazmorra[indexi + 1][indexj] != null){
                     actual.abajo = mazmorra[indexi + 1][indexj];
+                    actual.abajo.arriba = actual;
                     actual = actual.abajo;
                     existeHabitacion = true;
                 }
@@ -50,13 +53,11 @@ public class Main {
             case "d":
                 if(mazmorra[indexi][indexj + 1] != null){
                     actual.derecho = mazmorra[indexi][indexj + 1];
+                    actual.derecho.izquierdo = actual;
                     actual = actual.derecho;
                     existeHabitacion = true;
                 }
                 break;
-        }
-        if(existeHabitacion){
-            actual.uid.asignarJugadorAPared(wasd);
         }
         return existeHabitacion;
     }
@@ -179,7 +180,7 @@ public class Main {
                         if(actual.arriba == null)
                         {
                             if(juego.revisarConexiones(actual, mover)){
-
+                                actual.uid.asignarJugadorAPared(mover);
                             } else{
                                 juego.numCuarto++;
                                 UID uidNuevo = new UID(juego.numCuarto, mover);
@@ -202,7 +203,7 @@ public class Main {
                         if(actual.derecho == null)
                         {
                             if(juego.revisarConexiones(actual, mover)){
-
+                                actual.uid.asignarJugadorAPared(mover);
                             } else{
                                 juego.numCuarto++;
                                 UID uidNuevo = new UID(juego.numCuarto, mover);
@@ -223,7 +224,7 @@ public class Main {
                         if(actual.abajo == null)
                         {
                             if(juego.revisarConexiones(actual, mover)){
-
+                                actual.uid.asignarJugadorAPared(mover);
                             } else{
                                 juego.numCuarto++;
                                 UID uidNuevo = new UID(juego.numCuarto, mover);
@@ -244,7 +245,7 @@ public class Main {
                         if(actual.izquierdo == null)
                         {
                             if(juego.revisarConexiones(actual, mover)){
-
+                                actual.uid.asignarJugadorAPared(mover);
                             } else{
                                 juego.numCuarto++;
                                 UID uidNuevo = new UID(juego.numCuarto, mover);
