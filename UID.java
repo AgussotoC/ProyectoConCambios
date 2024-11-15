@@ -1,5 +1,6 @@
 import java.util.Random;
 import java.util.Scanner;
+
 public class UID{
     Scanner scanner = new Scanner(System.in);
     Random rand = new Random();
@@ -66,6 +67,8 @@ public class UID{
         generarAreaMatriz(numCuarto, wasd);
         encontrarCoordenadasEntidades();
     }
+    
+    
     private void decidirNumEnemigos(){
         int prob = rand.nextInt(1,101);
         int max = 75;
@@ -388,6 +391,22 @@ public class UID{
                         System.out.print("R"); break;
                     case 6:
                         System.out.print("@"); break;
+                    /* 
+                    case 7:
+                        Nodo habitacion = new Nodo(null, j);
+                        if(habitacion.getTipoHabitacion().equalsIgnoreCase("enemigo")){
+                            System.out.println("B");
+                        }else{decidirNumEnemigos();
+                            System.out.println(" ");
+                        }
+                        break;
+                    case 8:
+                        Nodo habitacionn = new Nodo(null, j);
+                        if(habitacionn.getTipoHabitacion().equalsIgnoreCase("salida")){
+                            System.out.println("S");
+                        }
+                            break;
+                        */
                 }
             }
             System.out.println();
@@ -415,7 +434,7 @@ public class UID{
         }
         return sePuede;
     }
-
+    
     //metodo para mover el personaje
     public void moverPersonaje(String wasdm, Agentes agente){
         int indexi = 0;
@@ -455,16 +474,7 @@ public class UID{
                     }
                     break;
                 case "m":
-                    System.out.println("1) Mapa");
-                    System.out.println("2) inventario");
-                    int opcion = scanner.nextInt();
-                    if (opcion == 1) {
-                        System.out.println("it works");
-                        lista.imprimirMapa(lista.gethabitacionActual());
-                    }else if (opcion == 2) {
-                        System.out.println("inventario");
-                        agente.mostrarInventario();
-                    }
+                    
                     break;
                 default:
                     System.out.println("Invalido intente de nuevo");

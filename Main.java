@@ -3,15 +3,13 @@ public class Main {
     //Iniciacion de clases
     int numCuarto = 1;
     UID uid = new UID(numCuarto, "w");
-    Scanner scanner = new Scanner(System.in);
+    static Scanner scanner = new Scanner(System.in);
     //Variables globales
     static boolean gano;
     static Items[] items = new Items[15];
-
     int fila = 50;
     int columna = 50;
     Nodo[][] mazmorra = new Nodo[fila][columna];
-
     int dañoVeneno = 1;
     private boolean revisarConexiones(Nodo actual, String wasd){
         boolean existeHabitacion = false;
@@ -105,6 +103,7 @@ public class Main {
                 break;
         }
     }
+    Nodo actual;
     //Ejecución del main
     public static void main(String[] args) {
         Main juego = new Main();
@@ -128,13 +127,15 @@ public class Main {
         Nodo actual = new Nodo(juego.uid, juego.numCuarto);
         lista.insertarInicio(actual, mover);
         juego.mazmorra[25][25] = actual;
+       
 
 
         //Ejecucion principal del juego
         while(puertaTaken == false && jugador.getSalud() != 0){
             actual.uid.imprimirMatriz(jugador); mover = juego.scanner.nextLine();
-            lista.imprimirMapa(actual);
+            //lista.imprimirMapa(actual);
             System.out.println("Llave: " + jugador.getLlave());
+          
             try{
                 actual.uid.moverPersonaje(mover, jugador); System.out.println();
                 /*if(jugador.getDebuff()){
@@ -260,8 +261,23 @@ public class Main {
                             actual.uid.reasignarPosicionJugador(mover);
                         }
                         break;
+                    default:
+                        juego.mostrarMapa(lista, jugador, actual);
+                        break;
                 }
             }
+        }
+    }
+    public void mostrarMapa(Lista lista, Agentes agente, Nodo actuall){
+        System.out.println("1) Mapa");
+        System.out.println("2) inventario");
+        int opcion = scanner.nextInt();
+        if (opcion == 1) {
+            System.out.println("it works");
+            lista.imprimirMapa(actuall);
+        }else if (opcion == 2) {
+            System.out.println("inventario");
+            agente.mostrarInventario();
         }
     }
 }
