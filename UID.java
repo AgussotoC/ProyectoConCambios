@@ -713,7 +713,7 @@ public class UID{
     }
 
     public void sistemaDeBatalla(Agentes jugador, int i) {
-        //Agregar Contador para los turnos; 1 jugador, 0 enemigo
+        System.out.println("Hay combate");
         boolean pelea = true;
         boolean defensa = false;
         //Ver si el jugador o enemigo tiene equipada el Arma

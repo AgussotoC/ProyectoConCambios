@@ -131,7 +131,7 @@ public class Agentes
                     break;
             }
             if(armadura.getVida() > 0){
-                salud = - daño;
+                salud -= daño;
                 if(armadura.getVida() < 0){
                     armadura.setVida(0);
                 }
@@ -145,7 +145,7 @@ public class Agentes
         double daño;
         switch (arma.getNombre()){
             case "Arma basica":
-                daño = ataque * 1.20;
+                daño = ataque * 0.20;
                 break;
             case "Arma secreta":
                 daño = objetivo.getSalud()/2 + ataque;

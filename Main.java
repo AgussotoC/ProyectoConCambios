@@ -185,7 +185,6 @@ public class Main {
                 //Incialización del comprobante para ver si el jugador esta en el area del enemigo
                 if(actual.uid.areaEnemigo(jugador) == true){
                     gano = false;
-                    System.out.println("Hay combate");
                 }
             } catch (ArrayIndexOutOfBoundsException a){
                 if(!juego.hayBoss){
