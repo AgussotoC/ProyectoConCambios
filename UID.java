@@ -529,42 +529,50 @@ public class UID{
                     break;
             }
         }
-        /*if(enemigos != null){
+        if(enemigos != null){
+            int contador = 0;
             for (Agentes enemigo : enemigos) {
                 if(enemigo == null){
+                    contador ++;
                     continue;
-                }//mmm
+                }
                 String[] moverEnemigo = {"w", "a", "s", "d"};
                 String moverE = moverEnemigo[rand.nextInt(moverEnemigo.length)];
-                int contador = 0;
+                int indexiEnemigo = enemigo.getIndexI();
+                int indexjEnemigo = enemigo.getIndexJ();
                 switch (moverE) {
                     case "w":
-                        if (sePuede(matriz[indexiEnemigos[contador] - 1][indexjEnemigos[contador]]) == true) {
-                            matriz[indexiEnemigos[contador]][indexjEnemigos[contador]] = 0;
-                            matriz[indexiEnemigos[contador] - 1][indexjEnemigos[contador]] = enemigo.getIcono();
+                        if (indexiEnemigo > 0 && sePuede(matriz[indexiEnemigo - 1][indexjEnemigo]) == true) {
+                            matriz[indexiEnemigo][indexjEnemigo] = 0;
+                            matriz[indexiEnemigo - 1][indexjEnemigo] = enemigo.getIcono();
+                            enemigo.setIndexI(indexiEnemigo - 1);
                         }
                         break;
                     case "a":
-                        if (sePuede(matriz[indexiEnemigos[contador]][indexjEnemigos[contador] - 1]) == true) {
-                            matriz[indexiEnemigos[contador]][indexjEnemigos[contador]] = 0;
-                            matriz[indexiEnemigos[contador]][indexjEnemigos[contador] - 1] = enemigo.getIcono();
+                        if (indexjEnemigo > 0 && sePuede(matriz[indexiEnemigo][indexjEnemigo - 1])) {
+                            matriz[indexiEnemigo][indexjEnemigo] = 0;
+                            matriz[indexiEnemigo][indexjEnemigo - 1] = enemigo.getIcono();
+                            enemigo.setIndexJ(indexjEnemigo - 1);
                         }
                         break;
                     case "s":
-                        if (sePuede(matriz[indexiEnemigos[contador] + 1][indexjEnemigos[contador]]) == true) {
-                            matriz[indexiEnemigos[contador]][indexjEnemigos[contador]] = 0;
-                            matriz[indexiEnemigos[contador] + 1][indexjEnemigos[contador]] = enemigo.getIcono();
+                        if (indexiEnemigo < num - 1 && sePuede(matriz[indexiEnemigo + 1][indexjEnemigo])) {
+                            matriz[indexiEnemigo][indexjEnemigo] = 0;
+                            matriz[indexiEnemigo + 1][indexjEnemigo] = enemigo.getIcono();
+                            enemigo.setIndexI(indexiEnemigo + 1);
                         }
                         break;
                     case "d":
-                        if (sePuede(matriz[indexiEnemigos[contador]][indexjEnemigos[contador] + 1]) == true) {
-                            matriz[indexiEnemigos[contador]][indexjEnemigos[contador]] = 0;
-                            matriz[indexiEnemigos[contador]][indexjEnemigos[contador] + 1] = enemigo.getIcono();
+                        if (indexjEnemigo < num - 1 && sePuede(matriz[indexiEnemigo][indexjEnemigo + 1])) {
+                            matriz[indexiEnemigo][indexjEnemigo] = 0;
+                            matriz[indexiEnemigo][indexjEnemigo + 1] = enemigo.getIcono();
+                            enemigo.setIndexJ(indexjEnemigo + 1);
                         }
                         break;
                 }
+                contador ++;
             }
-        }*/
+        }
     }
 
     //Comprobación si el jugador esta en el area de 1x1 del enemigo para iniciar combate
@@ -717,11 +725,13 @@ public class UID{
         System.out.println("Hay combate");
         boolean pelea = true;
         boolean defensa = false;
+        int indiceInventarioE;
         //Ver si el jugador o enemigo tiene equipada el Arma
         while (pelea) {
             //probabilidad que el enemigo pueda usar un item del inventario
             double probalidad = rand.nextDouble(0.10,0.20);
             int Default = 0;
+            indiceInventarioE = rand.nextInt(enemigos[i].inventario.objetos.length);
             //interfaz de batalla
             System.out.println("----Status----");
             if(jugador != null){
@@ -803,28 +813,41 @@ public class UID{
             }
             //Acciones del enemigo
             if (enemigos[i] != null && defensa != true) {
-                /*if (probalidad == 6 && enemigos[i].inventario.objetos != null) {
+                if (enemigos[i].getSalud() <= enemigos[i].getSalud()/2) {
                     for (int b = 0; b < enemigos[i].inventario.objetos.length ; b++) {
                         if(enemigos[i].inventario.objetos[b] == null){
                             continue;
                         }
-                        if(enemigos[i].inventario.objetos[b].getNombre().equalsIgnoreCase("Reducir defensa")){
-                            jugador.setBuff(enemigos[i].inventario.objetos[b].getEfecto());
-                            System.out.println("El enemigo ha equipado: " + enemigos[i].inventario.objetos[b].getNombre());
-                        }else{
-                            enemigos[i].setAtaque(enemigos[i].inventario.objetos[i].getEfecto());
-                            System.out.println("El enemigo ha equipado: " + enemigos[i].inventario.objetos[b].getNombre());
+                        if(enemigos[i].inventario.objetos[indiceInventarioE].getNombre().equalsIgnoreCase("Mancuerna")){
+                            enemigos[i].aplicarItems(enemigos[i], enemigos[i].inventario.objetos[indiceInventarioE].getNombre(), probalidad);
+                            enemigos[i].inventario.objetos[indiceInventarioE] = null;
+                        }else if(enemigos[i].inventario.objetos[indiceInventarioE].getNombre().equalsIgnoreCase("Mascarilla")){
+                            enemigos[i].aplicarItems(enemigos[i], enemigos[i].inventario.objetos[indiceInventarioE].getNombre(), Default);
+                            enemigos[i].inventario.objetos[indiceInventarioE] = null;
+                        }else if(enemigos[i].inventario.objetos[indiceInventarioE].getNombre().equalsIgnoreCase("Sangre")){
+                            enemigos[i].aplicarItems(enemigos[i], enemigos[i].inventario.objetos[indiceInventarioE].getNombre(), Default);
+                            enemigos[i].inventario.objetos[indiceInventarioE] = null;
+                        }else if(enemigos[i].inventario.objetos[indiceInventarioE].getNombre().equalsIgnoreCase("Quebrar")){
+                            enemigos[i].aplicarItems(enemigos[i], enemigos[i].inventario.objetos[indiceInventarioE].getNombre(), probalidad);
+                            enemigos[i].inventario.objetos[indiceInventarioE] = null;
+                        }else if(enemigos[i].inventario.objetos[indiceInventarioE].getNombre().equalsIgnoreCase("Veneno")){
+                            enemigos[i].aplicarItems(enemigos[i], enemigos[i].inventario.objetos[indiceInventarioE].getNombre(), Default);
+                            enemigos[i].inventario.objetos[indiceInventarioE] = null;
+                        }else if(enemigos[i].inventario.objetos[indiceInventarioE].getNombre().equalsIgnoreCase("Reduccion")){
+                            enemigos[i].aplicarItems(enemigos[i], enemigos[i].inventario.objetos[indiceInventarioE].getNombre(), Default);
+                            enemigos[i].inventario.objetos[indiceInventarioE] = null;
                         }
+                        
                     }
-                }*/
-                //Ataque del enemigo
-                enemigos[i].atacar(jugador);
-                System.out.println("Has recibido " + enemigos[i].getAtaque() + " de daño");
-                if (jugador.getSalud() == 0) {
-                    System.out.println("Te han derrotado");
-                    pelea = false;
                 }
+                //Ataque del enemigo
+            enemigos[i].atacar(jugador);
+            System.out.println("Has recibido " + enemigos[i].getAtaque() + " de daño");
+            if (jugador.getSalud() == 0) {
+                System.out.println("Te han derrotado");
+                pelea = false;
             }
+        }
         }
     }
 }
