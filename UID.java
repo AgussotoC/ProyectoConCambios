@@ -71,7 +71,7 @@ public class UID{
         }
         }
     public UID(String wasd){
-        System.out.println(" Has entrado a la Habitacion de Boss");
+        System.out.println(" Has entrado a la Habitacion de Boss, Ten cuidado!");
         matriz = new int[num][num];
         //Definir las paredes de los costados
         for(int i = 0; i < num; i++){
@@ -745,14 +745,15 @@ public class UID{
                         if (enemigos[i].getSalud() == 0) {
                             System.out.println("Has derrotado al enemigo!");
                             enemigos[i].setIcono(0);
-                            if (enemigos[i].inventario.objetos == null && probalidadSoltarItemA > 15){
+                            /*if (enemigos[i].inventario.objetos == null && probalidadSoltarItemA > 15){
                                 matriz[enemigos[i].indexi][enemigos[i].indexj] = 3;
                             }
                             if(enemigos[i].inventario.objetos != null){
                                 matriz[enemigos[i].indexi][enemigos[i].indexj] = enemigos[i].inventario.objetos[indiceInventarioE].getIconoItem();
                             }else{
                                 matriz[enemigos[i].indexi][enemigos[i].indexj] = 0;
-                            }
+                            }*/
+                            matriz[enemigos[i].indexi][enemigos[i].indexj] = 0;
                             enemigos[i] = null;
                             pelea = false;
                         }

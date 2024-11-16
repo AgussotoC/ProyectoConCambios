@@ -32,25 +32,25 @@ public class Main {
                 }
             }
         }
-                if(mazmorra[indexi - 1][indexj] != null){
+                if(indexi > 0 && mazmorra[indexi - 1][indexj] != null){
                     actual.arriba = mazmorra[indexi - 1][indexj];
                     actual.arriba.abajo = actual;
                 }
 
 
-                if(mazmorra[indexi][indexj - 1] != null){
+                if(indexj > 0 && mazmorra[indexi][indexj - 1] != null){
                     actual.izquierdo = mazmorra[indexi][indexj - 1];
                     actual.izquierdo.derecho = actual;
                 }
 
 
-                if(mazmorra[indexi + 1][indexj] != null){
+                if(indexi < fila - 1 && mazmorra[indexi + 1][indexj] != null){
                     actual.abajo = mazmorra[indexi + 1][indexj];
                     actual.abajo.arriba = actual;
                 }
 
 
-                if(mazmorra[indexi][indexj + 1] != null){
+                if(indexj < fila - 1 && mazmorra[indexi][indexj + 1] != null){
                     actual.derecho = mazmorra[indexi][indexj + 1];
                     actual.derecho.izquierdo = actual;
                 }
@@ -102,12 +102,15 @@ public class Main {
         }
     }
     //Ejecución del main
-    private void comprobarBoss(String wasd){
-            if(probalidadBoss >= rand.nextInt(1,100)){
-                hayBoss = true;
-            } else{
-                probalidadBoss += 7;
-            }
+    private boolean comprobarBoss() {
+        if (!hayBoss && rand.nextInt(100) + 1 <= probalidadBoss) {
+            hayBoss = true;
+            probalidadBoss = 10; 
+            return true; 
+        } else {
+            probalidadBoss += 7; 
+            return false;
+        }
     }
     private void comprobarSalida(String wasd){
             if(probalidadSalida >= rand.nextInt(1,100)){
@@ -145,6 +148,7 @@ public class Main {
         //Ejecucion principal del juego
         while(puertaTaken == false && jugador.getSalud() != 0){
             juego.revisarConexiones(actual);
+            System.out.println(juego.probalidadBoss);
             actual.uid.imprimirMatriz(jugador); mover = juego.scanner.nextLine();
             try{
                 if(mover.equalsIgnoreCase("m")){
@@ -186,33 +190,19 @@ public class Main {
                 if(actual.uid.areaEnemigo(jugador) == true){
                     gano = false;
                 }
-            } catch (ArrayIndexOutOfBoundsException a){
-                if(!juego.hayBoss){
-                    if(juego.probalidadBoss == rand.nextInt(1, 101)){
-                        juego.hayBoss = true;
-                        juego.numeroDeBoss +=1;
-                    } else{
-                        juego.probalidadBoss += 7;
-                    }
-                }
-                if(!juego.haySalida){
-                    if(juego.probalidadSalida == rand.nextInt(1, 101)){
-                        juego.haySalida = true;
-                        juego.numeroDeSalida +=1;
-                    } else{
-                        juego.probalidadSalida += 5;
-                    }
-                }
+            } catch (ArrayIndexOutOfBoundsException opcion){
+                
                 switch (mover){
                     case "w":
                         System.out.println("Se fue a la habitacion de arriba");
                         if(actual.arriba == null)
                         {
-                            if(juego.hayBoss && juego.numeroDeBoss == 1){
+                            if(juego.comprobarBoss() && juego.numeroDeBoss < 1){
                                 UID uidBoss = new UID(mover);
                                 juego.numCuarto++;
                                 Nodo nuevoNodo = new Nodo(uidBoss, juego.numCuarto);
                                 actual = nuevoNodo;
+                                lista.insertarNodo(actual, mover, nuevoNodo);
                                 juego.agregarAMatriz(actual, mover);
                                 juego.numeroDeBoss += 1;
                             } else {
@@ -234,13 +224,22 @@ public class Main {
                     case "d":
                         System.out.println("Se fue a la habitacion de la derecha");
                         if(actual.derecho == null)
-                        {
-                            juego.numCuarto++;
-                            UID uidNuevo = new UID(juego.numCuarto, mover);
-                            Nodo nuevoNodo = new Nodo(uidNuevo, juego.numCuarto);
-                            lista.insertarNodo(actual, mover, nuevoNodo);
-                            actual = nuevoNodo;
-                            juego.agregarAMatriz(actual, mover);
+                        {   
+                            if(juego.comprobarBoss() && juego.numeroDeBoss < 1){
+                                UID uidBoss = new UID(mover);
+                                juego.numCuarto++;
+                                Nodo nuevoNodo = new Nodo(uidBoss, juego.numCuarto);
+                                actual = nuevoNodo;
+                                juego.agregarAMatriz(actual, mover);
+                                juego.numeroDeBoss += 1;
+                            }else{
+                                juego.numCuarto++;
+                                UID uidNuevo = new UID(juego.numCuarto, mover);
+                                Nodo nuevoNodo = new Nodo(uidNuevo, juego.numCuarto);
+                                lista.insertarNodo(actual, mover, nuevoNodo);
+                                actual = nuevoNodo;
+                                juego.agregarAMatriz(actual, mover);
+                            }
                         }
                         else
                         {
@@ -251,13 +250,22 @@ public class Main {
                     case "s":
                         System.out.println("Se fue a la habitacion de abajo");
                         if(actual.abajo == null)
-                        {
-                            juego.numCuarto++;
-                            UID uidNuevo = new UID(juego.numCuarto, mover);
-                            Nodo nuevoNodo = new Nodo(uidNuevo, juego.numCuarto);
-                            lista.insertarNodo(actual, mover, nuevoNodo);
-                            actual = nuevoNodo;
-                            juego.agregarAMatriz(actual, mover);
+                        {   
+                            if(juego.comprobarBoss() && juego.numeroDeBoss < 1){
+                                UID uidBoss = new UID(mover);
+                                juego.numCuarto++;
+                                Nodo nuevoNodo = new Nodo(uidBoss, juego.numCuarto);
+                                actual = nuevoNodo;
+                                juego.agregarAMatriz(actual, mover);
+                                juego.numeroDeBoss += 1;
+                            }else{
+                                juego.numCuarto++;
+                                UID uidNuevo = new UID(juego.numCuarto, mover);
+                                Nodo nuevoNodo = new Nodo(uidNuevo, juego.numCuarto);
+                                lista.insertarNodo(actual, mover, nuevoNodo);
+                                actual = nuevoNodo;
+                                juego.agregarAMatriz(actual, mover);
+                            }
                         }
                         else
                         {
@@ -268,13 +276,21 @@ public class Main {
                     case "a":
                         System.out.println("Se fue a la habitacion de la izquierda");
                         if(actual.izquierdo == null)
-                        {
+                        {   if(juego.comprobarBoss() && juego.numeroDeBoss < 1){
+                            UID uidBoss = new UID(mover);
                             juego.numCuarto++;
-                            UID uidNuevo = new UID(juego.numCuarto, mover);
-                            Nodo nuevoNodo = new Nodo(uidNuevo, juego.numCuarto);
-                            lista.insertarNodo(actual, mover, nuevoNodo);
+                            Nodo nuevoNodo = new Nodo(uidBoss, juego.numCuarto);
                             actual = nuevoNodo;
                             juego.agregarAMatriz(actual, mover);
+                            juego.numeroDeBoss += 1;
+                            }else{
+                                juego.numCuarto++;
+                                UID uidNuevo = new UID(juego.numCuarto, mover);
+                                Nodo nuevoNodo = new Nodo(uidNuevo, juego.numCuarto);
+                                lista.insertarNodo(actual, mover, nuevoNodo);
+                                actual = nuevoNodo;
+                                juego.agregarAMatriz(actual, mover);
+                            }
                         }
                         else
                         {
