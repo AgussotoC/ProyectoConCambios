@@ -16,6 +16,8 @@ public class Agentes
     public Items buff;
     public Items debuff;
     public Inventario inventario;
+    public int indexi;
+    public int indexj;
 
     //Constructor del jugador y enemigos
     public Agentes(int icono, double salud, double ataque, double defensa, Armas arma, Armaduras armadura, Items buff, Items debuff){
@@ -29,7 +31,22 @@ public class Agentes
         this.debuff = debuff;
         this.inventario = new Inventario(3);
         this.llave = false;
+        this.indexi = 0;
+        this.indexj = 0;
     } 
+    public void setIndexI(int i){
+        indexi = i;
+    }
+    public void setIndexJ(int j){
+        indexj = j;
+    }
+    public int getIndexJ(){
+       return  indexj;
+    }
+    public int getIndexI(){
+        return  indexi;
+     }
+    
     public void agregarItemAlInventario(Items item){
         inventario.agregarItem(item);
     }
