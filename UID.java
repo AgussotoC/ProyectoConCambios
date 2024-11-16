@@ -383,26 +383,19 @@ public class UID{
     }
     public void encontrarCoordenadasEnemigos(Agentes[] enemigos){
         int contadorEnemigos = 0;
-            for(int i = 0; i < num; i++){
-                for(int j = 0; j < num; j++){
-                    if(matriz[i][j] == 2){
-                        if(contadorEnemigos < enemigos.length){
-                            enemigos[contadorEnemigos].setIndexI(i); 
-                            enemigos[contadorEnemigos].setIndexJ(j);
-                            indexiEnemigos[contadorEnemigos] = i;
-                            indexjEnemigos[contadorEnemigos] = j;
-                            contadorEnemigos ++;
-                            
-                        }
+        for(int i = 0; i < num; i++){
+            for(int j = 0; j < num; j++){
+                if(matriz[i][j] == 2){
+                    if(contadorEnemigos < enemigos.length){
+                        enemigos[contadorEnemigos].setIndexI(i); 
+                        enemigos[contadorEnemigos].setIndexJ(j);
+                        indexiEnemigos[contadorEnemigos] = i;
+                        indexjEnemigos[contadorEnemigos] = j;
+                        contadorEnemigos ++;
                     }
                 }
             }
-        /*for(int k = 0; k < enemigos.length; k++){
-            if(enemigos[k] == null){
-                continue;
-            }
-            
-        }*/
+        }
     }
 
     //Metodo para imprimir la matriz en la consola
@@ -530,10 +523,9 @@ public class UID{
             }
         }
         if(enemigos != null){
-            int contador = 0;
+            //Falta probalidad de moverse hacia jugador!
             for (Agentes enemigo : enemigos) {
                 if(enemigo == null){
-                    contador ++;
                     continue;
                 }
                 String[] moverEnemigo = {"w", "a", "s", "d"};
@@ -570,7 +562,6 @@ public class UID{
                         }
                         break;
                 }
-                contador ++;
             }
         }
     }
@@ -579,7 +570,6 @@ public class UID{
     public boolean areaEnemigo(Agentes jugador){
         boolean hayCombate = false;
         if(enemigos != null) {
-            int contador = 0;
             int indexiJugador = 0;
             int indexjJugador = 0;
             //Encontrar al jugador
@@ -600,7 +590,7 @@ public class UID{
                         for(int k = enemigos[i].indexj -1 ; k <= enemigos[i].indexj +1 ; k++){
                             if (indexiJugador == j && indexjJugador == k) {
                                 hayCombate = true;
-                                sistemaDeBatalla(jugador, i); // Iniciar combate con el enemigo cercano
+                                sistemaDeBatalla(jugador, i); // Inicia combate con el enemigo cercano
                                 return true;
                         }
                     }
@@ -665,9 +655,9 @@ public class UID{
         armas[2] = new Armas("Arma legendaria", "+100% de daño");
 
         //Armaduras
-        armaduras[0] = new Armaduras("Armadura basica", "-20% daño recibido, -2% duracion por golpe");
-        armaduras[1] = new Armaduras("Armadura secreta", "-30% daño recibido, duracion al 100% despues de cada batalla");
-        armaduras[2] = new Armaduras("Armasura legendaria", "-50% daño recibido");
+        armaduras[0] = new Armaduras("Armadura basica ", "-20% daño recibido, -2% duracion por golpe");
+        armaduras[1] = new Armaduras("Armadura secreta ", "-30% daño recibido, duracion al 100% despues de cada batalla");
+        armaduras[2] = new Armaduras("Armadura legendaria ", "-50% daño recibido");
 
         //Items
         double aumentoAtaque = rand.nextInt(10,21);
@@ -726,12 +716,14 @@ public class UID{
         boolean pelea = true;
         boolean defensa = false;
         int indiceInventarioE;
+        int probalidadSoltarItemA;
         //Ver si el jugador o enemigo tiene equipada el Arma
         while (pelea) {
             //probabilidad que el enemigo pueda usar un item del inventario
             double probalidad = rand.nextDouble(0.10,0.20);
             int Default = 0;
             indiceInventarioE = rand.nextInt(enemigos[i].inventario.objetos.length);
+            probalidadSoltarItemA = rand.nextInt(0,100);
             //interfaz de batalla
             System.out.println("----Status----");
             if(jugador != null){
@@ -753,7 +745,14 @@ public class UID{
                         if (enemigos[i].getSalud() == 0) {
                             System.out.println("Has derrotado al enemigo!");
                             enemigos[i].setIcono(0);
-                            matriz[enemigos[i].indexi][enemigos[i].indexj] = 0;
+                            if (enemigos[i].inventario.objetos == null && probalidadSoltarItemA > 15){
+                                matriz[enemigos[i].indexi][enemigos[i].indexj] = 3;
+                            }
+                            if(enemigos[i].inventario.objetos != null){
+                                matriz[enemigos[i].indexi][enemigos[i].indexj] = enemigos[i].inventario.objetos[indiceInventarioE].getIconoItem();
+                            }else{
+                                matriz[enemigos[i].indexi][enemigos[i].indexj] = 0;
+                            }
                             enemigos[i] = null;
                             pelea = false;
                         }
