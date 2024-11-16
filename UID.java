@@ -381,18 +381,21 @@ public class UID{
         }
     }
     public void encontrarCoordenadasEnemigos(Agentes[] enemigos){
-        for(Agentes enemigo: enemigos){
+        int contadorEnemigos = 0;
             for(int i = 0; i < num; i++){
                 for(int j = 0; j < num; j++){
-                    if(matriz[i][j] == enemigo.getIcono()){
-                        enemigo.setIndexI(i); 
-                        enemigo.setIndexJ(j);
-                        
-                        
+                    if(matriz[i][j] == 2){
+                        if(contadorEnemigos < enemigos.length){
+                            enemigos[contadorEnemigos].setIndexI(i); 
+                            enemigos[contadorEnemigos].setIndexJ(j);
+                            indexiEnemigos[contadorEnemigos] = i;
+                            indexjEnemigos[contadorEnemigos] = j;
+                            contadorEnemigos ++;
+                            
+                        }
                     }
                 }
             }
-        }
         /*for(int k = 0; k < enemigos.length; k++){
             if(enemigos[k] == null){
                 continue;
@@ -588,19 +591,11 @@ public class UID{
                         for(int k = indexjEnemigos[i]-1 ; k <= indexjEnemigos[i] +1 ; k++){
                             if (indexiJugador == j && indexjJugador == k) {
                                 hayCombate = true;
-                            }
+                                sistemaDeBatalla(jugador, i); // Iniciar combate con el enemigo correcto
+                                return true;
                         }
                     }
-                    /*if (indexiJugador == enemigos[i].getIndexI()  &&  indexjJugador -1 == enemigos[i].getIndexJ() || indexiJugador == enemigos[i].getIndexI() &&  indexjJugador + 1 == enemigos[i].getIndexJ() || indexiJugador -1  == enemigos[i].getIndexI() && indexjJugador == enemigos[i].getIndexJ() || indexiJugador + 1 == enemigos[i].getIndexI() && indexjJugador == enemigos[i].getIndexJ()) {
-                       
-                    }*/
-                if(hayCombate == true){
-                    sistemaDeBatalla(jugador, i);
-                    hayCombate = false;
-                    break;
                 }
-                
-                
             }
         }
         return hayCombate;
