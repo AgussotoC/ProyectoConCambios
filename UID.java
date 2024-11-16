@@ -7,6 +7,7 @@ public class UID{
     Random rand = new Random();
     Agentes agentes;
     Inventario inventario;
+    boolean veneno;
     //Coordenadas de cada entidad (exceptuando al jugador)
     int indexiItems;
     int indexjItems;
@@ -47,8 +48,8 @@ public class UID{
     public UID(int numCuarto, String wasd){
         Armaduras armaduraI = new Armaduras("Sin armadura","Defensa Base");
         Armas armaI = new Armas("Sin arma", "Ataque base");
-        Items buffI = new Items("Sin buff", 1, "Sin afecto");
-        Items debuffI = new Items("Sin debuff", 1, "Sin afecto");
+        Items buffI = new Items("Sin buff",  "Sin afecto");
+        Items debuffI = new Items("Sin debuff",  "Sin afecto");
         decidirNumEnemigos();
         if(enemigos.length == 0){
             enemigos = null;
@@ -663,13 +664,13 @@ public class UID{
         //Items
         double aumentoAtaque = rand.nextInt(10,21);
         //Buffs
-        items[0] = new Items("Mancuerna", aumentoAtaque,"Aumenta el daño entre 10-20%");
-        items[1] = new Items("Mascarilla",15 ,"Aumenta la defensa en un 15%");
-        items[2] = new Items("Sangre", 20, "El 20% de tu daño se te añade a la vida");
+        items[0] = new Items("Mancuerna","Aumenta el daño entre 10-20%");
+        items[1] = new Items("Mascarilla","Aumenta la defensa en un 15%");
+        items[2] = new Items("Sangre","El 20% de tu daño se te añade a la vida");
         //Debuffs
-        items[3] = new Items("Quebrar", 15, "Reduce la defensa del enemigo en un 15%");
-        items[4] = new Items("Veneno", 1, "Quita vida en cada turno hasta 10 vida, empieza en 1");
-        items[5] = new Items("Reduccion",20, "Reduce el daño del enemigo en un 20%");
+        items[3] = new Items("Quebrar","Reduce la defensa del enemigo en un 15%");
+        items[4] = new Items("Veneno", "Quita vida en cada turno hasta 10 vida, empieza en 1");
+        items[5] = new Items("Reduccion","Reduce el daño del enemigo en un 20%");
     }
 
     public void asignarJugadorAPared(String wasd){
@@ -719,8 +720,8 @@ public class UID{
         //Ver si el jugador o enemigo tiene equipada el Arma
         while (pelea) {
             //probabilidad que el enemigo pueda usar un item del inventario
-            int probalidad = rand.nextInt(5,8);
-
+            double probalidad = rand.nextDouble(0.10,0.20);
+            int Default = 0;
             //interfaz de batalla
             System.out.println("----Status----");
             if(jugador != null){
@@ -761,15 +762,24 @@ public class UID{
                             if (op == 1) {
                                 System.out.println("Ingrese el numero de Item");
                                 int seleccionItem = scanner.nextInt() - 1;
-                                if (jugador.inventario.objetos[seleccionItem].getNombre().equalsIgnoreCase("Reducir defensa")) {
-                                    enemigos[i].setBuff(jugador.inventario.objetos[seleccionItem].getEfecto());
-                                    System.out.println(enemigos[i].getDefensa());
-                                    System.out.println("Se ha usado exitosamente");
+                                if(jugador.inventario.objetos[seleccionItem].getNombre().equalsIgnoreCase("Mancuerna")){
+                                    jugador.aplicarItems(jugador, jugador.inventario.objetos[seleccionItem].getNombre(), probalidad);
                                     jugador.inventario.objetos[seleccionItem] = null;
-                                } else if (jugador.inventario.objetos[seleccionItem].getNombre().equalsIgnoreCase("Aumentar daño")) {
-                                    jugador.setAtaque(jugador.inventario.objetos[seleccionItem].getEfecto());
-                                    System.out.println("Se ha equipado exitosamente");
-                                    System.out.println("Ahora tu ataque es de: " + jugador.getAtaque());
+                                }else if(jugador.inventario.objetos[seleccionItem].getNombre().equalsIgnoreCase("Mascarilla")){
+                                    jugador.aplicarItems(jugador, jugador.inventario.objetos[seleccionItem].getNombre(), Default);
+                                    jugador.inventario.objetos[seleccionItem] = null;
+                                }else if(jugador.inventario.objetos[seleccionItem].getNombre().equalsIgnoreCase("Sangre")){
+                                    jugador.aplicarItems(jugador, jugador.inventario.objetos[seleccionItem].getNombre(), Default);
+                                    jugador.inventario.objetos[seleccionItem] = null;
+                                }else if(jugador.inventario.objetos[seleccionItem].getNombre().equalsIgnoreCase("Quebrar")){
+                                    jugador.aplicarItems(enemigos[i], jugador.inventario.objetos[seleccionItem].getNombre(), Default);
+                                    jugador.inventario.objetos[seleccionItem] = null;
+                                }else if(jugador.inventario.objetos[seleccionItem].getNombre().equalsIgnoreCase("Veneno")){
+                                    jugador.aplicarItems(enemigos[i], jugador.inventario.objetos[seleccionItem].getNombre(), Default);
+                                    veneno = true;
+                                    jugador.inventario.objetos[seleccionItem] = null;
+                                }else if(jugador.inventario.objetos[seleccionItem].getNombre().equalsIgnoreCase("Reduccion")){
+                                    jugador.aplicarItems(enemigos[i], jugador.inventario.objetos[seleccionItem].getNombre(), Default);
                                     jugador.inventario.objetos[seleccionItem] = null;
                                 }
                             }
@@ -793,7 +803,7 @@ public class UID{
             }
             //Acciones del enemigo
             if (enemigos[i] != null && defensa != true) {
-                if (probalidad == 6 && enemigos[i].inventario.objetos != null) {
+                /*if (probalidad == 6 && enemigos[i].inventario.objetos != null) {
                     for (int b = 0; b < enemigos[i].inventario.objetos.length ; b++) {
                         if(enemigos[i].inventario.objetos[b] == null){
                             continue;
@@ -806,7 +816,7 @@ public class UID{
                             System.out.println("El enemigo ha equipado: " + enemigos[i].inventario.objetos[b].getNombre());
                         }
                     }
-                }
+                }*/
                 //Ataque del enemigo
                 enemigos[i].atacar(jugador);
                 System.out.println("Has recibido " + enemigos[i].getAtaque() + " de daño");
@@ -814,37 +824,7 @@ public class UID{
                     System.out.println("Te han derrotado");
                     pelea = false;
                 }
-                
-
-                //Sistema de veneno en combate
-                /*if (enemigo.getSalud() != 0) {
-                    if (enemigo.getDebuff() == true) {
-                        enemigo.venenoAtaque(dañoVeneno);
-                        System.out.println("El veneno le hizo un daño adicional al enemigo de: " + dañoVeneno);
-                        if (enemigo.getSalud() == 0) {
-                            enemigo = null;
-                            pelea = false;
-                        }
-                        if (dañoVeneno < 10) {
-                            dañoVeneno += 1;
-                        }
-                    }
-                }
-                if (jugador.getSalud() != 0) {
-                    if (jugador.getDebuff()) {
-                        jugador.venenoAtaque(dañoVeneno);
-                        System.out.println("El veneno te hizo un daño adicional de: " + dañoVeneno);
-                        if (jugador.getSalud() == 0) {
-                            System.out.println("Te han derrotado");
-                            pelea = false;
-                        }
-                        if (dañoVeneno < 10) {
-                            dañoVeneno += 1;
-                        }
-                    }
-                }*/
             }
         }
-
     }
 }

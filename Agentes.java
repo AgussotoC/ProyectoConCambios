@@ -162,12 +162,36 @@ public class Agentes
         }
         return objetivo.getSalud();
     }
-    public double BuffDeAumentoDeDaño(double daño){
-        switch (buff.getNombre()){
+    public void aplicarItems(Agentes objetivo, String nombreItem, double probalidad){
+        switch (nombreItem){
+            //aplicables a uno mismo
             case "Mancuerna":
+                objetivo.ataque += objetivo.ataque * probalidad;
+                System.out.println(nombreItem + " Se aplico correctamente ");
+                break;
+            case "Mascarilla":
+                objetivo.defensa += objetivo.defensa * 0.15;
+                System.out.println(nombreItem + " Se aplico correctamente ");
+                break;
+            case "Sangre":
+                objetivo.salud += objetivo.ataque * 20;
+                System.out.println(nombreItem + " Se aplico correctamente ");
+                break;
+            // aplicables al oponente
+            case "Quebrar":
+                objetivo.defensa -= objetivo.defensa * 0.15;
+                System.out.println(nombreItem + " Se aplico correctamente ");
+                break;
+            case "Veneno":
+                objetivo.salud -= probalidad;
+                System.out.println(nombreItem + " Se aplico correctamente ");
+                break;
+            case "Reduccion":
+                objetivo.ataque -= objetivo.ataque * 0.20;
+                System.out.println(nombreItem + " Se aplico correctamente ");
+                break;
 
         }
-        return daño;
     }
 
     //Metodo de defensa, defender bloquea 25% del ataque recibido

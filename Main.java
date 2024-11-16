@@ -123,8 +123,8 @@ public class Main {
         //Vector y variable necesarias para mover la casilla enemigo
         Armaduras armaduraI = new Armaduras("Sin armadura", "Sin armadura");
         Armas armaI = new Armas("Sin arma","Sin arma");
-        Items buffI = new Items("Sin buff", 1, "Sin afecto");
-        Items debuffI = new Items("Sin debuff", 1, "Sin afecto");
+        Items buffI = new Items("Sin buff", "Sin afecto");
+        Items debuffI = new Items("Sin debuff",  "Sin afecto");
         //Creacion del jugador
         Agentes jugador = new Agentes(6,500,70,50, armaI , armaduraI, buffI, debuffI);
 
