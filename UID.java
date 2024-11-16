@@ -596,11 +596,11 @@ public class UID{
                     if(enemigos[i] == null){
                         continue;
                     }
-                    for(int j = indexiEnemigos[i] -1 ; j <= indexiEnemigos[i]+1 ; j++){
-                        for(int k = indexjEnemigos[i]-1 ; k <= indexjEnemigos[i] +1 ; k++){
+                    for(int j = enemigos[i].indexi -1 ; j <= enemigos[i].indexi +1 ; j++){
+                        for(int k = enemigos[i].indexj -1 ; k <= enemigos[i].indexj +1 ; k++){
                             if (indexiJugador == j && indexjJugador == k) {
                                 hayCombate = true;
-                                sistemaDeBatalla(jugador, i); // Iniciar combate con el enemigo correcto
+                                sistemaDeBatalla(jugador, i); // Iniciar combate con el enemigo cercano
                                 return true;
                         }
                     }
