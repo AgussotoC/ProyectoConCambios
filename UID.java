@@ -65,8 +65,10 @@ public class UID{
         generacionItems();
         generarAreaMatriz(numCuarto, wasd);
         encontrarCoordenadasEntidades();
-        encontrarCoordenadasEnemigos(enemigos);
-    }
+        if(enemigos != null){
+            encontrarCoordenadasEnemigos(enemigos);
+        }
+        }
     public UID(String wasd){
         System.out.println(" Has entrado a la Habitacion de Boss");
         matriz = new int[num][num];
@@ -379,21 +381,24 @@ public class UID{
         }
     }
     public void encontrarCoordenadasEnemigos(Agentes[] enemigos){
-        for(int k = 0; k < enemigos.length; k++){
-            if(enemigos[k] == null){
-                continue;
-            }
+        for(Agentes enemigo: enemigos){
             for(int i = 0; i < num; i++){
                 for(int j = 0; j < num; j++){
-                    if(matriz[i][j] == enemigos[k].getIcono()){
-                        enemigos[k].setIndexI(i); 
-                        enemigos[k].setIndexJ(j);
+                    if(matriz[i][j] == enemigo.getIcono()){
+                        enemigo.setIndexI(i); 
+                        enemigo.setIndexJ(j);
                         
                         
                     }
                 }
             }
         }
+        /*for(int k = 0; k < enemigos.length; k++){
+            if(enemigos[k] == null){
+                continue;
+            }
+            
+        }*/
     }
 
     //Metodo para imprimir la matriz en la consola
@@ -579,14 +584,23 @@ public class UID{
                     if(enemigos[i] == null){
                         continue;
                     }
-                    if (indexiJugador == enemigos[i].getIndexI()  &&  indexjJugador -1 == enemigos[i].getIndexJ() || indexiJugador == enemigos[i].getIndexI() &&  indexjJugador + 1 == enemigos[i].getIndexJ() || indexiJugador -1  == enemigos[i].getIndexI() && indexjJugador == enemigos[i].getIndexJ() || indexiJugador + 1 == enemigos[i].getIndexI() && indexjJugador == enemigos[i].getIndexJ()) {
-                        hayCombate = true;
+                    for(int j = indexiEnemigos[i] -1 ; j <= indexiEnemigos[i]+1 ; j++){
+                        for(int k = indexjEnemigos[i]-1 ; k <= indexjEnemigos[i] +1 ; k++){
+                            if (indexiJugador == j && indexjJugador == k) {
+                                hayCombate = true;
+                            }
+                        }
                     }
+                    /*if (indexiJugador == enemigos[i].getIndexI()  &&  indexjJugador -1 == enemigos[i].getIndexJ() || indexiJugador == enemigos[i].getIndexI() &&  indexjJugador + 1 == enemigos[i].getIndexJ() || indexiJugador -1  == enemigos[i].getIndexI() && indexjJugador == enemigos[i].getIndexJ() || indexiJugador + 1 == enemigos[i].getIndexI() && indexjJugador == enemigos[i].getIndexJ()) {
+                       
+                    }*/
                 if(hayCombate == true){
                     sistemaDeBatalla(jugador, i);
+                    hayCombate = false;
+                    break;
                 }
-                hayCombate = false;
-                break;
+                
+                
             }
         }
         return hayCombate;
@@ -733,6 +747,7 @@ public class UID{
                         if (enemigos[i].getSalud() == 0) {
                             System.out.println("Has derrotado al enemigo!");
                             enemigos[i].setIcono(0);
+                            matriz[enemigos[i].indexi][enemigos[i].indexj] = 0;
                             enemigos[i] = null;
                             pelea = false;
                         }
