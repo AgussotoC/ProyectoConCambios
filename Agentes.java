@@ -119,20 +119,20 @@ public class Agentes
         } else{
             switch (armadura.getNombre()){
                 case "Armadura basica":
-                    daño = daño * 0.80;
-                    armadura.setVida(armadura.getVida() - 2);
+                    daño -= daño * 0.20;
+                    armadura.setVida(armadura.vida - 2);
                     break;
                 case "Armadura secreta":
-                    daño = daño * 0.70;
-                    armadura.setVida(armadura.getVida() - 2);
+                    daño -= daño * 0.30;
+                    armadura.setVida(armadura.vida - 2);
                     break;
                 case "Armadura legendaria":
-                    daño = daño * 0.50;
+                    daño -= daño * 0.50;
                     break;
             }
             if(armadura.getVida() > 0){
                 salud -= daño;
-                if(armadura.getVida() < 0){
+                if(armadura.getVida() <= 0){
                     armadura.setVida(0);
                 }
             }
@@ -159,7 +159,7 @@ public class Agentes
         double daño;
         switch (arma.getNombre()){
             case "Arma basica":
-                daño = ataque * 0.20;
+                daño = ataque + ataque * 0.20;
                 break;
             case "Arma secreta":
                 daño = Boss.getSalud()/2 + ataque;
@@ -177,7 +177,7 @@ public class Agentes
     }
 
     public void AccionesBoss(Agentes Boss,Agentes objetivo, int probalidad){
-        if(Boss.salud >= 300 && probalidad > 60){
+        if(Boss.salud >= 300 && probalidad >= 60){
             System.out.println("El Boss te ataco");
             double daño;
             daño = Boss.ataque;
@@ -185,10 +185,15 @@ public class Agentes
             if(objetivo.getSalud() < 0){
                 objetivo.setSalud(0);
             }
-        }else if(Boss.salud >= 300 && probalidad < 40){
+        }else if(Boss.salud >= 300 && probalidad <= 40){
             System.out.println("El Boss se defendio");
             defenderBoss(objetivo.ataque);
-        }else if (Boss.salud < 300 && probalidad < 40) {
+            if(Boss.defensa > 0){
+                Boss.defensa += objetivo.ataque;
+            }else if (Boss.salud > 0 && Boss.defensa <= 0){
+                Boss.salud += objetivo.ataque;
+            }
+        }else if (Boss.salud < 300 && probalidad <= 40) {
             System.out.println("El Boss te ataco");
             double daño;
             daño = Boss.ataque;
@@ -196,9 +201,14 @@ public class Agentes
             if(objetivo.getSalud() < 0){
                 objetivo.setSalud(0);
             }
-        }else if (Boss.salud < 300 && probalidad > 60) {
+        }else if (Boss.salud < 300 && probalidad >= 60) {
             System.out.println("El Boss se defendio");
             defenderBoss(objetivo.ataque);
+            if(Boss.defensa <= 0){
+                Boss.defensa += objetivo.ataque;
+            }else{
+                Boss.salud += objetivo.ataque;
+            }
         }
     }
     //Metodo de ataque
@@ -257,10 +267,10 @@ public class Agentes
 
     //Metodo de defensa, defender bloquea 25% del ataque recibido
     public void defender(double daño){
-        recibirDaño((daño - (daño*0.75)) + daño);
+        recibirDaño(daño - (daño*0.75));
     }
     public void defenderBoss(double daño){
-        recibirDañoBoss((daño - (daño*0.75)) + daño);
+        recibirDañoBoss(daño - (daño*0.75));
     }
 
     public void venenoAtaque(double daño){

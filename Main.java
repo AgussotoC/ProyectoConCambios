@@ -100,6 +100,17 @@ public class Main {
             break;
         }
     }
+    public void mostrarMapa(Lista lista, Agentes agente, Nodo actuall){
+        System.out.println("1) Mapa");
+        System.out.println("2) inventario");
+        int opcion = scanner.nextInt();
+        if (opcion == 1) {
+            lista.imprimirMapa(actuall);
+        }else if (opcion == 2) {
+            System.out.println("inventario");
+            agente.mostrarInventario();
+        }
+    }
     //Ejecución del main
     private void comprobarBoss() {
         if (!hayBoss && rand.nextInt(100) + 1 <= probalidadBoss) {
@@ -295,17 +306,6 @@ public class Main {
                     break;
                 }
             }
-        }
-    }
-    public void mostrarMapa(Lista lista, Agentes agente, Nodo actuall){
-        System.out.println("1) Mapa");
-        System.out.println("2) inventario");
-        int opcion = scanner.nextInt();
-        if (opcion == 1) {
-            lista.imprimirMapa(actuall);
-        }else if (opcion == 2) {
-            System.out.println("inventario");
-            agente.mostrarInventario();
         }
     }
 }

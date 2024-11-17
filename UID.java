@@ -721,9 +721,9 @@ public class UID{
         armas[2] = new Armas("Arma legendaria", "+100% de daño");
         
         //Armaduras
-        armaduras[0] = new Armaduras("Armadura basica ", "-20% daño recibido, -2% duracion por golpe");
-        armaduras[1] = new Armaduras("Armadura secreta ", "-30% daño recibido, duracion al 100% despues de cada batalla");
-        armaduras[2] = new Armaduras("Armadura legendaria ", "-50% daño recibido");
+        armaduras[0] = new Armaduras("Armadura basica", "-20% daño recibido, -2% duracion por golpe");
+        armaduras[1] = new Armaduras("Armadura secreta", "-30% daño recibido, duracion al 100% despues de cada batalla");
+        armaduras[2] = new Armaduras("Armadura legendaria", "-50% daño recibido");
         
         //Items
         double aumentoAtaque = rand.nextInt(10,21);
