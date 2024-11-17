@@ -214,20 +214,20 @@ public class Agentes
     //Metodo de ataque
     public double  atacar(Agentes objetivo){
         double daño;
-        switch (arma.getNombre()){
-            case "Arma basica":
-                daño = ataque * 0.20;
+        switch (arma.getNombre().toLowerCase()){
+            case "arma basica":
+                daño = ataque + ataque * 0.20;
                 break;
-            case "Arma secreta":
+            case "arma secreta":
                 daño = objetivo.getSalud()/2 + ataque;
                 break;
-            case "Arma legendaria":
+            case "arma legendaria":
                 daño = ataque * 2;
                 break;
             default:
                 daño = ataque;
         }
-        objetivo.recibirDaño(daño);
+        objetivo.recibirDaño((int) daño);
         if(objetivo.getSalud() < 0){
             objetivo.setSalud(0);
         }
