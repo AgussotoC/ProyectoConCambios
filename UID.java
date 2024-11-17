@@ -42,9 +42,10 @@ public class UID{
     int mChiquita = num -1; //Area dentro de las paredes
     int range = ((num - 2) * 4) - 4; //area dentro de las paredes es (disminuye en 2 bloques)
     int rng = rand.nextInt(1, range + 1);
-
+    
     Agentes[] enemigos;
     int[] spawnEnemigos = null; //ver cuantas entidades de enemigos se crean
+    Agentes Boss = new Agentes(7, 600, 100, 300, null, null, null, null);
     public UID(int numCuarto, String wasd, boolean hayBoss, boolean haySalida){
         Armaduras armaduraI = new Armaduras("Sin armadura","Defensa Base");
         Armas armaI = new Armas("Sin arma", "Ataque base");
@@ -69,33 +70,36 @@ public class UID{
         if(enemigos != null){
             encontrarCoordenadasEnemigos(enemigos);
         }
+        if (Boss != null) {
+            encontrarCordenadasBoss();
         }
+    }
     /*public UID(String wasd){
-        System.out.println(" Has entrado a la Habitacion de Boss, Ten cuidado!");
-        matriz = new int[num][num];
-        //Definir las paredes de los costados
-        for(int i = 0; i < num; i++){
-            for(int j = 0; j < num; j++){
-                if(i == 0 || i == num - 1){
-                    matriz[i][j] = 1;
-                } else if(j == 0 || j == num - 1){
-                    matriz[i][j] = 1;
-                } else{
-                    matriz[i][j] = 0;
-                }
-            }
-        }
-        matriz[num/2][num/2] = 7; //Se crea al Boss en el centro
-        switch(wasd){ //Reubica al jugador en la entrada del nuevo cuarto
-            case "w":
-                reubicarJugador(num-1, num/2); break;
-            case "s":
-                reubicarJugador(0, num/2); break;
-            case "d":
-                reubicarJugador(num/2, 0); break;
-            case "a":
-                reubicarJugador(num/2, num-1); break;
-        }
+    System.out.println(" Has entrado a la Habitacion de Boss, Ten cuidado!");
+    matriz = new int[num][num];
+    //Definir las paredes de los costados
+    for(int i = 0; i < num; i++){
+    for(int j = 0; j < num; j++){
+    if(i == 0 || i == num - 1){
+    matriz[i][j] = 1;
+    } else if(j == 0 || j == num - 1){
+    matriz[i][j] = 1;
+    } else{
+    matriz[i][j] = 0;
+    }
+    }
+    }
+    matriz[num/2][num/2] = 7; //Se crea al Boss en el centro
+    switch(wasd){ //Reubica al jugador en la entrada del nuevo cuarto
+    case "w":
+    reubicarJugador(num-1, num/2); break;
+    case "s":
+    reubicarJugador(0, num/2); break;
+    case "d":
+    reubicarJugador(num/2, 0); break;
+    case "a":
+    reubicarJugador(num/2, num-1); break;
+    }
     }*/
     private void decidirNumEnemigos(){
         int prob = rand.nextInt(1,101);
@@ -106,11 +110,11 @@ public class UID{
                 numEnemigos += 1;
                 switch (max){
                     case 75:
-                        max = 25; break;
+                    max = 25; break;
                     case 25:
-                        max = 10; break;
+                    max = 10; break;
                     case 10:
-                        max = 2; break;
+                    max = 2; break;
                 }
             } else{
                 break;
@@ -200,7 +204,7 @@ public class UID{
             rng = rand.nextInt(1 , range + 1);
         }
     }
-
+    
     //Metodo para generar aleatoriamente la dungeon
     public  int[][] generarAreaMatriz(int numCuarto, String wasd, boolean hayBoss, boolean haySalida){
         matriz = new int[num][num];
@@ -220,7 +224,7 @@ public class UID{
         if(hayBoss){ //Es el cuarto del boss
             generarHBoss(wasd);
         } else if(haySalida){ //es el cuarto de la salida
-
+            
         } else{ //Es un cuarto normal
             int[] entidades = {6, 4, 3, 5};
             generarEntidades(entidades);
@@ -244,21 +248,21 @@ public class UID{
             if(generacion <= genMaximo){
                 switch (paredRandom){
                     case 1:
-                        matriz[0][num/2] = 0; break;
+                    matriz[0][num/2] = 0; break;
                     case 2:
-                        matriz[num -1][num/2] = 0; break;
+                    matriz[num -1][num/2] = 0; break;
                     case 3:
-                        matriz[num/2][0] = 0; break;
+                    matriz[num/2][0] = 0; break;
                     case 4:
-                        matriz[num/2][num - 1] = 0; break;
+                    matriz[num/2][num - 1] = 0; break;
                 }
                 switch(genMaximo){
                     case 5:
-                        genMaximo = 3; break;
+                    genMaximo = 3; break;
                     case 3:
-                        genMaximo = 2; break;
+                    genMaximo = 2; break;
                     case 2:
-                        genMaximo = 1; break;
+                    genMaximo = 1; break;
                 }
                 generacion = rand.nextInt(1, 6);
                 paredRandom = rand.nextInt(1,5);
@@ -267,7 +271,7 @@ public class UID{
             }
         }
     }
-
+    
     public void generarParedes(String wasd){
         boolean condicion = true;
         int contador = 0;
@@ -278,40 +282,40 @@ public class UID{
         int[] paredHechas = {0 , 0, 0, 0};
         switch(wasd){ //Asegurar que siempre haya una puerta con la habitacion anterior
             case "w": //Se crea una puerta abajo
-                paredRandom = 2;
-                paredHechas[0] = 2; break;
+            paredRandom = 2;
+            paredHechas[0] = 2; break;
             case "s": //Se crea una puerte arriba
-                paredRandom = 1;
-                paredHechas[0] = 1; break;
+            paredRandom = 1;
+            paredHechas[0] = 1; break;
             case "d": //Se crea una puerta a la derecha
-                paredRandom = 3;
-                paredHechas[0] = 3; break;
+            paredRandom = 3;
+            paredHechas[0] = 3; break;
             case "a": //Se crea una puerta a la izquierda
-                paredRandom = 4;
-                paredHechas[0] = 4; break;
+            paredRandom = 4;
+            paredHechas[0] = 4; break;
             default:
-                paredRandom = rand.nextInt(1,5);
+            paredRandom = rand.nextInt(1,5);
         }
         for(int k = 0; k < 4; k++){
             contador++;
             if(generacion <= genMaximo){
                 switch (paredRandom){
                     case 1://Pared de arrriba
-                        matriz[0][num/2] = 0; break;
+                    matriz[0][num/2] = 0; break;
                     case 2: //Pared de abajo
-                        matriz[num -1][num/2] = 0; break;
+                    matriz[num -1][num/2] = 0; break;
                     case 3: //Pared de la izquierda
-                        matriz[num/2][0] = 0; break;
+                    matriz[num/2][0] = 0; break;
                     case 4: //Pared de la derecha
-                        matriz[num/2][num - 1] = 0; break;
+                    matriz[num/2][num - 1] = 0; break;
                 }
                 switch(genMaximo){
                     case 5:
-                        genMaximo = 5; break; //60% de probabilidad
+                    genMaximo = 5; break; //60% de probabilidad
                     case 3:
-                        genMaximo = 2; break; //40% de probabilidad
+                    genMaximo = 2; break; //40% de probabilidad
                     case 2:
-                        genMaximo = 1; break;//20% de probabilidad
+                    genMaximo = 1; break;//20% de probabilidad
                 }
                 generacion = rand.nextInt(1, 6);
                 paredRandom = rand.nextInt(1,5);
@@ -320,7 +324,7 @@ public class UID{
                         condicion = false;
                     }
                     else if(paredRandom == paredHechas[0] || paredRandom == paredHechas[1] ||
-                       paredRandom == paredHechas[2] || paredRandom == paredHechas[3]){
+                    paredRandom == paredHechas[2] || paredRandom == paredHechas[3]){
                         paredRandom = rand.nextInt(1,5);
                     } else{
                         paredHechas[contador] = paredRandom;
@@ -334,37 +338,48 @@ public class UID{
         }
         switch(wasd){ //Reubica al jugador en la entrada del nuevo cuarto
             case "w":
-                reubicarJugador(num-1, num/2); break;
+            reubicarJugador(num-1, num/2); break;
             case "s":
-                reubicarJugador(0, num/2); break;
+            reubicarJugador(0, num/2); break;
             case "d":
-                reubicarJugador(num/2, 0); break;
+            reubicarJugador(num/2, 0); break;
             case "a":
-                reubicarJugador(num/2, num-1); break;
+            reubicarJugador(num/2, num-1); break;
         }
     }
-
+    
     private void generarHBoss(String wasd){
         switch(wasd){ //Reubica al jugador en la entrada del nuevo cuarto
             case "w":
-                reubicarJugador(num-1, num/2); break;
+            reubicarJugador(num-1, num/2); break;
             case "s":
-                reubicarJugador(0, num/2); break;
+            reubicarJugador(0, num/2); break;
             case "d":
-                reubicarJugador(num/2, 0); break;
+            reubicarJugador(num/2, 0); break;
             case "a":
-                reubicarJugador(num/2, num-1); break;
+            reubicarJugador(num/2, num-1); break;
         }
         matriz[num/2][num/2] = 7; //Se crea al Boss en el centro
         if(matriz[0][0] == 0){
             matriz[0][0] = 1;
         }
     }
-
+    
     private void generarSalida(){
-
+        
     }
-
+    
+    public void encontrarCordenadasBoss(){
+        for(int i = 0; i < num; i++){
+            for(int j = 0; j < num; j++){
+                if(matriz[i][j] == 7){
+                    Boss.indexi = i;
+                    Boss.indexj = j;
+                }
+            }
+        }
+    }
+    
     public void reubicarJugador(int coordenadaI, int coordenadaJ){
         int indexi = 0;
         int indexj = 0;
@@ -379,7 +394,7 @@ public class UID{
         matriz[indexi][indexj] = 0;
         matriz[coordenadaI][coordenadaJ] = 6;
     }
-
+    
     //metodo para saber las coordenadas de los items que se pueden agarrar
     public void encontrarCoordenadasEntidades(){
         char[] entidadesAgarrables = {4, 3, 5};
@@ -389,17 +404,17 @@ public class UID{
                     if(matriz[i][j] == entidadesAgarrables[k]){
                         switch (k){
                             case 0:
-                                indexiArmas = i;
-                                indexjArmas = j;
-                                break;
+                            indexiArmas = i;
+                            indexjArmas = j;
+                            break;
                             case 1:
-                                indexiItems = i;
-                                indexjItems = j;
-                                break;
+                            indexiItems = i;
+                            indexjItems = j;
+                            break;
                             case 2:
-                                indexiArmadura = i;
-                                indexjArmadura = j;
-                                break;
+                            indexiArmadura = i;
+                            indexjArmadura = j;
+                            break;
                         }
                     }
                 }
@@ -422,7 +437,7 @@ public class UID{
             }
         }
     }
-
+    
     //Metodo para imprimir la matriz en la consola
     public void imprimirMatriz(Agentes jugador){
         String[] itemsLogo = {"A", "B", "C"};
@@ -438,53 +453,53 @@ public class UID{
             for(int j = 0; j < num; j++){
                 switch(matriz[i][j]){
                     case 0: //espacio en blanco
-                        System.out.print(" "); break;
+                    System.out.print(" "); break;
                     case 1: //print de las paredes
-                        System.out.print("#");
-                        if(j == num -1){ // Print de la vizualizacion de los atributos
-                            switch (i){
-                                case 0:
-                                    System.out.printf(" Items...[%s][%s][%s]", itemsImprimidos[0], itemsImprimidos[1], itemsImprimidos[2]);
-                                    break;
-                                case 1:
-                                    System.out.printf(" Vida...%d", (int)jugador.getSalud());
-                                    break;
-                                case 2:
-                                    System.out.printf(" Armadura...%s", jugador.armadura.descripcion); break;
-                                case 3:
-                                    System.out.printf(" Arma...%s", jugador.arma.descripcion); break;
-                            }
-                            if(i == num-3){
-                                System.out.printf(" Ataque...%d", (int)jugador.getAtaque());
-                            }
-                            if(i == num-2){
-                                System.out.printf(" Buff...%s", jugador.buff.nombre);
-                            }
-                            if(i == num-1){
-                                System.out.printf(" Debuff...%s", jugador.debuff.nombre);
-                            }
+                    System.out.print("#");
+                    if(j == num -1){ // Print de la vizualizacion de los atributos
+                        switch (i){
+                            case 0:
+                            System.out.printf(" Items...[%s][%s][%s]", itemsImprimidos[0], itemsImprimidos[1], itemsImprimidos[2]);
+                            break;
+                            case 1:
+                            System.out.printf(" Vida...%d", (int)jugador.getSalud());
+                            break;
+                            case 2:
+                            System.out.printf(" Armadura...%s", jugador.armadura.descripcion); break;
+                            case 3:
+                            System.out.printf(" Arma...%s", jugador.arma.descripcion); break;
                         }
-                        break;
+                        if(i == num-3){
+                            System.out.printf(" Ataque...%d", (int)jugador.getAtaque());
+                        }
+                        if(i == num-2){
+                            System.out.printf(" Buff...%s", jugador.buff.nombre);
+                        }
+                        if(i == num-1){
+                            System.out.printf(" Debuff...%s", jugador.debuff.nombre);
+                        }
+                    }
+                    break;
                     case 2:
-                        System.out.print("E"); break; //Enemigo
+                    System.out.print("E"); break; //Enemigo
                     case 3:
-                        System.out.print("I"); break; //Item
+                    System.out.print("I"); break; //Item
                     case 4:
-                        System.out.print("A"); break; //Arma
+                    System.out.print("A"); break; //Arma
                     case 5:
-                        System.out.print("R"); break; //Armadura
+                    System.out.print("R"); break; //Armadura
                     case 6:
-                        System.out.print("@"); break; //Jugador
+                    System.out.print("@"); break; //Jugador
                     case 7:
-                        System.out.print("B"); break; //Boss
+                    System.out.print("B"); break; //Boss
                     case 8:
-                        System.out.print("S"); break; //Salida
+                    System.out.print("S"); break; //Salida
                 }
             }
             System.out.println();
         }
     }
-
+    
     //comprobante que si la entidad puede estar ahí (revisar si hay pared por ejemplo)
     public boolean sePuede(int espacio){
         boolean sePuede = true;
@@ -495,7 +510,7 @@ public class UID{
         }
         return sePuede;
     }
-
+    
     //comprobante diferente para el jugador, ya que este puede entrar a la puerta
     public boolean sePuedeJugador(int espacio){
         boolean sePuede = true;
@@ -522,29 +537,29 @@ public class UID{
         if(agente.getIcono() == 6){
             switch(wasdm){
                 case "w":
-                    if(sePuedeJugador(matriz[indexi -1][indexj]) == true){
-                        matriz[indexi][indexj] = 0;
-                        matriz[indexi - 1][indexj] = agente.getIcono();
-                    }
-                    break;
+                if(sePuedeJugador(matriz[indexi -1][indexj]) == true){
+                    matriz[indexi][indexj] = 0;
+                    matriz[indexi - 1][indexj] = agente.getIcono();
+                }
+                break;
                 case "a":
-                    if(sePuedeJugador(matriz[indexi][indexj - 1]) == true){
-                        matriz[indexi][indexj] = 0;
-                        matriz[indexi][indexj - 1] = agente.getIcono();
-                    }
-                    break;
+                if(sePuedeJugador(matriz[indexi][indexj - 1]) == true){
+                    matriz[indexi][indexj] = 0;
+                    matriz[indexi][indexj - 1] = agente.getIcono();
+                }
+                break;
                 case "s":
-                    if(sePuedeJugador(matriz[indexi + 1][indexj]) == true){
-                        matriz[indexi][indexj] = 0;
-                        matriz[indexi + 1][indexj] = agente.getIcono();
-                    }
-                    break;
+                if(sePuedeJugador(matriz[indexi + 1][indexj]) == true){
+                    matriz[indexi][indexj] = 0;
+                    matriz[indexi + 1][indexj] = agente.getIcono();
+                }
+                break;
                 case "d":
-                    if(sePuedeJugador(matriz[indexi][indexj + 1]) == true){
-                        matriz[indexi][indexj] = 0;
-                        matriz[indexi][indexj + 1] = agente.getIcono();
-                    }
-                    break;
+                if(sePuedeJugador(matriz[indexi][indexj + 1]) == true){
+                    matriz[indexi][indexj] = 0;
+                    matriz[indexi][indexj + 1] = agente.getIcono();
+                }
+                break;
             }
         }
         if(enemigos != null){
@@ -559,38 +574,38 @@ public class UID{
                 int indexjEnemigo = enemigo.getIndexJ();
                 switch (moverE) {
                     case "w":
-                        if (indexiEnemigo > 0 && sePuede(matriz[indexiEnemigo - 1][indexjEnemigo]) == true) {
-                            matriz[indexiEnemigo][indexjEnemigo] = 0;
-                            matriz[indexiEnemigo - 1][indexjEnemigo] = enemigo.getIcono();
-                            enemigo.setIndexI(indexiEnemigo - 1);
-                        }
-                        break;
+                    if (indexiEnemigo > 0 && sePuede(matriz[indexiEnemigo - 1][indexjEnemigo]) == true) {
+                        matriz[indexiEnemigo][indexjEnemigo] = 0;
+                        matriz[indexiEnemigo - 1][indexjEnemigo] = enemigo.getIcono();
+                        enemigo.setIndexI(indexiEnemigo - 1);
+                    }
+                    break;
                     case "a":
-                        if (indexjEnemigo > 0 && sePuede(matriz[indexiEnemigo][indexjEnemigo - 1])) {
-                            matriz[indexiEnemigo][indexjEnemigo] = 0;
-                            matriz[indexiEnemigo][indexjEnemigo - 1] = enemigo.getIcono();
-                            enemigo.setIndexJ(indexjEnemigo - 1);
-                        }
-                        break;
+                    if (indexjEnemigo > 0 && sePuede(matriz[indexiEnemigo][indexjEnemigo - 1])) {
+                        matriz[indexiEnemigo][indexjEnemigo] = 0;
+                        matriz[indexiEnemigo][indexjEnemigo - 1] = enemigo.getIcono();
+                        enemigo.setIndexJ(indexjEnemigo - 1);
+                    }
+                    break;
                     case "s":
-                        if (indexiEnemigo < num - 1 && sePuede(matriz[indexiEnemigo + 1][indexjEnemigo])) {
-                            matriz[indexiEnemigo][indexjEnemigo] = 0;
-                            matriz[indexiEnemigo + 1][indexjEnemigo] = enemigo.getIcono();
-                            enemigo.setIndexI(indexiEnemigo + 1);
-                        }
-                        break;
+                    if (indexiEnemigo < num - 1 && sePuede(matriz[indexiEnemigo + 1][indexjEnemigo])) {
+                        matriz[indexiEnemigo][indexjEnemigo] = 0;
+                        matriz[indexiEnemigo + 1][indexjEnemigo] = enemigo.getIcono();
+                        enemigo.setIndexI(indexiEnemigo + 1);
+                    }
+                    break;
                     case "d":
-                        if (indexjEnemigo < num - 1 && sePuede(matriz[indexiEnemigo][indexjEnemigo + 1])) {
-                            matriz[indexiEnemigo][indexjEnemigo] = 0;
-                            matriz[indexiEnemigo][indexjEnemigo + 1] = enemigo.getIcono();
-                            enemigo.setIndexJ(indexjEnemigo + 1);
-                        }
-                        break;
+                    if (indexjEnemigo < num - 1 && sePuede(matriz[indexiEnemigo][indexjEnemigo + 1])) {
+                        matriz[indexiEnemigo][indexjEnemigo] = 0;
+                        matriz[indexiEnemigo][indexjEnemigo + 1] = enemigo.getIcono();
+                        enemigo.setIndexJ(indexjEnemigo + 1);
+                    }
+                    break;
                 }
             }
         }
     }
-
+    
     //Comprobación si el jugador esta en el area de 1x1 del enemigo para iniciar combate
     public boolean areaEnemigo(Agentes jugador){
         boolean hayCombate = false;
@@ -608,15 +623,15 @@ public class UID{
             }
             //Revisar si el jugador esta en el area del enemigo
             for (int i = 0; i< enemigos.length; i ++) {
-                    if(enemigos[i] == null){
-                        continue;
-                    }
-                    for(int j = enemigos[i].indexi -1 ; j <= enemigos[i].indexi +1 ; j++){
-                        for(int k = enemigos[i].indexj -1 ; k <= enemigos[i].indexj +1 ; k++){
-                            if (indexiJugador == j && indexjJugador == k) {
-                                hayCombate = true;
-                                sistemaDeBatalla(jugador, i); // Inicia combate con el enemigo cercano
-                                return true;
+                if(enemigos[i] == null){
+                    continue;
+                }
+                for(int j = enemigos[i].indexi -1 ; j <= enemigos[i].indexi +1 ; j++){
+                    for(int k = enemigos[i].indexj -1 ; k <= enemigos[i].indexj +1 ; k++){
+                        if (indexiJugador == j && indexjJugador == k) {
+                            hayCombate = true;
+                            sistemaDeBatalla(jugador, i,false); // Inicia combate con el enemigo cercano
+                            return true;
                         }
                     }
                 }
@@ -624,7 +639,33 @@ public class UID{
         }
         return hayCombate;
     }
-
+    public boolean areaBoss(Agentes jugador){
+        boolean hayCombate = false;
+        if(Boss != null){
+            int indexiJugador = 0;
+            int indexjJugador = 0;
+            //Encontrar al jugador
+            for (int i = 0; i < num; i++) {
+                for (int j = 0; j < num; j++) {
+                    if (matriz[i][j] == 6) {
+                    indexiJugador = i;
+                    indexjJugador = j;
+                    }
+                }
+            }
+            for(int j = Boss.indexi -1 ; j <= Boss.indexi +1 ; j++){
+                for(int k = Boss.indexj -1 ; k <= Boss.indexj +1 ; k++){
+                    if (indexiJugador == j && indexjJugador == k) {
+                        hayCombate = true;
+                        sistemaDeBatalla(jugador, 0,true); // Inicia combate con el enemigo cercano
+                        return true;
+                    }
+                }
+            }
+        }
+        return hayCombate;
+    }
+    
     public void encontrarEquipable(Agentes jugador){
         //Jugador encontró arma
         if(jugador.getIcono() == matriz[indexiArmas][indexjArmas]){
@@ -672,18 +713,18 @@ public class UID{
             }
         }
     }
-
+    
     private void generacionItems(){
         //armas
         armas[0] = new Armas("Arma basica", "+20% de daño");
         armas[1] = new Armas("Arma secreta", "ataque base +50% de la vida del enemigo");
         armas[2] = new Armas("Arma legendaria", "+100% de daño");
-
+        
         //Armaduras
         armaduras[0] = new Armaduras("Armadura basica ", "-20% daño recibido, -2% duracion por golpe");
         armaduras[1] = new Armaduras("Armadura secreta ", "-30% daño recibido, duracion al 100% despues de cada batalla");
         armaduras[2] = new Armaduras("Armadura legendaria ", "-50% daño recibido");
-
+        
         //Items
         double aumentoAtaque = rand.nextInt(10,21);
         //Buffs
@@ -695,7 +736,7 @@ public class UID{
         items[4] = new Items("Veneno", "Quita vida en cada turno hasta 10 vida, empieza en 1");
         items[5] = new Items("Reduccion","Reduce el daño del enemigo en un 20%");
     }
-
+    
     public void asignarJugadorAPared(String wasd){
         for(int i = 0; i < num; i++){
             for(int j = 0; j < num; j++){
@@ -706,16 +747,16 @@ public class UID{
         }
         switch (wasd){
             case "w":
-                matriz[num-1][num/2] = 6; break;
+            matriz[num-1][num/2] = 6; break;
             case "a":
-                matriz[num/2][num-1] = 6; break;
+            matriz[num/2][num-1] = 6; break;
             case "s":
-                matriz[0][num/2] = 6; break;
+            matriz[0][num/2] = 6; break;
             case "d":
-                matriz[num/2][0] = 6; break;
+            matriz[num/2][0] = 6; break;
         }
     }
-
+    
     public void reasignarPosicionJugador(String wasd){
         for(int i = 0; i < num; i++){
             for(int j = 0; j < num; j++){
@@ -726,153 +767,229 @@ public class UID{
         }
         switch (wasd){
             case "w":
-                matriz[num-1][num/2] = 6; break;
+            matriz[num-1][num/2] = 6; break;
             case "a":
-                matriz[num/2][num-1] = 6; break;
+            matriz[num/2][num-1] = 6; break;
             case "s":
-                matriz[0][num/2] = 6; break;
+            matriz[0][num/2] = 6; break;
             case "d":
-                matriz[num/2][0] = 6; break;
+            matriz[num/2][0] = 6; break;
         }
     }
-
-    public void sistemaDeBatalla(Agentes jugador, int i) {
+    public void utilizarItemJugador(Agentes jugador ,int seleccionItem, int i){
+        double probalidad = rand.nextDouble(0.10,0.20);
+        int Default = 0;
+        if(jugador.inventario.objetos[seleccionItem].getNombre().equalsIgnoreCase("Mancuerna")){
+            jugador.aplicarItems(jugador, jugador.inventario.objetos[seleccionItem].getNombre(), probalidad);
+            jugador.inventario.objetos[seleccionItem] = null;
+        }else if(jugador.inventario.objetos[seleccionItem].getNombre().equalsIgnoreCase("Mascarilla")){
+            jugador.aplicarItems(jugador, jugador.inventario.objetos[seleccionItem].getNombre(), Default);
+            jugador.inventario.objetos[seleccionItem] = null;
+        }else if(jugador.inventario.objetos[seleccionItem].getNombre().equalsIgnoreCase("Sangre")){
+            jugador.aplicarItems(jugador, jugador.inventario.objetos[seleccionItem].getNombre(), Default);
+            jugador.inventario.objetos[seleccionItem] = null;
+        }else if(jugador.inventario.objetos[seleccionItem].getNombre().equalsIgnoreCase("Quebrar")){
+            jugador.aplicarItems(enemigos[i], jugador.inventario.objetos[seleccionItem].getNombre(), Default);
+            jugador.inventario.objetos[seleccionItem] = null;
+        }else if(jugador.inventario.objetos[seleccionItem].getNombre().equalsIgnoreCase("Veneno")){
+            jugador.aplicarItems(enemigos[i], jugador.inventario.objetos[seleccionItem].getNombre(), Default);
+            veneno = true;
+            jugador.inventario.objetos[seleccionItem] = null;
+        }else if(jugador.inventario.objetos[seleccionItem].getNombre().equalsIgnoreCase("Reduccion")){
+            jugador.aplicarItems(enemigos[i], jugador.inventario.objetos[seleccionItem].getNombre(), Default);
+            jugador.inventario.objetos[seleccionItem] = null;
+        }
+    }
+    public void utilizarItemEnemigo(int i, Agentes jugador){
+        int indiceInventarioE = rand.nextInt(enemigos[i].inventario.objetos.length);
+        double probalidad = rand.nextDouble(0.10,0.20);
+        int Default = 0;
+        for (int b = 0; b < enemigos[i].inventario.objetos.length ; b++) {
+            if(enemigos[i].inventario.objetos[b] == null){
+                continue;
+            }
+            if(enemigos[i].inventario.objetos[indiceInventarioE].getNombre().equalsIgnoreCase("Mancuerna")){
+                enemigos[i].aplicarItems(enemigos[i], enemigos[i].inventario.objetos[indiceInventarioE].getNombre(), probalidad);
+                enemigos[i].inventario.objetos[indiceInventarioE] = null;
+            }else if(enemigos[i].inventario.objetos[indiceInventarioE].getNombre().equalsIgnoreCase("Mascarilla")){
+                enemigos[i].aplicarItems(enemigos[i], enemigos[i].inventario.objetos[indiceInventarioE].getNombre(), Default);
+                enemigos[i].inventario.objetos[indiceInventarioE] = null;
+            }else if(enemigos[i].inventario.objetos[indiceInventarioE].getNombre().equalsIgnoreCase("Sangre")){
+                enemigos[i].aplicarItems(enemigos[i], enemigos[i].inventario.objetos[indiceInventarioE].getNombre(), Default);
+                enemigos[i].inventario.objetos[indiceInventarioE] = null;
+            }else if(enemigos[i].inventario.objetos[indiceInventarioE].getNombre().equalsIgnoreCase("Quebrar")){
+                enemigos[i].aplicarItems(jugador, enemigos[i].inventario.objetos[indiceInventarioE].getNombre(), probalidad);
+                enemigos[i].inventario.objetos[indiceInventarioE] = null;
+            }else if(enemigos[i].inventario.objetos[indiceInventarioE].getNombre().equalsIgnoreCase("Veneno")){
+                enemigos[i].aplicarItems(jugador, enemigos[i].inventario.objetos[indiceInventarioE].getNombre(), Default);
+                enemigos[i].inventario.objetos[indiceInventarioE] = null;
+            }else if(enemigos[i].inventario.objetos[indiceInventarioE].getNombre().equalsIgnoreCase("Reduccion")){
+                enemigos[i].aplicarItems(jugador, enemigos[i].inventario.objetos[indiceInventarioE].getNombre(), Default);
+                enemigos[i].inventario.objetos[indiceInventarioE] = null;
+            }
+            
+        }
+    }
+    public void sistemaDeBatalla(Agentes jugador, int i, boolean boss){
         System.out.println("Hay combate");
         boolean pelea = true;
         boolean defensa = false;
-        int indiceInventarioE;
         int probalidadSoltarItemA;
         //Ver si el jugador o enemigo tiene equipada el Arma
         while (pelea) {
-            //probabilidad que el enemigo pueda usar un item del inventario
-            double probalidad = rand.nextDouble(0.10,0.20);
-            int Default = 0;
-            indiceInventarioE = rand.nextInt(enemigos[i].inventario.objetos.length);
-            probalidadSoltarItemA = rand.nextInt(0,100);
-            //interfaz de batalla
-            System.out.println("----Status----");
-            if(jugador != null){
-                jugador.statusJugador(jugador);
-            }
-            if(enemigos[i] != null){
-                enemigos[i].statusEnemigos(enemigos[i]);
-            }
-            System.out.println("1) Atacar");
-            System.out.println("2) Ver inventario");
-            System.out.println("3) Defender");
-            try {
+            if(boss == false){
+                //probabilidad que el enemigo pueda usar un item del inventario
+                probalidadSoltarItemA = rand.nextInt(0,100);
+                //interfaz de batalla
+                System.out.println("----Status----");
+                if(jugador != null){
+                    jugador.statusJugador(jugador);
+                }
+                if(enemigos[i] != null){
+                    enemigos[i].statusEnemigos(enemigos[i]);
+                }
+                System.out.println("1) Atacar");
+                System.out.println("2) Ver inventario");
+                System.out.println("3) Defender");
+                try {
+                    int opcion = scanner.nextInt();
+                    switch (opcion) {
+                        //Atacar
+                        case 1:
+                            jugador.atacar(enemigos[i]);
+                            System.out.println("Has hecho " + jugador.getAtaque() + " de daño");
+                            if (enemigos[i].getSalud() == 0) {
+                                System.out.println("Has derrotado al enemigo!");
+                                enemigos[i].setIcono(0);
+                                /*if (enemigos[i].inventario.objetos == null && probalidadSoltarItemA > 15){
+                                matriz[enemigos[i].indexi][enemigos[i].indexj] = 3;
+                                }
+                                if(enemigos[i].inventario.objetos != null){
+                                matriz[enemigos[i].indexi][enemigos[i].indexj] = enemigos[i].inventario.objetos[indiceInventarioE].getIconoItem();
+                                }else{
+                                matriz[enemigos[i].indexi][enemigos[i].indexj] = 0;
+                                }*/
+                                matriz[enemigos[i].indexi][enemigos[i].indexj] = 0;
+                                enemigos[i] = null;
+                                pelea = false;
+                            }
+                        break;
+                        
+                        //ver inventario
+                        case 2:
+                            if (jugador.inventario.objetos[0] == null) {
+                                System.out.println("No tienes objetos en el inventario");
+                            } else {
+                                jugador.mostrarInventario();
+                                System.out.println("Desea equipar un objeto?");
+                                System.out.println("1) Si");
+                                System.out.println("2) No");
+                                int op = scanner.nextInt();
+                                if (op == 1) {
+                                    System.out.println("Ingrese el numero de Item");
+                                    int seleccionItem = scanner.nextInt() - 1;
+                                    utilizarItemJugador(jugador, seleccionItem, i);
+                                }
+                            }
+                        break;
+                        //defender
+                        case 3:
+                            System.out.println("Te has defendido en un 25% del daño ");
+                            jugador.defender(enemigos[i].getAtaque());
+                            defensa = true;
+                            break;
+                            default:
+                            System.out.println("ingrese una opcion valida");
+                            break;
+                    }
+                 //Fin del switch
+                } catch(InputMismatchException opcion) {
+                    //Sacado de internet, el try catch no se repetía con el loop
+                    System.out.printf("%s no es un numero, pierde el turno.%n", scanner.next());
+                }
+                //Acciones del enemigo
+                if (enemigos[i] != null && defensa != true) {
+                    if (enemigos[i].getSalud() <= enemigos[i].getSalud()/2) {
+                       utilizarItemEnemigo(i, jugador);
+                    }
+                    //Ataque del enemigo
+                    enemigos[i].atacar(jugador);
+                    System.out.println("Has recibido " + enemigos[i].getAtaque() + " de daño");
+                    if (jugador.getSalud() == 0) {
+                        System.out.println("Te han derrotado");
+                        pelea = false;
+                    }
+                }
+            }else{
+                int probalidadDeAcciones = rand.nextInt(100) +1 ;
+                System.out.println("----Status----");
+                if(jugador != null){
+                    jugador.statusJugador(jugador);
+                }
+                if(Boss != null){
+                    Boss.statusBoss(Boss);
+                }
+                System.out.println("1) Atacar");
+                System.out.println("2) Ver inventario");
+                System.out.println("3) Defender");
                 int opcion = scanner.nextInt();
                 switch (opcion) {
                     //Atacar
                     case 1:
-                        jugador.atacar(enemigos[i]);
-                        System.out.println("Has hecho " + jugador.getAtaque() + " de daño");
-                        if (enemigos[i].getSalud() == 0) {
-                            System.out.println("Has derrotado al enemigo!");
-                            enemigos[i].setIcono(0);
-                            /*if (enemigos[i].inventario.objetos == null && probalidadSoltarItemA > 15){
-                                matriz[enemigos[i].indexi][enemigos[i].indexj] = 3;
-                            }
-                            if(enemigos[i].inventario.objetos != null){
-                                matriz[enemigos[i].indexi][enemigos[i].indexj] = enemigos[i].inventario.objetos[indiceInventarioE].getIconoItem();
-                            }else{
-                                matriz[enemigos[i].indexi][enemigos[i].indexj] = 0;
-                            }*/
-                            matriz[enemigos[i].indexi][enemigos[i].indexj] = 0;
-                            enemigos[i] = null;
-                            pelea = false;
+                    jugador.atacarABoss(Boss);
+                    System.out.println("Has hecho " + jugador.getAtaque() + " de daño");
+                    if (Boss.getSalud() == 0) {
+                        System.out.println("Has derrotado al Boss!");
+                        Boss.setIcono(0);// caracter para la llave
+                        /*if (enemigos[i].inventario.objetos == null && probalidadSoltarItemA > 15){
+                        matriz[enemigos[i].indexi][enemigos[i].indexj] = 3;
                         }
-                        break;
-
-                    //ver inventario
+                        if(enemigos[i].inventario.objetos != null){
+                        matriz[enemigos[i].indexi][enemigos[i].indexj] = enemigos[i].inventario.objetos[indiceInventarioE].getIconoItem();
+                        }else{
+                        matriz[enemigos[i].indexi][enemigos[i].indexj] = 0;
+                        }*/
+                        matriz[Boss.indexi][Boss.indexj] = 0;
+                        Boss = null;
+                        pelea = false;
+                    }
+                    break;
                     case 2:
-                        if (jugador.inventario.objetos[0] == null) {
-                            System.out.println("No tienes objetos en el inventario");
-                        } else {
-                            jugador.mostrarInventario();
-                            System.out.println("Desea equipar un objeto?");
-                            System.out.println("1) Si");
-                            System.out.println("2) No");
-                            int op = scanner.nextInt();
-                            if (op == 1) {
-                                System.out.println("Ingrese el numero de Item");
-                                int seleccionItem = scanner.nextInt() - 1;
-                                if(jugador.inventario.objetos[seleccionItem].getNombre().equalsIgnoreCase("Mancuerna")){
-                                    jugador.aplicarItems(jugador, jugador.inventario.objetos[seleccionItem].getNombre(), probalidad);
-                                    jugador.inventario.objetos[seleccionItem] = null;
-                                }else if(jugador.inventario.objetos[seleccionItem].getNombre().equalsIgnoreCase("Mascarilla")){
-                                    jugador.aplicarItems(jugador, jugador.inventario.objetos[seleccionItem].getNombre(), Default);
-                                    jugador.inventario.objetos[seleccionItem] = null;
-                                }else if(jugador.inventario.objetos[seleccionItem].getNombre().equalsIgnoreCase("Sangre")){
-                                    jugador.aplicarItems(jugador, jugador.inventario.objetos[seleccionItem].getNombre(), Default);
-                                    jugador.inventario.objetos[seleccionItem] = null;
-                                }else if(jugador.inventario.objetos[seleccionItem].getNombre().equalsIgnoreCase("Quebrar")){
-                                    jugador.aplicarItems(enemigos[i], jugador.inventario.objetos[seleccionItem].getNombre(), Default);
-                                    jugador.inventario.objetos[seleccionItem] = null;
-                                }else if(jugador.inventario.objetos[seleccionItem].getNombre().equalsIgnoreCase("Veneno")){
-                                    jugador.aplicarItems(enemigos[i], jugador.inventario.objetos[seleccionItem].getNombre(), Default);
-                                    veneno = true;
-                                    jugador.inventario.objetos[seleccionItem] = null;
-                                }else if(jugador.inventario.objetos[seleccionItem].getNombre().equalsIgnoreCase("Reduccion")){
-                                    jugador.aplicarItems(enemigos[i], jugador.inventario.objetos[seleccionItem].getNombre(), Default);
-                                    jugador.inventario.objetos[seleccionItem] = null;
-                                }
-                            }
+                    //ver inventario
+                    if (jugador.inventario.objetos[0] == null) {
+                        System.out.println("No tienes objetos en el inventario");
+                    } else {
+                        jugador.mostrarInventario();
+                        System.out.println("Desea equipar un objeto?");
+                        System.out.println("1) Si");
+                        System.out.println("2) No");
+                        int op = scanner.nextInt();
+                        if (op == 1) {
+                            System.out.println("Ingrese el numero de Item");
+                            int seleccionItem = scanner.nextInt() - 1;
+                            utilizarItemJugador(jugador, seleccionItem, i);
                         }
-                        break;
-
+                    }
+                    break;
                     //defender
                     case 3:
-                        System.out.println("Te has defendido en un 25% del daño ");
-                        jugador.defender(enemigos[i].getAtaque());
-                        defensa = true;
-                        break;
+                    System.out.println("Te has defendido en un 25% del daño ");
+                    jugador.defender(Boss.getAtaque());
+                    defensa = true;
+                    break;
                     default:
-                        System.out.println("ingrese una opcion valida");
-                        break;
-
-                } //Fin del switch
-            } catch(InputMismatchException opcion) {
-                //Sacado de internet, el try catch no se repetía con el loop
-                System.out.printf("%s no es un numero, pierde el turno.%n", scanner.next());
-            }
-            //Acciones del enemigo
-            if (enemigos[i] != null && defensa != true) {
-                if (enemigos[i].getSalud() <= enemigos[i].getSalud()/2) {
-                    for (int b = 0; b < enemigos[i].inventario.objetos.length ; b++) {
-                        if(enemigos[i].inventario.objetos[b] == null){
-                            continue;
-                        }
-                        if(enemigos[i].inventario.objetos[indiceInventarioE].getNombre().equalsIgnoreCase("Mancuerna")){
-                            enemigos[i].aplicarItems(enemigos[i], enemigos[i].inventario.objetos[indiceInventarioE].getNombre(), probalidad);
-                            enemigos[i].inventario.objetos[indiceInventarioE] = null;
-                        }else if(enemigos[i].inventario.objetos[indiceInventarioE].getNombre().equalsIgnoreCase("Mascarilla")){
-                            enemigos[i].aplicarItems(enemigos[i], enemigos[i].inventario.objetos[indiceInventarioE].getNombre(), Default);
-                            enemigos[i].inventario.objetos[indiceInventarioE] = null;
-                        }else if(enemigos[i].inventario.objetos[indiceInventarioE].getNombre().equalsIgnoreCase("Sangre")){
-                            enemigos[i].aplicarItems(enemigos[i], enemigos[i].inventario.objetos[indiceInventarioE].getNombre(), Default);
-                            enemigos[i].inventario.objetos[indiceInventarioE] = null;
-                        }else if(enemigos[i].inventario.objetos[indiceInventarioE].getNombre().equalsIgnoreCase("Quebrar")){
-                            enemigos[i].aplicarItems(enemigos[i], enemigos[i].inventario.objetos[indiceInventarioE].getNombre(), probalidad);
-                            enemigos[i].inventario.objetos[indiceInventarioE] = null;
-                        }else if(enemigos[i].inventario.objetos[indiceInventarioE].getNombre().equalsIgnoreCase("Veneno")){
-                            enemigos[i].aplicarItems(enemigos[i], enemigos[i].inventario.objetos[indiceInventarioE].getNombre(), Default);
-                            enemigos[i].inventario.objetos[indiceInventarioE] = null;
-                        }else if(enemigos[i].inventario.objetos[indiceInventarioE].getNombre().equalsIgnoreCase("Reduccion")){
-                            enemigos[i].aplicarItems(enemigos[i], enemigos[i].inventario.objetos[indiceInventarioE].getNombre(), Default);
-                            enemigos[i].inventario.objetos[indiceInventarioE] = null;
-                        }
-                        
+                    System.out.println("ingrese una opcion valida");
+                    break;
+                }
+                //Acciones del Boss
+                if(Boss != null){
+                    Boss.AccionesBoss(Boss, jugador, probalidadDeAcciones);
+                    if (jugador.getSalud() == 0) {
+                        System.out.println("Te han derrotado");
+                        pelea = false;
                     }
                 }
-                //Ataque del enemigo
-            enemigos[i].atacar(jugador);
-            System.out.println("Has recibido " + enemigos[i].getAtaque() + " de daño");
-            if (jugador.getSalud() == 0) {
-                System.out.println("Te han derrotado");
-                pelea = false;
             }
-        }
         }
     }
 }

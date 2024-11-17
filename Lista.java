@@ -73,7 +73,11 @@ public class Lista {
                     }else if(i == 2 && j == 3){
                         System.out.println(" | ");
                     }else if (i == 3 && j == 3) {
-                        System.out.print("[" + habitacionActual.getNumeroCuarto()+ "]");
+                        if(habitacionActual.getTipoHabitacion().equalsIgnoreCase("jefe")){
+                            System.out.print("[B]");
+                        }else if(habitacionActual.getTipoHabitacion().equalsIgnoreCase("salida")){
+                            System.out.print("[S]");
+                        }else {System.out.print("[" + habitacionActual.getNumeroCuarto()+ "]");}
                     }else if (i == 4 && j == 3) {
                         System.out.println("     |   ");
                     }else if(i == 5 && j == 3){
