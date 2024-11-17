@@ -193,7 +193,7 @@ public class Agentes
             }else if (Boss.salud > 0 && Boss.defensa <= 0){
                 Boss.salud += objetivo.ataque;
             }
-        }else if (Boss.salud < 300 && probalidad <= 40) {
+        }else if (Boss.salud <= 300 && probalidad <= 40) {
             System.out.println("El Boss te ataco");
             double daño;
             daño = Boss.ataque;
@@ -201,7 +201,7 @@ public class Agentes
             if(objetivo.getSalud() < 0){
                 objetivo.setSalud(0);
             }
-        }else if (Boss.salud < 300 && probalidad >= 60) {
+        }else if (Boss.salud <= 300 && probalidad >= 60) {
             System.out.println("El Boss se defendio");
             defenderBoss(objetivo.ataque);
             if(Boss.defensa <= 0){

@@ -838,7 +838,7 @@ public class UID{
         //Ver si el jugador o enemigo tiene equipada el Arma
         while (pelea) {
             if(boss == false){
-                //probabilidad que el enemigo pueda usar un item del inventario
+                //probabilidad que el enemigo pueda soltar un item 
                 probalidadSoltarItemA = rand.nextInt(0,100);
                 //interfaz de batalla
                 System.out.println("----Status----");
@@ -970,16 +970,16 @@ public class UID{
                             utilizarItemJugador(jugador, seleccionItem, i);
                         }
                     }
-                    break;
+                        break;
                     //defender
                     case 3:
-                    System.out.println("Te has defendido en un 25% del daño ");
-                    jugador.defender(Boss.getAtaque());
-                    defensa = true;
-                    break;
-                    default:
-                    System.out.println("ingrese una opcion valida");
-                    break;
+                        System.out.println("Te has defendido en un 25% del daño ");
+                        jugador.defender(Boss.getAtaque());
+                        defensa = true;
+                        break;
+                        default:
+                        System.out.println("ingrese una opcion valida");
+                        break;
                 }
                 //Acciones del Boss
                 if(Boss != null){
