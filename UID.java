@@ -45,7 +45,7 @@ public class UID{
 
     Agentes[] enemigos;
     int[] spawnEnemigos = null; //ver cuantas entidades de enemigos se crean
-    public UID(int numCuarto, String wasd){
+    public UID(int numCuarto, String wasd, boolean hayBoss, boolean haySalida){
         Armaduras armaduraI = new Armaduras("Sin armadura","Defensa Base");
         Armas armaI = new Armas("Sin arma", "Ataque base");
         Items buffI = new Items("Sin buff",  "Sin afecto");
@@ -64,13 +64,13 @@ public class UID{
             }
         }
         generacionItems();
-        generarAreaMatriz(numCuarto, wasd);
+        generarAreaMatriz(numCuarto, wasd, hayBoss, haySalida);
         encontrarCoordenadasEntidades();
         if(enemigos != null){
             encontrarCoordenadasEnemigos(enemigos);
         }
         }
-    public UID(String wasd){
+    /*public UID(String wasd){
         System.out.println(" Has entrado a la Habitacion de Boss, Ten cuidado!");
         matriz = new int[num][num];
         //Definir las paredes de los costados
@@ -96,8 +96,7 @@ public class UID{
             case "a":
                 reubicarJugador(num/2, num-1); break;
         }
-    }
-    
+    }*/
     private void decidirNumEnemigos(){
         int prob = rand.nextInt(1,101);
         int max = 75;
@@ -203,7 +202,7 @@ public class UID{
     }
 
     //Metodo para generar aleatoriamente la dungeon
-    public  int[][] generarAreaMatriz(int numCuarto, String wasd){
+    public  int[][] generarAreaMatriz(int numCuarto, String wasd, boolean hayBoss, boolean haySalida){
         matriz = new int[num][num];
         //Definir las paredes de los costados
         for(int i = 0; i < num; i++){
@@ -218,18 +217,23 @@ public class UID{
             }
         }
         //Generar entidades
-        int[] entidades = {6, 4, 3, 5};
-        generarEntidades(entidades);
-        generarEnemigos(spawnEnemigos);
-        //Generar puertas
-        if(numCuarto == 1){
-            generarParedesIniciales();
-        } else { //Metodo para generar habitacion que no sea la primera
-            generarParedes(wasd);
+        if(hayBoss){ //Es el cuarto del boss
+            generarHBoss(wasd);
+        } else if(haySalida){ //es el cuarto de la salida
+
+        } else{ //Es un cuarto normal
+            int[] entidades = {6, 4, 3, 5};
+            generarEntidades(entidades);
+            generarEnemigos(spawnEnemigos);
+            //Generar puertas
+            if(numCuarto == 1){
+                generarParedesIniciales();
+            } else { //Metodo para generar habitacion que no sea la primera
+                generarParedes(wasd);
+            }
         }
         return matriz;
     }
-
     //metodo para crear las puertas de la primera habitacion
     public void generarParedesIniciales(){
         int generacion = 1; //probailidad de 100%, se mide con 1/5
@@ -338,6 +342,27 @@ public class UID{
             case "a":
                 reubicarJugador(num/2, num-1); break;
         }
+    }
+
+    private void generarHBoss(String wasd){
+        switch(wasd){ //Reubica al jugador en la entrada del nuevo cuarto
+            case "w":
+                reubicarJugador(num-1, num/2); break;
+            case "s":
+                reubicarJugador(0, num/2); break;
+            case "d":
+                reubicarJugador(num/2, 0); break;
+            case "a":
+                reubicarJugador(num/2, num-1); break;
+        }
+        matriz[num/2][num/2] = 7; //Se crea al Boss en el centro
+        if(matriz[0][0] == 0){
+            matriz[0][0] = 1;
+        }
+    }
+
+    private void generarSalida(){
+
     }
 
     public void reubicarJugador(int coordenadaI, int coordenadaJ){
