@@ -103,8 +103,8 @@ public class Agentes
     public void setArma(Armas armaNueva){
         this.arma = armaNueva;
     }
-    public void setBuff(double efecto){
-        this.defensa = efecto;
+    public void setBuff(Items buff){
+        this.buff = buff;
     }
     public void setDebuff(Items debuff){
         this.debuff = debuff;
@@ -251,7 +251,7 @@ public class Agentes
                 System.out.println(nombreItem + " Se aplico correctamente ");
                 break;
             case "Sangre":
-                objetivo.salud += objetivo.ataque * 20;
+                objetivo.salud += objetivo.ataque * 0.20;
                 System.out.println(nombreItem + " Se aplico correctamente ");
                 break;
             // aplicables al oponente
@@ -267,7 +267,6 @@ public class Agentes
                 objetivo.ataque -= objetivo.ataque * 0.20;
                 System.out.println(nombreItem + " Se aplico correctamente ");
                 break;
-
         }
     }
 
