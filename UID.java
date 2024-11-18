@@ -488,6 +488,8 @@ public class UID{
                     System.out.print("B"); break; //Boss
                     case 8:
                     System.out.print("S"); break; //Salida
+                    case 9:
+                    System.out.print("+"); break; //llave!
                 }
             }
             System.out.println();
@@ -958,7 +960,7 @@ public class UID{
                         }else{
                         matriz[enemigos[i].indexi][enemigos[i].indexj] = 0;
                         }*/
-                        matriz[Boss.indexi][Boss.indexj] = 0;
+                        matriz[Boss.indexi][Boss.indexj] = 9;
                         Boss = null;
                         jugador.setLlave(true);
                         pelea = false;

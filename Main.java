@@ -120,7 +120,7 @@ public class Main {
         }
     }
     private void comprobarSalida(){
-        if(!haySalida && rand.nextInt(1,100) <= probalidadSalida){
+        if(!haySalida && rand.nextInt(100) + 1 <= probalidadSalida){
             haySalida = true;
         } else if(!hayBoss){
             probalidadSalida += 5;
@@ -354,6 +354,9 @@ public class Main {
                     break;
                 }
             }
+        }
+        if (jugador.getWin() == true) {
+            System.out.println("-------Has ganado!-------");
         }
     }
 }
