@@ -119,10 +119,10 @@ public class Main {
             probalidadBoss += 7;
         }
     }
-    private void comprobarSalida(String wasd){
-        if(probalidadSalida >= rand.nextInt(1,100)){
+    private void comprobarSalida(){
+        if(!haySalida && rand.nextInt(1,100) <= probalidadSalida){
             haySalida = true;
-        } else{
+        } else if(!hayBoss){
             probalidadSalida += 5;
         }
     }
@@ -144,7 +144,7 @@ public class Main {
         
         //Ver si salió de la habitación
         boolean puertaTaken = false;
-        jugador.setLlave(0);
+        jugador.setLlave(false);
         String mover = "w";
         Nodo actual = new Nodo(juego.uid, juego.numCuarto);
         lista.insertarInicio(actual, mover);
@@ -153,7 +153,7 @@ public class Main {
         
         
         //Ejecucion principal del juego
-        while(puertaTaken == false && jugador.getSalud() != 0){
+        while(!jugador.getWin() && jugador.getSalud() != 0){
             juego.revisarConexiones(actual);
             System.out.println(juego.probalidadBoss);
             actual.uid.imprimirMatriz(jugador); mover = juego.scanner.nextLine();
@@ -206,9 +206,21 @@ public class Main {
                         if(juego.numeroDeBoss == 0){
                             juego.comprobarBoss();
                         }
+                        if(!juego.hayBoss){
+                            if(juego.numeroDeSalida == 0){
+                                juego.comprobarSalida();
+                            }
+                        }
                         juego.numCuarto++;
                         UID uidNuevo = new UID(juego.numCuarto, mover, juego.hayBoss, juego.haySalida);
                         Nodo nuevoNodo = new Nodo(uidNuevo, juego.numCuarto);
+                        if(!juego.hayBoss){
+                            if(juego.haySalida){
+                                juego.numeroDeSalida += 1;
+                                nuevoNodo.setTipoHabitacion("salida");
+                                juego.haySalida = false;
+                            }
+                        }
                         if(juego.hayBoss){
                             juego.numeroDeBoss += 1;
                             nuevoNodo.setTipoHabitacion("jefe");
@@ -233,9 +245,21 @@ public class Main {
                         if(juego.numeroDeBoss == 0){
                             juego.comprobarBoss();
                         }
+                        if(!juego.hayBoss){
+                            if(juego.numeroDeSalida == 0){
+                                juego.comprobarSalida();
+                            }
+                        }
                         juego.numCuarto++;
                         UID uidNuevo = new UID(juego.numCuarto, mover, juego.hayBoss, juego.haySalida);
                         Nodo nuevoNodo = new Nodo(uidNuevo, juego.numCuarto);
+                        if(!juego.hayBoss){
+                            if(juego.haySalida){
+                                juego.numeroDeSalida += 1;
+                                nuevoNodo.setTipoHabitacion("salida");
+                                juego.haySalida = false;
+                            }
+                        }
                         if(juego.hayBoss){
                             juego.numeroDeBoss += 1;
                             nuevoNodo.setTipoHabitacion("jefe");
@@ -259,9 +283,21 @@ public class Main {
                         if(juego.numeroDeBoss == 0){
                             juego.comprobarBoss();
                         }
+                        if(!juego.hayBoss){
+                            if(juego.numeroDeSalida == 0){
+                                juego.comprobarSalida();
+                            }
+                        }
                         juego.numCuarto++;
                         UID uidNuevo = new UID(juego.numCuarto, mover, juego.hayBoss, juego.haySalida);
                         Nodo nuevoNodo = new Nodo(uidNuevo, juego.numCuarto);
+                        if(!juego.hayBoss){
+                            if(juego.haySalida){
+                                juego.numeroDeSalida += 1;
+                                nuevoNodo.setTipoHabitacion("salida");
+                                juego.haySalida = false;
+                            }
+                        }
                         if(juego.hayBoss){
                             juego.numeroDeBoss += 1;
                             nuevoNodo.setTipoHabitacion("jefe");
@@ -285,9 +321,21 @@ public class Main {
                         if(juego.numeroDeBoss == 0){
                             juego.comprobarBoss();
                         }
+                        if(!juego.hayBoss){
+                            if(juego.numeroDeSalida == 0){
+                                juego.comprobarSalida();
+                            }
+                        }
                         juego.numCuarto++;
                         UID uidNuevo = new UID(juego.numCuarto, mover, juego.hayBoss, juego.haySalida);
                         Nodo nuevoNodo = new Nodo(uidNuevo, juego.numCuarto);
+                        if(!juego.hayBoss){
+                            if(juego.haySalida){
+                                juego.numeroDeSalida += 1;
+                                nuevoNodo.setTipoHabitacion("salida");
+                                juego.haySalida = false;
+                            }
+                        }
                         if(juego.hayBoss){
                             juego.numeroDeBoss += 1;
                             nuevoNodo.setTipoHabitacion("jefe");

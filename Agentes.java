@@ -7,6 +7,7 @@ public class Agentes
     private double ataque;
     private double defensa;
     boolean llave;
+    boolean win;
 
     /*Características compartidas y modificables por toda entidad
       también ocupa la creaciones de clases de items para funcionar, lo cual lo ideal sería hacerlo en el main*/
@@ -31,6 +32,7 @@ public class Agentes
         this.debuff = debuff;
         this.inventario = new Inventario(3);
         this.llave = false;
+        this.win = false;
         this.indexi = 0;
         this.indexj = 0;
     } 
@@ -53,13 +55,17 @@ public class Agentes
     public void mostrarInventario(){
         inventario.mostrarInventario(); 
     }
-    public void setLlave(int opcion){
-        if(opcion == 1 ){
-            this.llave = true;
-        }
+    public void setLlave(boolean opcion){
+            this.llave = opcion;
+    }
+    public void setWin(boolean opcion){
+        this.win = opcion;
     }
     public boolean getLlave(){
         return llave;
+    }
+    public boolean getWin(){
+        return win;
     }
 
     //Getters características únicas

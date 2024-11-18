@@ -74,33 +74,6 @@ public class UID{
             encontrarCordenadasBoss();
         }
     }
-    /*public UID(String wasd){
-    System.out.println(" Has entrado a la Habitacion de Boss, Ten cuidado!");
-    matriz = new int[num][num];
-    //Definir las paredes de los costados
-    for(int i = 0; i < num; i++){
-    for(int j = 0; j < num; j++){
-    if(i == 0 || i == num - 1){
-    matriz[i][j] = 1;
-    } else if(j == 0 || j == num - 1){
-    matriz[i][j] = 1;
-    } else{
-    matriz[i][j] = 0;
-    }
-    }
-    }
-    matriz[num/2][num/2] = 7; //Se crea al Boss en el centro
-    switch(wasd){ //Reubica al jugador en la entrada del nuevo cuarto
-    case "w":
-    reubicarJugador(num-1, num/2); break;
-    case "s":
-    reubicarJugador(0, num/2); break;
-    case "d":
-    reubicarJugador(num/2, 0); break;
-    case "a":
-    reubicarJugador(num/2, num-1); break;
-    }
-    }*/
     private void decidirNumEnemigos(){
         int prob = rand.nextInt(1,101);
         int max = 75;
@@ -223,8 +196,6 @@ public class UID{
         //Generar entidades
         if(hayBoss){ //Es el cuarto del boss
             generarHBoss(wasd);
-        } else if(haySalida){ //es el cuarto de la salida
-            
         } else{ //Es un cuarto normal
             int[] entidades = {6, 4, 3, 5};
             generarEntidades(entidades);
@@ -233,7 +204,7 @@ public class UID{
             if(numCuarto == 1){
                 generarParedesIniciales();
             } else { //Metodo para generar habitacion que no sea la primera
-                generarParedes(wasd);
+                generarParedes(wasd, haySalida);
             }
         }
         return matriz;
@@ -272,7 +243,7 @@ public class UID{
         }
     }
     
-    public void generarParedes(String wasd){
+    public void generarParedes(String wasd, boolean haySalida){
         boolean condicion = true;
         int contador = 0;
         int generacion = 1; //probailidad de 100%, se mide con 1/5
@@ -309,13 +280,24 @@ public class UID{
                     case 4: //Pared de la derecha
                     matriz[num/2][num - 1] = 0; break;
                 }
-                switch(genMaximo){
-                    case 5:
-                    genMaximo = 5; break; //60% de probabilidad
-                    case 3:
-                    genMaximo = 2; break; //40% de probabilidad
-                    case 2:
-                    genMaximo = 1; break;//20% de probabilidad
+                if(haySalida){
+                    switch(contador){
+                        case 1:
+                            genMaximo = 5; break; //100% de probabilidad, segunda puerta para la salida
+                        case 2:
+                            genMaximo = 2; break; //40% de probabilidad
+                        case 3:
+                            genMaximo = 1; break;//20% de probabilidad
+                    }
+                } else{
+                    switch(genMaximo){
+                        case 5:
+                            genMaximo = 5; break; //60% de probabilidad
+                        case 3:
+                            genMaximo = 2; break; //40% de probabilidad
+                        case 2:
+                            genMaximo = 1; break;//20% de probabilidad
+                    }
                 }
                 generacion = rand.nextInt(1, 6);
                 paredRandom = rand.nextInt(1,5);
@@ -346,6 +328,18 @@ public class UID{
             case "a":
             reubicarJugador(num/2, num-1); break;
         }
+        if(haySalida){
+            switch(paredHechas[1]){
+                case 1:
+                    matriz[0][num/2] = 8; break;
+                case 2:
+                    matriz[num - 1][num/2] = 8; break;
+                case 3:
+                    matriz[num/2][0] = 8; break;
+                case 4:
+                    matriz[num/2][num - 1] = 8; break;
+            }
+        }
     }
     
     private void generarHBoss(String wasd){
@@ -364,9 +358,9 @@ public class UID{
             matriz[0][0] = 1;
         }
     }
-    
+
     private void generarSalida(){
-        
+
     }
     
     public void encontrarCordenadasBoss(){
@@ -512,12 +506,27 @@ public class UID{
     }
     
     //comprobante diferente para el jugador, ya que este puede entrar a la puerta
-    public boolean sePuedeJugador(int espacio){
-        boolean sePuede = true;
-        if(espacio == 3 || espacio == 4 || espacio == 5){
-            sePuede = true;
-        } else if(espacio != 0){
-            sePuede = false;
+    public boolean sePuedeJugador(int espacio, Agentes jugador){
+        boolean sePuede;
+        switch(espacio){
+            case 0:
+                sePuede = true; break;
+            case 3:
+                sePuede = true; break;
+            case 4:
+                sePuede = true; break;
+            case 5:
+                sePuede = true; break;
+            case 8:
+                if(jugador.getLlave()){
+                    jugador.setWin(true);
+                    sePuede = true;
+                } else {
+                    sePuede = false;
+                }
+                break;
+            default:
+                sePuede = false; break;
         }
         return sePuede;
     }
@@ -537,25 +546,25 @@ public class UID{
         if(agente.getIcono() == 6){
             switch(wasdm){
                 case "w":
-                if(sePuedeJugador(matriz[indexi -1][indexj]) == true){
+                if(sePuedeJugador(matriz[indexi -1][indexj], agente)){
                     matriz[indexi][indexj] = 0;
                     matriz[indexi - 1][indexj] = agente.getIcono();
                 }
                 break;
                 case "a":
-                if(sePuedeJugador(matriz[indexi][indexj - 1]) == true){
+                if(sePuedeJugador(matriz[indexi][indexj - 1], agente)){
                     matriz[indexi][indexj] = 0;
                     matriz[indexi][indexj - 1] = agente.getIcono();
                 }
                 break;
                 case "s":
-                if(sePuedeJugador(matriz[indexi + 1][indexj]) == true){
+                if(sePuedeJugador(matriz[indexi + 1][indexj], agente)){
                     matriz[indexi][indexj] = 0;
                     matriz[indexi + 1][indexj] = agente.getIcono();
                 }
                 break;
                 case "d":
-                if(sePuedeJugador(matriz[indexi][indexj + 1]) == true){
+                if(sePuedeJugador(matriz[indexi][indexj + 1],agente)){
                     matriz[indexi][indexj] = 0;
                     matriz[indexi][indexj + 1] = agente.getIcono();
                 }
@@ -951,6 +960,7 @@ public class UID{
                         }*/
                         matriz[Boss.indexi][Boss.indexj] = 0;
                         Boss = null;
+                        jugador.setLlave(true);
                         pelea = false;
                     }
                     break;
