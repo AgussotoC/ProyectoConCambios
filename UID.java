@@ -1,3 +1,4 @@
+
 import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
@@ -415,6 +416,7 @@ public class UID{
             }
         }
     }
+    //Encuentra enemigos en la matriz y guarda las cordenadas de cada uno en sus atributos correspondientes
     public void encontrarCoordenadasEnemigos(Agentes[] enemigos){
         int contadorEnemigos = 0;
         for(int i = 0; i < num; i++){
@@ -574,7 +576,6 @@ public class UID{
             }
         }
         if(enemigos != null){
-            //Falta probalidad de moverse hacia jugador!
             for (Agentes enemigo : enemigos) {
                 if(enemigo == null){
                     continue;
@@ -724,7 +725,7 @@ public class UID{
             }
         }
     }
-    
+    //Creacion de Items, armas y armaduras
     private void generacionItems(){
         //armas
         armas[0] = new Armas("Arma basica", "+20% de daño");
@@ -787,6 +788,7 @@ public class UID{
             matriz[num/2][0] = 6; break;
         }
     }
+    //Aplica los items al jugador
     public void utilizarItemJugador(Agentes jugador ,int seleccionItem, int i){
         double probalidad = rand.nextDouble(0.10,0.20);
         int Default = 0;
@@ -811,6 +813,7 @@ public class UID{
             jugador.inventario.objetos[seleccionItem] = null;
         }
     }
+    //Aplica los items al enemigo
     public void utilizarItemEnemigo(int i, Agentes jugador){
         int indiceInventarioE = rand.nextInt(enemigos[i].inventario.objetos.length);
         double probalidad = rand.nextDouble(0.10,0.20);
@@ -841,6 +844,7 @@ public class UID{
             
         }
     }
+    //Metodo que controla el sistema de batalla de los enemigos y el jefe
     public void sistemaDeBatalla(Agentes jugador, int i, boolean boss){
         System.out.println("Hay combate");
         boolean pelea = true;
@@ -872,14 +876,16 @@ public class UID{
                             if (enemigos[i].getSalud() == 0) {
                                 System.out.println("Has derrotado al enemigo!");
                                 enemigos[i].setIcono(0);
-                                /*if (enemigos[i].inventario.objetos == null && probalidadSoltarItemA > 15){
-                                matriz[enemigos[i].indexi][enemigos[i].indexj] = 3;
+                                if (enemigos[i].inventario.objetos == null && probalidadSoltarItemA > 15){
+                                    int itemE = rand.nextInt(6); // Da un item aleatorio con probalidad de 15% al jugador al morir el enemigo si el inventario del enemigo es null
+                                    jugador.agregarItemAlInventario(items[itemE]);
+                                    System.out.println("El enemigo te ha dado: " + items[itemE].getNombre() );
                                 }
                                 if(enemigos[i].inventario.objetos != null){
-                                matriz[enemigos[i].indexi][enemigos[i].indexj] = enemigos[i].inventario.objetos[indiceInventarioE].getIconoItem();
-                                }else{
-                                matriz[enemigos[i].indexi][enemigos[i].indexj] = 0;
-                                }*/
+                                    int itemE = rand.nextInt(6);
+                                    jugador.agregarItemAlInventario(items[itemE]);
+                                    System.out.println("El enemigo te ha dado: " + items[itemE].getNombre() );
+                                }
                                 matriz[enemigos[i].indexi][enemigos[i].indexj] = 0;
                                 enemigos[i] = null;
                                 pelea = false;
@@ -951,16 +957,8 @@ public class UID{
                     System.out.println("Has hecho " + jugador.getAtaque() + " de daño");
                     if (Boss.getSalud() == 0) {
                         System.out.println("Has derrotado al Boss!");
-                        Boss.setIcono(0);// caracter para la llave
-                        /*if (enemigos[i].inventario.objetos == null && probalidadSoltarItemA > 15){
-                        matriz[enemigos[i].indexi][enemigos[i].indexj] = 3;
-                        }
-                        if(enemigos[i].inventario.objetos != null){
-                        matriz[enemigos[i].indexi][enemigos[i].indexj] = enemigos[i].inventario.objetos[indiceInventarioE].getIconoItem();
-                        }else{
-                        matriz[enemigos[i].indexi][enemigos[i].indexj] = 0;
-                        }*/
-                        matriz[Boss.indexi][Boss.indexj] = 9;
+                        Boss.setIcono(0);
+                        matriz[Boss.indexi][Boss.indexj] = 0;
                         Boss = null;
                         jugador.setLlave(true);
                         pelea = false;
