@@ -6,8 +6,6 @@ import java.util.Scanner;
 public class UID{
     Scanner scanner = new Scanner(System.in);
     Random rand = new Random();
-    Agentes agentes;
-    Inventario inventario;
     boolean veneno;
     //Coordenadas de cada entidad (exceptuando al jugador)
     int indexiItems;
@@ -16,14 +14,16 @@ public class UID{
     int indexjArmas;
     int indexiArmadura;
     int indexjArmadura;
+
     //Coordenadas de los enemigos
     int[] indexiEnemigos;
     int[] indexjEnemigos;
+
     //Creacion de objteos
     Armas[] armas = new Armas[3];
     Armaduras[] armaduras = new Armaduras[3];
     Items[] items = new Items[6];
-    Lista lista = new Lista();
+
     //Creacion de la matriz y su tamaño
     int[][] matriz;
     int num = rand.nextInt(8, 17); //Tamaño de la matriz
@@ -47,6 +47,8 @@ public class UID{
     Agentes[] enemigos;
     int[] spawnEnemigos = null; //ver cuantas entidades de enemigos se crean
     Agentes Boss = new Agentes(7, 600, 100, 300, null, null, null, null);
+
+    //Contructor
     public UID(int numCuarto, String wasd, boolean hayBoss, boolean haySalida){
         Armaduras armaduraI = new Armaduras("Sin armadura","Defensa Base");
         Armas armaI = new Armas("Sin arma", "Ataque base");
@@ -101,36 +103,39 @@ public class UID{
     private void generarEntidades(int[] entidades){
         for(int k = 0; k < entidades.length; k++)
         {
-            esPosible = false;
-            range = (num - 2) * (num - 2);
-            rng = rand.nextInt(1 , range + 1);
-            for(int i = 0; i < mChiquita; i++)
-            {
-                for(int j =  0; j < mChiquita; j++)
+            if(rand.nextInt(1, 101) <= 25 || k == 0){
+                esPosible = false;
+                range = (num - 2) * (num - 2); //area dentro de las paredes
+                rng = rand.nextInt(1 , range + 1);
+                for(int i = 0; i < mChiquita; i++)
                 {
-                    if(matriz[i][j] != 0)
+                    for(int j =  0; j < mChiquita; j++)
                     {
-                        range -= 1;
-                    } else if(rng == 1)
-                    {
-                        matriz[i][j] = entidades[k];
-                        esPosible = true;
-                        break;
-                    } else
-                    {
-                        range -= 1;
-                        if(range < 1){
-                            range = 2;
+                        if(matriz[i][j] != 0)
+                        {
+                            range -= 1;
+                        } else if(rng == 1)
+                        {
+                            matriz[i][j] = entidades[k];
+                            esPosible = true;
+                            break;
+                        } else
+                        {
+                            range -= 1;
+                            if(range < 1){
+                                range = 2;
+                            }
+                            rng = rand.nextInt(1, range + 1);
                         }
-                        rng = rand.nextInt(1, range + 1);
+                    }
+                    if(esPosible)
+                    {
+                        break;
                     }
                 }
-                if(esPosible)
-                {
-                    break;
-                }
             }
-        }
+            }
+
         esPosible = false;
         range = (num - 2) * (num - 2);
         rng = rand.nextInt(1 , range + 1);
@@ -214,7 +219,9 @@ public class UID{
     public void generarParedesIniciales(){
         int generacion = 1; //probailidad de 100%, se mide con 1/5
         int genMaximo = 5;
-        int maxPared = 5;
+        int contador = 0;
+        int[] paredHechas = {0 , 0, 0, 0};
+        boolean condicion = true;
         int paredRandom = rand.nextInt(1,5);
         for(int k = 0; k < 4; k++){
             if(generacion <= genMaximo){
@@ -228,16 +235,30 @@ public class UID{
                     case 4:
                     matriz[num/2][num - 1] = 0; break;
                 }
-                switch(genMaximo){
-                    case 5:
-                    genMaximo = 3; break;
-                    case 3:
-                    genMaximo = 2; break;
+                switch(contador){
+                    case 1:
+                        genMaximo = 5; break;
                     case 2:
-                    genMaximo = 1; break;
+                        genMaximo = 2; break;
+                    case 3:
+                        genMaximo = 1; break;
                 }
                 generacion = rand.nextInt(1, 6);
                 paredRandom = rand.nextInt(1,5);
+                while (condicion){
+                    if(k == 3){
+                        condicion = false;
+                    }
+                    else if(paredRandom == paredHechas[0] || paredRandom == paredHechas[1] ||
+                            paredRandom == paredHechas[2] || paredRandom == paredHechas[3]){
+                        paredRandom = rand.nextInt(1,5);
+                    } else{
+                        paredHechas[contador] = paredRandom;
+                        condicion = false;
+                    }
+                }
+                condicion = true;
+                contador++;
             } else{
                 break;
             }
@@ -268,7 +289,7 @@ public class UID{
             default:
             paredRandom = rand.nextInt(1,5);
         }
-        for(int k = 0; k < 4; k++){
+        for(int k = 0; k < 4; k++){ //Creacion de las demas puertas
             contador++;
             if(generacion <= genMaximo){
                 switch (paredRandom){
@@ -291,10 +312,10 @@ public class UID{
                             genMaximo = 1; break;//20% de probabilidad
                     }
                 } else{
-                    switch(genMaximo){
+                    switch(contador){
                         case 5:
                             genMaximo = 5; break; //60% de probabilidad
-                        case 3:
+                        case 4:
                             genMaximo = 2; break; //40% de probabilidad
                         case 2:
                             genMaximo = 1; break;//20% de probabilidad
@@ -586,28 +607,28 @@ public class UID{
                 int indexjEnemigo = enemigo.getIndexJ();
                 switch (moverE) {
                     case "w":
-                    if (indexiEnemigo > 0 && sePuede(matriz[indexiEnemigo - 1][indexjEnemigo]) == true) {
+                    if ((enemigo.indexi > 0) && sePuede(matriz[indexiEnemigo - 1][indexjEnemigo]) == true) {
                         matriz[indexiEnemigo][indexjEnemigo] = 0;
                         matriz[indexiEnemigo - 1][indexjEnemigo] = enemigo.getIcono();
                         enemigo.setIndexI(indexiEnemigo - 1);
                     }
                     break;
                     case "a":
-                    if (indexjEnemigo > 0 && sePuede(matriz[indexiEnemigo][indexjEnemigo - 1])) {
+                    if ((enemigo.indexj > 0) && sePuede(matriz[indexiEnemigo][indexjEnemigo - 1])) {
                         matriz[indexiEnemigo][indexjEnemigo] = 0;
                         matriz[indexiEnemigo][indexjEnemigo - 1] = enemigo.getIcono();
                         enemigo.setIndexJ(indexjEnemigo - 1);
                     }
                     break;
                     case "s":
-                    if (indexiEnemigo < num - 1 && sePuede(matriz[indexiEnemigo + 1][indexjEnemigo])) {
+                    if ((enemigo.indexi < num - 2) && sePuede(matriz[indexiEnemigo + 1][indexjEnemigo])) {
                         matriz[indexiEnemigo][indexjEnemigo] = 0;
                         matriz[indexiEnemigo + 1][indexjEnemigo] = enemigo.getIcono();
                         enemigo.setIndexI(indexiEnemigo + 1);
                     }
                     break;
                     case "d":
-                    if (indexjEnemigo < num - 1 && sePuede(matriz[indexiEnemigo][indexjEnemigo + 1])) {
+                    if ((enemigo.indexi < num - 2) && sePuede(matriz[indexiEnemigo][indexjEnemigo + 1])) {
                         matriz[indexiEnemigo][indexjEnemigo] = 0;
                         matriz[indexiEnemigo][indexjEnemigo + 1] = enemigo.getIcono();
                         enemigo.setIndexJ(indexjEnemigo + 1);
@@ -642,6 +663,7 @@ public class UID{
                     for(int k = enemigos[i].indexj -1 ; k <= enemigos[i].indexj +1 ; k++){
                         if (indexiJugador == j && indexjJugador == k) {
                             hayCombate = true;
+                            imprimirMatriz(jugador);
                             sistemaDeBatalla(jugador, i,false); // Inicia combate con el enemigo cercano
                             return true;
                         }
@@ -949,47 +971,52 @@ public class UID{
                 System.out.println("1) Atacar");
                 System.out.println("2) Ver inventario");
                 System.out.println("3) Defender");
-                int opcion = scanner.nextInt();
-                switch (opcion) {
-                    //Atacar
-                    case 1:
-                    jugador.atacarABoss(Boss);
-                    System.out.println("Has hecho " + jugador.getAtaque() + " de daño");
-                    if (Boss.getSalud() == 0) {
-                        System.out.println("Has derrotado al Boss!");
-                        Boss.setIcono(0);
-                        matriz[Boss.indexi][Boss.indexj] = 0;
-                        Boss = null;
-                        jugador.setLlave(true);
-                        pelea = false;
-                    }
-                    break;
-                    case 2:
-                    //ver inventario
-                    if (jugador.inventario.objetos[0] == null) {
-                        System.out.println("No tienes objetos en el inventario");
-                    } else {
-                        jugador.mostrarInventario();
-                        System.out.println("Desea equipar un objeto?");
-                        System.out.println("1) Si");
-                        System.out.println("2) No");
-                        int op = scanner.nextInt();
-                        if (op == 1) {
-                            System.out.println("Ingrese el numero de Item");
-                            int seleccionItem = scanner.nextInt() - 1;
-                            utilizarItemJugador(jugador, seleccionItem, i);
-                        }
-                    }
-                        break;
-                    //defender
-                    case 3:
-                        System.out.println("Te has defendido en un 25% del daño ");
-                        jugador.defender(Boss.getAtaque());
-                        defensa = true;
-                        break;
+                try{
+                    int opcion = scanner.nextInt();
+                    switch (opcion) {
+                        //Atacar
+                        case 1:
+                            jugador.atacarABoss(Boss);
+                            System.out.println("Has hecho " + jugador.getAtaque() + " de daño");
+                            if (Boss.getSalud() == 0) {
+                                System.out.println("Has derrotado al Boss!");
+                                Boss.setIcono(0);
+                                matriz[Boss.indexi][Boss.indexj] = 0;
+                                Boss = null;
+                                jugador.setLlave(true);
+                                pelea = false;
+                            }
+                            break;
+                        case 2:
+                            //ver inventario
+                            if (jugador.inventario.objetos[0] == null) {
+                                System.out.println("No tienes objetos en el inventario");
+                            } else {
+                                jugador.mostrarInventario();
+                                System.out.println("Desea equipar un objeto?");
+                                System.out.println("1) Si");
+                                System.out.println("2) No");
+                                int op = scanner.nextInt();
+                                if (op == 1) {
+                                    System.out.println("Ingrese el numero de Item");
+                                    int seleccionItem = scanner.nextInt() - 1;
+                                    utilizarItemJugador(jugador, seleccionItem, i);
+                                }
+                            }
+                            break;
+                        //defender
+                        case 3:
+                            System.out.println("Te has defendido en un 25% del daño ");
+                            jugador.defender(Boss.getAtaque());
+                            defensa = true;
+                            break;
                         default:
-                        System.out.println("ingrese una opcion valida");
-                        break;
+                            System.out.println("ingrese una opcion valida");
+                            break;
+                    }
+                } catch(InputMismatchException opcion) {
+                    //Sacado de internet, el try catch no se repetía con el loop
+                    System.out.printf("%s no es un numero, pierde el turno.%n", scanner.next());
                 }
                 //Acciones del Boss
                 if(Boss != null){

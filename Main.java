@@ -127,7 +127,6 @@ public class Main {
         }
     }
     public static void main(String[] args) {
-        Random rand = new Random();
         Main juego = new Main();
         Lista lista = new Lista();
         //Vector y variable necesarias para mover la casilla enemigo
@@ -143,19 +142,17 @@ public class Main {
         juego.uid.encontrarCoordenadasEntidades();
         
         //Ver si salió de la habitación
-        boolean puertaTaken = false;
         jugador.setLlave(false);
         String mover = "w";
         Nodo actual = new Nodo(juego.uid, juego.numCuarto);
         lista.insertarInicio(actual, mover);
         juego.mazmorra[25][25] = actual;
-        
-        
-        
+
+
+
         //Ejecucion principal del juego
         while(!jugador.getWin() && jugador.getSalud() != 0){
             juego.revisarConexiones(actual);
-            System.out.println(juego.probalidadBoss);
             actual.uid.imprimirMatriz(jugador); mover = juego.scanner.nextLine();
             try{
                 if(mover.equalsIgnoreCase("m")){
@@ -164,38 +161,12 @@ public class Main {
                 }else{
                     actual.uid.moverPersonaje(mover, jugador); System.out.println();
                 }
-                /*if(jugador.getDebuff()){
-                jugador.venenoAtaque(juego.dañoVeneno);
-                if(jugador.getSalud() != 0){
-                System.out.println("Daño del veneno: " + juego.dañoVeneno);
-                if(juego.dañoVeneno < 10){
-                juego.dañoVeneno += 1;
-                }
-                }
-                }*/
-                /*if(enemigos[enemigoActual] != null){
-                if(enemigos[enemigoActual].getDebuff()){
-                enemigos[enemigoActual].venenoAtaque(juego.dañoVeneno);
-                if(enemigos[enemigoActual].getSalud() == 0){
-                enemigos[enemigoActual] = null;
-                for (int i = 0; i < juego.uid.num; i++) {
-                for (int j = 0; j < juego.uid.num; j++) {
-                if (juego.uid.matriz[i][j] == 2) {
-                juego.uid.matriz[i][j] = 0;
-                }
-                }
-                }
-                }
-                if(juego.dañoVeneno < 10){
-                juego.dañoVeneno += 1;
-                }
-                }
-                }*/
+
                 //Comprobantes para ver si el jugador agarró una arma, item, debuff, o entró a la puerta
                 actual.uid.encontrarEquipable(jugador);
                 
                 //Incialización del comprobante para ver si el jugador esta en el area del enemigo
-                if(actual.uid.areaEnemigo(jugador) == true);
+                if(actual.uid.areaEnemigo(jugador));
                 if(actual.getTipoHabitacion().equalsIgnoreCase("jefe") && actual.uid.areaBoss(jugador) == true);
             } catch (ArrayIndexOutOfBoundsException opcion){
                 switch (mover){
