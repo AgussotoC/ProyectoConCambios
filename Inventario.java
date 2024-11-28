@@ -3,11 +3,13 @@ public class Inventario {
     private int cantidad;
     public Items[] objetos;
 
-    public Inventario(int Capacidad){ //Constructor de Items para el inventario
+    //Constructor de Items para el inventario
+    public Inventario(int Capacidad){ 
         this.Capacidad = Capacidad;
         this.objetos = new Items[Capacidad];
         this.cantidad = 0;
     }
+    //Agrega al inventario
     public void agregarItem(Items item){
             if(cantidad < Capacidad){
                 objetos[cantidad] = item;
@@ -16,6 +18,7 @@ public class Inventario {
                 System.out.println("El inventario esta lleno");
             }
     }
+    // imprime el inventario
     public void mostrarInventario(){
         System.out.println("Items:");
         for(int i = 0; i < cantidad; i++){

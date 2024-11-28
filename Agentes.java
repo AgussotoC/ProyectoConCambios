@@ -36,31 +36,37 @@ public class Agentes
         this.indexi = 0;
         this.indexj = 0;
     } 
+    // setters de cordenadas
     public void setIndexI(int i){
         indexi = i;
     }
     public void setIndexJ(int j){
         indexj = j;
     }
+    // getters de cordenadas
     public int getIndexJ(){
        return  indexj;
     }
     public int getIndexI(){
         return  indexi;
      }
-    
+    //Metodo para agregar Items al inventario
     public void agregarItemAlInventario(Items item){
         inventario.agregarItem(item);
     }
+    //Muestra el inventario
     public void mostrarInventario(){
         inventario.mostrarInventario(); 
     }
+    // setter para la llave de salida
     public void setLlave(boolean opcion){
             this.llave = opcion;
     }
+    // setter para comprobar que puede salir de la habitacion final
     public void setWin(boolean opcion){
         this.win = opcion;
     }
+    // getters 
     public boolean getLlave(){
         return llave;
     }
@@ -115,7 +121,7 @@ public class Agentes
     public void setIcono(int ingreso){
         this.icono = ingreso;
     }
-    //Metodo que recibe el daño y lo reduce a la salud
+    //Metodo que recibe el daño y lo reduce a la salud o armadura
     public double recibirDaño(double daño){
         if(armadura.getVida() == 0){
             salud -= daño;
@@ -145,6 +151,7 @@ public class Agentes
         }
         return salud;
     }
+    // Metodo para hacerle  daño al boss
     public double recibirDañoBoss(double daño){
         if(defensa > 0){
             defensa -= daño;
@@ -161,6 +168,7 @@ public class Agentes
         }
         return salud;
     }
+    //Metodo para atacar al boss
     public void atacarABoss(Agentes Boss){
         double daño;
         switch (arma.getNombre()){
@@ -181,7 +189,7 @@ public class Agentes
             Boss.setSalud(0);
         }
     }
-
+    // Acciones del boss para atacar y defender
     public void AccionesBoss(Agentes Boss,Agentes objetivo, int probalidad){
         if(Boss.salud >= 300 && probalidad >= 60){
             System.out.println("El Boss te ataco");
@@ -239,6 +247,7 @@ public class Agentes
         }
         return objetivo.getSalud();
     }
+    //Recibe items y los aplica 
     public void aplicarItems(Agentes objetivo, String nombreItem, double probalidad){
         switch (nombreItem){
             //aplicables a uno mismo
@@ -287,6 +296,7 @@ public class Agentes
         }
 
     }
+    // Muestra status de las entidades
     public void mostrarAtributos(Agentes jugador){
         System.out.println("Jugador: " + " Vida: " + jugador.getSalud() + " Arma: " + jugador.arma  + " Ataque: " + jugador.getAtaque() +  " Defensa: " + jugador.getDefensa() + " Armadura: " + jugador.armadura.getNombre() + " Llave " + jugador.getLlave());
     }

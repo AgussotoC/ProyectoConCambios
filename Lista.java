@@ -54,6 +54,7 @@ public class Lista {
         }
         return inicio = habitacionActual;
     }
+    // imprime minimapa de la mazmorra
     public void imprimirMapa(Nodo habitacionActual){
         int[][] mapa = new int[6][6];
         System.out.println("Mapa mazmorra");
