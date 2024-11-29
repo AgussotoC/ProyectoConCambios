@@ -1015,7 +1015,6 @@ public class UID{
                             break;
                     }
                 } catch(InputMismatchException opcion) {
-                    //Sacado de internet, el try catch no se repetía con el loop
                     System.out.printf("%s no es un numero, pierde el turno.%n", scanner.next());
                 }
                 //Acciones del Boss
