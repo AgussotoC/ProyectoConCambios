@@ -614,14 +614,14 @@ public class UID{
                 int indexjEnemigo = enemigo.getIndexJ();
                 switch (moverE) {
                     case "w":
-                    if ((enemigo.indexi > 0) && sePuede(matriz[indexiEnemigo - 1][indexjEnemigo]) == true) {
+                    if ((enemigo.indexi > 1) && sePuede(matriz[indexiEnemigo - 1][indexjEnemigo]) == true) {
                         matriz[indexiEnemigo][indexjEnemigo] = 0;
                         matriz[indexiEnemigo - 1][indexjEnemigo] = enemigo.getIcono();
                         enemigo.setIndexI(indexiEnemigo - 1);
                     }
                     break;
                     case "a":
-                    if ((enemigo.indexj > 0) && sePuede(matriz[indexiEnemigo][indexjEnemigo - 1])) {
+                    if ((enemigo.indexj > 1) && sePuede(matriz[indexiEnemigo][indexjEnemigo - 1])) {
                         matriz[indexiEnemigo][indexjEnemigo] = 0;
                         matriz[indexiEnemigo][indexjEnemigo - 1] = enemigo.getIcono();
                         enemigo.setIndexJ(indexjEnemigo - 1);
