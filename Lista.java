@@ -122,10 +122,6 @@ public class Lista {
             }
         }
     }
-    public Nodo gethabitacionActual(){
-        return inicio;
-    }
-
 }
     
     

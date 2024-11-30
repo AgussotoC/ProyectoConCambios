@@ -100,23 +100,14 @@ public class Agentes
     public void setSalud(double efecto){
         this.salud = efecto;
     }
-    public void setAtaque(double efecto){
-        this.ataque = efecto;
-    }
     public void setArmadura(Armaduras armaduraNueva){
         this.armadura = armaduraNueva;
     }
     public void setArma(Armas armaNueva){
         this.arma = armaNueva;
     }
-    public void setBuff(Items buff){
-        this.buff = buff;
-    }
     public void setDebuff(Items debuff){
         this.debuff = debuff;
-    }
-    public void setArmaduraEfecto(){
-
     }
     public void setIcono(int ingreso){
         this.icono = ingreso;

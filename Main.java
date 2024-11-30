@@ -19,7 +19,10 @@ public class Main {
     
     int numeroDeBoss = 0;
     int numeroDeSalida = 0;
-    
+
+    int tickVeneno = 1;
+    int venenoTurnos = 1;
+
     private void revisarConexiones(Nodo actual){
         int indexi = 0;
         int indexj = 0;
@@ -106,6 +109,7 @@ public class Main {
         int opcion = scanner.nextInt();
         if (opcion == 1) {
             lista.imprimirMapa(actuall);
+            System.out.println("");
         }else if (opcion == 2) {
             System.out.println("inventario");
             agente.mostrarInventario();
@@ -160,8 +164,17 @@ public class Main {
                     juego.scanner.nextLine(); //Come el espacio muerto
                 }else{
                     actual.uid.moverPersonaje(mover, jugador); System.out.println();
+                    if(jugador.debuff.getNombre().equalsIgnoreCase("Veneno")){
+                        jugador.setSalud(jugador.getSalud() - juego.tickVeneno);
+                        juego.tickVeneno += 1;
+                        juego.venenoTurnos += 1;
+                        if(juego.venenoTurnos > 10){
+                            Items sinEfecto = new Items("Sin efecto", "Sin efecto");
+                            jugador.setDebuff(sinEfecto);
+                            juego.venenoTurnos = 1;
+                        }
+                    }
                 }
-
                 //Comprobantes para ver si el jugador agarró una arma, item, debuff, o entró a la puerta
                 actual.uid.encontrarEquipable(jugador);
                 
@@ -188,12 +201,14 @@ public class Main {
                         if(!juego.hayBoss){
                             if(juego.haySalida){
                                 juego.numeroDeSalida += 1;
+                                System.out.println("Has encontrado la salida");
                                 nuevoNodo.setTipoHabitacion("salida");
                                 juego.haySalida = false;
                             }
                         }
                         if(juego.hayBoss){
                             juego.numeroDeBoss += 1;
+                            System.out.println("Has encontrado al jefe");
                             nuevoNodo.setTipoHabitacion("jefe");
                             juego.hayBoss = false;
                         }
@@ -201,11 +216,10 @@ public class Main {
                         actual = nuevoNodo;
                         juego.agregarAMatriz(actual, mover);
                     }
-                    
                     else
                     {
                         actual = actual.arriba;
-                        actual.uid.reasignarPosicionJugador(mover);
+                        actual.uid.reasignarPosicionJugadorCuartoViejo(mover);
                     }
                     break;
                     
@@ -227,12 +241,14 @@ public class Main {
                         if(!juego.hayBoss){
                             if(juego.haySalida){
                                 juego.numeroDeSalida += 1;
+                                System.out.println("Has encontrado la salida");
                                 nuevoNodo.setTipoHabitacion("salida");
                                 juego.haySalida = false;
                             }
                         }
                         if(juego.hayBoss){
                             juego.numeroDeBoss += 1;
+                            System.out.println("Has encontrado al jefe");
                             nuevoNodo.setTipoHabitacion("jefe");
                             juego.hayBoss = false;
                         }
@@ -244,7 +260,7 @@ public class Main {
                     else
                     {
                         actual = actual.derecho;
-                        actual.uid.reasignarPosicionJugador(mover);
+                        actual.uid.reasignarPosicionJugadorCuartoViejo(mover);
                     }
                     break;
                     case "s":
@@ -265,12 +281,14 @@ public class Main {
                         if(!juego.hayBoss){
                             if(juego.haySalida){
                                 juego.numeroDeSalida += 1;
+                                System.out.println("Has encontrado la salida");
                                 nuevoNodo.setTipoHabitacion("salida");
                                 juego.haySalida = false;
                             }
                         }
                         if(juego.hayBoss){
                             juego.numeroDeBoss += 1;
+                            System.out.println("Has encontrado al jefe");
                             nuevoNodo.setTipoHabitacion("jefe");
                             juego.hayBoss = false;
                         }
@@ -282,7 +300,7 @@ public class Main {
                     else
                     {
                         actual = actual.abajo;
-                        actual.uid.reasignarPosicionJugador(mover);
+                        actual.uid.reasignarPosicionJugadorCuartoViejo(mover);
                     }
                     break;
                     case "a":
@@ -303,12 +321,14 @@ public class Main {
                         if(!juego.hayBoss){
                             if(juego.haySalida){
                                 juego.numeroDeSalida += 1;
+                                System.out.println("Has encontrado la salida");
                                 nuevoNodo.setTipoHabitacion("salida");
                                 juego.haySalida = false;
                             }
                         }
                         if(juego.hayBoss){
                             juego.numeroDeBoss += 1;
+                            System.out.println("Has encontrado al jefe");
                             nuevoNodo.setTipoHabitacion("jefe");
                             juego.hayBoss = false;
                         }
@@ -320,7 +340,7 @@ public class Main {
                     else
                     {
                         actual = actual.izquierdo;
-                        actual.uid.reasignarPosicionJugador(mover);
+                        actual.uid.reasignarPosicionJugadorCuartoViejo(mover);
                     }
                     break;
                 }

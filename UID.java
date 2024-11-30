@@ -27,17 +27,9 @@ public class UID{
     //Creacion de la matriz y su tamaño
     int[][] matriz;
     int num = rand.nextInt(8, 17); //Tamaño de la matriz
-    /* Forma de leer la matriz de enteros:
-    Vacio: 0
-    Paredes: 1
-    Enemigos: 2
-    Items: 3
-    Armas: 4
-    Armaduras: 5
-    Jugador: 6
-    boss 7
-    salida 8
-    */
+    //Forma de leer la matriz de enteros:
+    //Vacio: 0 | Paredes: 1 | Enemigos: 2 | Items: 3 | Armas: 4 | Armaduras: 5 | Jugador: 6 | boss 7 | Salida 8
+
     //Datos para spawnear entidades
     boolean esPosible = false;
     int mChiquita = num -1; //Area dentro de las paredes
@@ -48,7 +40,7 @@ public class UID{
     int[] spawnEnemigos = null; //ver cuantas entidades de enemigos se crean
     Agentes Boss = new Agentes(7, 600, 100, 300, null, null, null, null);
 
-    //Contructor
+    //Contructor de la generacion de una habitacimon
     public UID(int numCuarto, String wasd, boolean hayBoss, boolean haySalida){
         Armaduras armaduraI = new Armaduras("Sin armadura","Defensa Base");
         Armas armaI = new Armas("Sin arma", "Ataque base");
@@ -77,6 +69,7 @@ public class UID{
             encontrarCordenadasBoss();
         }
     }
+    //Metodo que decide cuantos enemigos van a haber
     private void decidirNumEnemigos(){
         int prob = rand.nextInt(1,101);
         int max = 75;
@@ -100,6 +93,7 @@ public class UID{
         indexjEnemigos =  new int[numEnemigos];
         indexiEnemigos = new int[numEnemigos];
     }
+    //Metodo para generar en la matriz los items, armas y armaduras (si hay)
     private void generarEntidades(int[] entidades){
         for(int k = 0; k < entidades.length; k++)
         {
@@ -140,6 +134,7 @@ public class UID{
         range = (num - 2) * (num - 2);
         rng = rand.nextInt(1 , range + 1);
     }
+    //Metodo para generar enemigos
     private void generarEnemigos(int[] enemigos){
         int contador = 0;
         if(enemigos != null){
@@ -264,7 +259,7 @@ public class UID{
             }
         }
     }
-    
+    //Genera las paredes de una habitacion nueva diferente a la inicial
     public void generarParedes(String wasd, boolean haySalida){
         boolean condicion = true;
         int contador = 0;
@@ -342,49 +337,45 @@ public class UID{
         }
         switch(wasd){ //Reubica al jugador en la entrada del nuevo cuarto
             case "w":
-            reubicarJugador(num-1, num/2); break;
+            reubicarJugadorCuartoNuevo(num-1, num/2); break;
             case "s":
-            reubicarJugador(0, num/2); break;
+            reubicarJugadorCuartoNuevo(0, num/2); break;
             case "d":
-            reubicarJugador(num/2, 0); break;
+            reubicarJugadorCuartoNuevo(num/2, 0); break;
             case "a":
-            reubicarJugador(num/2, num-1); break;
+            reubicarJugadorCuartoNuevo(num/2, num-1); break;
         }
         if(haySalida){
             switch(paredHechas[1]){
                 case 1:
-                    matriz[0][num/2] = 8; break;
+                    matriz[1][num/2] = 8; break;
                 case 2:
-                    matriz[num - 1][num/2] = 8; break;
+                    matriz[num - 2][num/2] = 8; break;
                 case 3:
-                    matriz[num/2][0] = 8; break;
+                    matriz[num/2][1] = 8; break;
                 case 4:
-                    matriz[num/2][num - 1] = 8; break;
+                    matriz[num/2][num - 2] = 8; break;
             }
         }
     }
-    
+    //Generar habitacion del boss
     private void generarHBoss(String wasd){
         switch(wasd){ //Reubica al jugador en la entrada del nuevo cuarto
             case "w":
-            reubicarJugador(num-1, num/2); break;
+            reubicarJugadorCuartoNuevo(num-1, num/2); break;
             case "s":
-            reubicarJugador(0, num/2); break;
+            reubicarJugadorCuartoNuevo(0, num/2); break;
             case "d":
-            reubicarJugador(num/2, 0); break;
+            reubicarJugadorCuartoNuevo(num/2, 0); break;
             case "a":
-            reubicarJugador(num/2, num-1); break;
+            reubicarJugadorCuartoNuevo(num/2, num-1); break;
         }
         matriz[num/2][num/2] = 7; //Se crea al Boss en el centro
         if(matriz[0][0] == 0){
             matriz[0][0] = 1;
         }
     }
-
-    private void generarSalida(){
-
-    }
-    
+    //Encuentra las coordenadas del boss
     public void encontrarCordenadasBoss(){
         for(int i = 0; i < num; i++){
             for(int j = 0; j < num; j++){
@@ -395,8 +386,8 @@ public class UID{
             }
         }
     }
-    
-    public void reubicarJugador(int coordenadaI, int coordenadaJ){
+    //Cuando le jugador entra a una habitacion nueva, que se asigne en la puerta correspondiente
+    public void reubicarJugadorCuartoNuevo(int coordenadaI, int coordenadaJ){
         int indexi = 0;
         int indexj = 0;
         for(int i = 0; i < num; i++){
@@ -410,8 +401,27 @@ public class UID{
         matriz[indexi][indexj] = 0;
         matriz[coordenadaI][coordenadaJ] = 6;
     }
-    
-    //metodo para saber las coordenadas de los items que se pueden agarrar
+    //Cuando le jugador entra a una habitacion vieja, que se asigne en la puerta correspondiente
+    public void reasignarPosicionJugadorCuartoViejo(String wasd){
+        for(int i = 0; i < num; i++){
+            for(int j = 0; j < num; j++){
+                if(matriz[i][j] == 6){
+                    matriz[i][j] = 0;
+                }
+            }
+        }
+        switch (wasd){
+            case "w":
+                matriz[num-1][num/2] = 6; break;
+            case "a":
+                matriz[num/2][num-1] = 6; break;
+            case "s":
+                matriz[0][num/2] = 6; break;
+            case "d":
+                matriz[num/2][0] = 6; break;
+        }
+    }
+    //metodo para saber las coordenadas de los objetos que se pueden agarrar
     public void encontrarCoordenadasEntidades(){
         char[] entidadesAgarrables = {4, 3, 5};
         for(int k = 0; k < entidadesAgarrables.length; k++){
@@ -446,16 +456,13 @@ public class UID{
                     if(contadorEnemigos < enemigos.length){
                         enemigos[contadorEnemigos].setIndexI(i); 
                         enemigos[contadorEnemigos].setIndexJ(j);
-                        indexiEnemigos[contadorEnemigos] = i;
-                        indexjEnemigos[contadorEnemigos] = j;
                         contadorEnemigos ++;
                     }
                 }
             }
         }
     }
-    
-    //Metodo para imprimir la matriz en la consola
+    //Metodo para imprimir la matriz en la consola (incluye enemigos, jugador, items, etc...)
     public void imprimirMatriz(Agentes jugador){
         String[] itemsLogo = {"A", "B", "C"};
         String[] itemsImprimidos = {"-", "-", "-"};
@@ -519,7 +526,7 @@ public class UID{
         }
     }
     
-    //comprobante que si la entidad puede estar ahí (revisar si hay pared por ejemplo)
+    //comprobante que si el enemigo puede estar ahí (revisar si hay pared por ejemplo)
     public boolean sePuede(int espacio){
         boolean sePuede = true;
         if(espacio == 3 || espacio == 4 || espacio == 5){
@@ -556,7 +563,7 @@ public class UID{
         return sePuede;
     }
     
-    //metodo para mover el personaje
+    //metodo para mover el personaje y los enemigos, ya que si el jugador se mueve ellos también
     public void moverPersonaje(String wasdm, Agentes agente){
         int indexi = 0;
         int indexj = 0;
@@ -673,6 +680,7 @@ public class UID{
         }
         return hayCombate;
     }
+    //Metodo para comprobar que le jugador esta en el area 1x1 del boss
     public boolean areaBoss(Agentes jugador){
         boolean hayCombate = false;
         if(Boss != null){
@@ -719,6 +727,7 @@ public class UID{
             System.out.println("Has obtenido: \n" + itemObtenido);
             jugador.agregarItemAlInventario(itemObtenido);
         }
+        //Lo mismo, pero con los enemigos
         if(enemigos != null){
             for(Agentes enemigo : enemigos){
                 if(enemigo == null){
@@ -770,46 +779,7 @@ public class UID{
         items[4] = new Items("Veneno", "Quita vida en cada turno hasta 10 vida, empieza en 1");
         items[5] = new Items("Reduccion","Reduce el daño del enemigo en un 20%");
     }
-    
-    public void asignarJugadorAPared(String wasd){
-        for(int i = 0; i < num; i++){
-            for(int j = 0; j < num; j++){
-                if(matriz[i][j] == 6){
-                    matriz[i][j] = 0;
-                }
-            }
-        }
-        switch (wasd){
-            case "w":
-            matriz[num-1][num/2] = 6; break;
-            case "a":
-            matriz[num/2][num-1] = 6; break;
-            case "s":
-            matriz[0][num/2] = 6; break;
-            case "d":
-            matriz[num/2][0] = 6; break;
-        }
-    }
-    
-    public void reasignarPosicionJugador(String wasd){
-        for(int i = 0; i < num; i++){
-            for(int j = 0; j < num; j++){
-                if(matriz[i][j] == 6){
-                    matriz[i][j] = 0;
-                }
-            }
-        }
-        switch (wasd){
-            case "w":
-            matriz[num-1][num/2] = 6; break;
-            case "a":
-            matriz[num/2][num-1] = 6; break;
-            case "s":
-            matriz[0][num/2] = 6; break;
-            case "d":
-            matriz[num/2][0] = 6; break;
-        }
-    }
+
     //Aplica los items al jugador
     public void utilizarItemJugador(Agentes jugador ,int seleccionItem, int i){
         double probalidad = rand.nextDouble(0.10,0.20);
@@ -980,6 +950,7 @@ public class UID{
                             System.out.println("Has hecho " + jugador.getAtaque() + " de daño");
                             if (Boss.getSalud() == 0) {
                                 System.out.println("Has derrotado al Boss!");
+                                System.out.println("Has obtenido la llave! Huye rapido...");
                                 Boss.setIcono(0);
                                 matriz[Boss.indexi][Boss.indexj] = 0;
                                 Boss = null;
